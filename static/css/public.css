@@ -42,6 +42,10 @@
 	width: 15%;
 }
 
+.width18 {
+	width: 18%;
+}
+
 .width20 {
 	width: 20%;
 }
@@ -153,7 +157,9 @@
 .margin_left5 {
 	margin-left: 5%
 }
-
+.margin_left8 {
+	margin-left: 8%
+}
 .margin_left100 {
 	margin-left: 100upx
 }
@@ -165,6 +171,7 @@
 .margin_left40 {
 	margin-left: 40upx
 }
+
 .margin_left125 {
 	margin-left: 125upx
 }
@@ -248,6 +255,13 @@
 .font_color33 {
 	color: #333333;
 }
+.font_colorfc{
+	color: #FCD07D;
+}
+
+.font_colorde {
+	color: #DEB14E;
+}
 
 .font_color66 {
 	color: #666666;
@@ -319,26 +333,61 @@
 	display: none
 }
 
-/* image {
-	pointer-events: none;
-} */
 
-.no_img {
-	width: 370upx;
-	height: 304upx;
-}
-.no_img_msg{
-	width: 380upx;
-	height: 278upx;
-}
-.no_img_team{
-	width: 366upx;
-	height: 279upx;
-}
 
 .uni-scroll-view::-webkit-scrollbar {
-		/* 隐藏滚动条，但依旧具备可以滚动的功能 */
-		display: none
-	}
-	
+	/* 隐藏滚动条，但依旧具备可以滚动的功能 */
+	display: none
+}
+
 /* image { pointer-events: none; } */
+
+.image_width_height100 {
+	width: 100%;
+	height: 100%;
+}
+
+.border_bottom {
+	border-bottom: 1px solid #484848;
+}
+
+.jb_view {
+	background: linear-gradient(to right, #EDCB80, #A58747);
+}
+
+/* 搜索框 */
+.searce_moudel {
+	width: 94%;
+	margin-left: 3%;
+	// margin-top: 3%;
+	-moz-box-shadow: 0px 5px 5px #CCCCCC;
+	-webkit-box-shadow: 0px 0px 5px #CCCCCC;
+	box-shadow: 0px 0px 5px #CCCCCC;
+	height: 60upx;
+	border-radius: 40upx;
+	line-height: 60upx;
+}
+
+.searce_left {
+	width: 5%;
+	margin-left: 2%;
+	margin-top: 1%;
+
+}
+
+.searce_right {
+	margin-top: 1%;
+	margin-left: 2%;
+}
+
+.searce_width {
+	width: 34upx;
+	height: 34upx;
+	margin-top: 1%;
+}
+
+.title_top {
+	height: 40upx;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.4);
+}

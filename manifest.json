@@ -1,5 +1,5 @@
 {
-    "name" : "douyin",
+    "name" : "超市",
     "appid" : "__UNI__EA899BC",
     "description" : "",
     "versionName" : "1.0.0",
@@ -72,7 +72,7 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
     }
 }
