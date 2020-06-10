@@ -22,28 +22,31 @@
 				<!-- 标题 -->
 				<view class="uni-flex">
 					<view class="">
-						<checkbox-group @change="allChoose(index)">
+						<checkbox-group @change="allChoose">
 							<label>
-								<checkbox :value="item.id" :checked="item.checkedAll" :class="{'checked':item.checkedAll}"/>
-								<!-- <checkbox  :class="{'checked':allChecked}" :checked="allChecked?true:false"></checkbox> -->
+								<checkbox value="all" :class="{'checked':allChecked}" :checked="allChecked?true:false"></checkbox> 全选
 							</label>
 						</checkbox-group>
+
 					</view>
 					<view class="">
 						<image src="../../../static/image/shopTitle.png" mode="" class="shopTitle"></image>
 					</view>
 					<view class="font_size28">
-						联想官方旗舰店
+						联想官方旗舰店{{item.checkedAll}}
 					</view>
 				</view>
 				<!-- 内容 -->
 				<view class="uni-flex" v-for="(item,index) in item.list1" :key="index">
 					<view class="margin_top8 margin_left3">
 						<checkbox-group class="block" @change="changeCheckbox">
+							<view v-for="item in checkboxData" :key="item.value">
 								<checkbox :value="String(item.value)" :checked="checkedArr.includes(String(item.value))" :class="{'checked':checkedArr.includes(String(item.value))}"></checkbox>
+								<text>{{item.label}}</text>
+							</view>
 						</checkbox-group>
-						
-						
+
+
 					</view>
 					<view class="margin_left3">
 						<image src="../../../static/image/beij/myTopb.png" class="product_moudel_img" mode=""></image>
@@ -62,11 +65,7 @@
 							</view>
 							<view class="">
 								<view class="example-body">
-									<uni-number-box
-									 :min="1" 
-									 :max="99"
-									 :value="item.num> item.stock ? item.stock :item.num" 
-									 :index="index" @change="change" />
+									<uni-number-box :min="1" :max="99" :value="item.num> item.stock ? item.stock :item.num" :index="index" @change="change" />
 								</view>
 							</view>
 						</view>
@@ -82,23 +81,38 @@
 	export default {
 		data() {
 			return {
+				isChecked: false,
 				checkedArr: [], //复选框选中的值
-				dataList:'',//给到后端的数据
+				allChecked: false, //是否全选
+				checkboxData:[
+									{'value':0,'label':'选项一'},
+									{'value':1,'label':'选项二'},
+									{'value':2,'label':'选项三'},
+									{'value':3,'label':'选项四'},
+									{'value':4,'label':'选项五'},
+									{'value':5,'label':'选项六'},
+									{'value':6,'label':'选项七'},
+									{'value':7,'label':'选项八'},
+									{'value':8,'label':'选项九'},
+									{'value':9,'label':'选项十'}
+								],
+				
 				productList: [{
 						name: '店铺名称',
 						id: '122',
 						list1: [{
-							name: '子商品',
-							num: 22,
-							Price: 5,
-							stock:90
-						},
-						{
-							name: '子商品',
-							num: 22,
-							Price: 5,
-							stock:20
-						}]
+								name: '子商品',
+								num: 22,
+								Price: 5,
+								stock: 90
+							},
+							{
+								name: '子商品',
+								num: 22,
+								Price: 5,
+								stock: 20
+							}
+						]
 					},
 					{
 						name: '店铺名称1',
@@ -107,7 +121,7 @@
 							name: '子商品',
 							num: 3,
 							Price: 10,
-							stock:11
+							stock: 11
 						}]
 					},
 				]
@@ -120,6 +134,25 @@
 
 			},
 
+			// 全选事件
+			allChoose(e) {
+				let chooseItem = e.detail.value;
+				// 全选
+				if (chooseItem[0] == 'all') {
+					this.allChecked = true;
+					for (let item of this.checkboxData) {
+						let itemVal = String(item.value);
+						if (!this.checkedArr.includes(itemVal)) {
+							this.checkedArr.push(itemVal);
+						}
+					}
+				} else {
+					// 取消全选
+					this.allChecked = false;
+					this.checkedArr = [];
+				}
+			},
+
 			// 多选复选框改变事件
 			changeCheckbox(e) {
 				this.checkedArr = e.detail.value;
@@ -129,41 +162,7 @@
 				} else {
 					this.allChecked = false;
 				}
-			},
-			// 全选事件
-			allChoose(e) {
-				console.log(e)
-				if(this.productList[e].checkedAll){
-					this.productList[e].checkedAll = false;//改变
-				}else{
-					this.productList[e].checkedAll = true;//改变
-					console.log(this.productList[e])
-					this.dataList = this.productList[e]//进行赋值
-					for(let item of  this.dataList.list1){
-						console.log(item);
-						
-					}
-				}
-				
-				
-				return;
-				let chooseItem = e.detail.value;
-				// 全选
-				if (chooseItem[0] == 'all') {
-					this.allChecked = true;
-					// for (let item of this.checkboxData) {
-					// 	let itemVal = String(item.value);
-					// 	if (!this.checkedArr.includes(itemVal)) {
-					// 		this.checkedArr.push(itemVal);
-					// 	}
-					// }
-				} else {
-					// 取消全选
-					this.allChecked = false;
-					this.checkedArr = [];
-				}
 			}
-
 		}
 	}
 </script>
