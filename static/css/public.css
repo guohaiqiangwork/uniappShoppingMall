@@ -180,6 +180,13 @@
 	margin-right: 3%;
 }
 
+.padding_bottom2 {
+	padding-bottom: 2%;
+}
+
+.padding_top2{
+	padding-top: 2%;
+}
 .padding_bottom3 {
 	padding-bottom: 3%;
 }
@@ -390,4 +397,13 @@
 	height: 40upx;
 	width: 100%;
 	background: rgba(0, 0, 0, 0.4);
+}
+
+.header_title_img{
+	width: 16upx;
+	height: 28upx;
+}
+.header_title_imgr{
+	width: 36upx;
+	height: 36upx;
 }

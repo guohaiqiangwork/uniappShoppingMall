@@ -20,7 +20,13 @@
 			}
 		}, {
 			"path": "pages/tabBar/shopCart/shopCart",
-			"style": {}
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
 		}, {
 			"path": "pages/tabBar/my/my",
 			"style": {
