@@ -1,5 +1,16 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		
+		{
+		    "path" : "pages/login/login",
+		    "style" : {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
 		{
 			"path": "pages/tabBar/home/home",
 			"style": {
@@ -18,10 +29,7 @@
 				},
 				"enablePullDownRefresh": false
 			}
-		}, {
-			"path": "pages/tabBar/shopCart/shopCart",
-			"style": {}
-		}, {
+		},{
 			"path": "pages/tabBar/my/my",
 			"style": {
 				"app-plus": {
@@ -36,16 +44,22 @@
 				"navigationBarTitleText": "首页"
 			}
 		},{
-		    "path" : "pages/login/login",
-		    "style" : {
-				"app-plus": {
-					"titleNView": false,
-					"backgroundTextStyle": "dark"
-				},
-				"enablePullDownRefresh": false
+			"path": "pages/lunBDetails/lunBDetails",
+			"style": {
+				"navigationBarTitleText": "轮播详情"
 			}
 		}
 	    
+        ,{
+            "path" : "pages/homeOperation/homeOperation",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/setUp/setUp",
+            "style" : {
+				"navigationBarTitleText": "设置中心"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -61,20 +75,15 @@
 		"list": [{
 			"pagePath": "pages/tabBar/home/home",
 			"enablePullDownRefresh": false,
-			"text": "首页",
+			"text": "家",
 			"iconPath": "static/image/tab/home.png",
 			"selectedIconPath": "static/image/tab/homeZ.png"
 		}, {
 			"pagePath": "pages/tabBar/category/category",
-			"text": "分类",
+			"text": "便民",
 			"iconPath": "static/image/tab/category.png",
 			"selectedIconPath": "static/image/tab/categoryZ.png"
-		}, {
-			"pagePath": "pages/tabBar/shopCart/shopCart",
-			"text": "购物车",
-			"iconPath": "./static/image/tab/shopCart.png",
-			"selectedIconPath": "static/image/tab/shopCartZ.png"
-		}, {
+		},  {
 			"pagePath": "pages/tabBar/my/my",
 			"text": "我的",
 			"iconPath": "static/image/tab/my.png",

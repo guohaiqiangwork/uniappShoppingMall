@@ -11,7 +11,7 @@
 					<view class="">
 						<image src="../../../static/image/icon/erw.png" mode="" class="top_img2"></image>
 					</view>
-					<view class="margin_left8">
+					<view class="margin_left8" @click="goSet">
 						<image src="../../../static/image/icon/set.png" mode="" class="top_img3"></image>
 					</view>
 				</view>
@@ -28,17 +28,17 @@
 					</view>
 					
 					<view class="font_size24 font_colorff" >
-						余额(元)
+						{{DD}}
 					</view>
 					<view class="font_size44" style="color: #FCD07D;">
-						800000
+						{{DD}}
 					</view>
 					<view class="uni-flex">
 						<view class="font_size24 width70">
-							累计余额：100,000,00
+							{{DD}}
 						</view>
 						<view class="left_btn">
-							提现
+							{{DD}}
 						</view>
 					</view>
 				</view>
@@ -50,7 +50,7 @@
 							<image src="../../../static/image/icon/ordeq.png" class="order_width" mode=""></image>
 						</view>
 						<view class="font_colorfc font_size26">
-							全部订单
+							{{DD}}
 						</view>
 					</view>
 					<view class="display_inline text_center" style="margin-top: 8%;width: 25%;">
@@ -58,7 +58,7 @@
 							<image src="../../../static/image/icon/orderd.png" class="order_width" mode=""></image>
 						</view>
 						<view class="font_colorfc font_size26">
-							待支付
+							{{DD}}
 						</view>
 					</view>
 					<view class="display_inline text_center" style="margin-top: 8%;width: 25%;">
@@ -66,7 +66,7 @@
 							<image src="../../../static/image/icon/orders.png" class="order_width" mode=""></image>
 						</view>
 						<view class="font_colorfc font_size26">
-							待收货
+							{{DD}}
 						</view>
 					</view>
 					<view class="display_inline text_center" style="margin-top: 8%;width: 25%;">
@@ -74,15 +74,15 @@
 							<image src="../../../static/image/icon/ordert.png" class="order_width" mode=""></image>
 						</view>
 						<view class="font_colorfc font_size26">
-							退换货
+							{{DD}}
 						</view>
 					</view>
 				</view>
-				<!-- 我的团队 -->
+				<!-- 我的家庭成员 -->
 				<view class="my_team">
 					<view class="uni-flex">
 						<view class="font_size30 font_colorff width90" style="margin-left: 20upx;margin-top: 30upx;">
-							我的团队
+							家庭成员
 						</view>
 						<view class="">
 							<image src="../../../static/image/icon/right.png" mode="" class="my_team_img"></image>
@@ -92,37 +92,49 @@
 					<view class="uni-flex">
 						<view class="width33 text_center" style="border-right: 1px solid #999999;">
 							<view class="font_size34 font_colorfc">
-								3000
+								{{DD}}
 							</view>
 							<view class="font_size24 font_colorcc">
-								总人数
+								{{DD}}
 							</view>
 						</view>
 						<view class="width33 text_center" style="border-right: 1px solid #999999;">
 							<view class="font_size34 font_colorfc">
-								3000
+								{{DD}}
 							</view>
 							<view class="font_size24 font_colorcc">
-								总交易额
+								{{DD}}
 							</view>
 						</view>
 						<view class="width33 text_center">
 							<view class="font_size34 font_colorfc">
-								3000
+								{{DD}}
 							</view>
 							<view class="font_size24 font_colorcc">
-								获得分润
+								{{DD}}
 							</view>
 						</view>
 											
 					</view>
 				</view>
 			</view>
+			
+			<!-- 联系我们 -->
+			
+			<view class="margin_top5">
+				<view class="width25 text_center display_inline" v-for="(item,index) in myPhone" :key="index" @click="gotoTele">
+					<view class="">
+						<image src="../../../static/image/pathUrl/tab1.png" mode="" style="width: 80upx;height: 80upx;"></image>
+					</view>
+					<view class="font_size26">
+						{{item.name}}
+					</view>
+				</view>
+			</view>
 	
-			<!-- 邀请 -->
-			<image src="../../../static/image/beij/myy.png" mode="" style="height: 140upx;width: 94%;margin-left: 3%;margin-top: 3%;"></image>
 		
 			<view class="text_center margin_top5">
+				此块区域待定
 				<image src="../../../static/image/beij/myHot.png" mode="" style="width: 150upx;height: 30upx;"></image>
 			</view>
 			
@@ -154,11 +166,37 @@
 	export default {
 		data() {
 			return {
-
+				DD:'待定',
+				myPhone:[
+					{name:'联系我们'},
+					{name:'关于我们'},
+					{name:'意见反亏'},
+					{name:'待定'}
+				]
+				
 			}
 		},
 		methods: {
-
+			/* 联系客服 */
+			gotoTele(){
+				 uni.makePhoneCall({
+				 // 手机号
+				phoneNumber: '400-110-120', 
+				// 成功回调
+				success: (res) => {
+						console.log('调用成功!')        
+				},
+				// 失败回调
+				fail: (res) => {
+						console.log('调用失败!')
+				}
+			  });
+			},
+			goSet(){
+				uni.navigateTo({
+					url:'../../setUp/setUp'
+				})
+			}
 		}
 	}
 </script>

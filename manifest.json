@@ -1,9 +1,9 @@
 {
-    "name" : "超市",
+    "name" : "大掌柜",
     "appid" : "__UNI__EA899BC",
     "description" : "",
     "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionCode" : 1,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -50,7 +50,9 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */

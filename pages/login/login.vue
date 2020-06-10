@@ -3,10 +3,7 @@
 		<view class="login">
 			<image src="../../static/image/beij/logB.png" mode="" class="image_width"></image>
 			<view class="login_moudel">
-				<!-- 返回箭头 -->
-				<view class="" @click="goToBack">
-					<image src="../../static/image/icon/leftF.png" class="goBack" mode=""></image>
-				</view>
+			
 				<!--登录模块 -->
 				<view class="login_moudel_width font_colorff">
 					<view class="font_weight600 font_size44 margin_top5">
@@ -206,9 +203,6 @@
 				uni.navigateTo({
 					url: '../' + page + '/' + page,
 				});
-			},
-			goToBack() {
-				uni.navigateBack()
 			}
 
 		}

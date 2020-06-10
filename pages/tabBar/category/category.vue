@@ -1,30 +1,29 @@
 <template>
 	<view>
 		<view class="title_top"></view>
-		<!-- 搜索框 -->
-		<view class="top_border  background_colorff" style="height: 90upx;padding-top: 20upx;">
-			<view class="uni-flex searce_moudel" style="border-radius: 20upx;">
-				<view class="searce_left">
-					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>
+		<!-- 轮播图 -->
+		<view class="">
+			<swiper class="imageContainer" @change="handleChange" circular autoplay>
+				<block v-for="(item,index) in imgList" :key="index">
+					<swiper-item @click="swiperClick(item.id)">
+						<image class="itemImg" :src="item.banner" lazy-load mode="scaleToFill"></image>
+					</swiper-item>
+				</block>
+			</swiper>
+		</view>
+		
+		<!-- 分类 -->
+		<view class="margin_top3">
+			<view class="width25 text_center display_inline" v-for="(item,index) in tabList" :key="index" @click="goOperation(item.name)">
+				<view class="">
+					<image src="../../../static/image/pathUrl/tab1.png" mode="" style="width: 80upx;height: 80upx;"></image>
 				</view>
-				<view class="searce_right">
-					<input class="findShop" maxlength="10" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text" @confirm='Search'
-					 placeholder-style='color:#cccccc' />
+				<view class="font_size26">
+					{{item.name}}
 				</view>
 			</view>
 		</view>
 		
-		<!-- 列表 -->
-		<view class="">
-			<view v-for="(item,index) in  [1,3,4,5]" :key="index" class="category_list  margin_top2" style="padding-left: 20upx;padding-top: 6upx;padding-bottom: 6upx;">
-				<view class="" >
-					<image src="../../../static/image/beij/logB.png"  mode=""></image>
-				</view>
-				<view class="margin_left2" style="margin-top: 60upx;margin-left: 26upx;">
-					潮流服饰
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -32,28 +31,57 @@
 	export default {
 		data() {
 			return {
-				
+				tabList:[
+					{name:'家政'},
+					{name:'购物'},
+					{name:'医疗'},
+					{name:'汽车救援'},
+					{name:'购物'},
+					{name:'水电急救'},
+					{name:'待定'},
+					{name:'待定'}
+				],
+				imgList: [{
+					banner: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3538793755,2857666234&fm=26&gp=0.jpg'
+				}, {
+					banner: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3984473917,238095211&fm=26&gp=0.jpg'
+				}]
 			}
 		},
 		methods: {
 			Search(e) {
 				console.log(e);
 			},
+			// 轮播滑动操作
+			handleChange(e) {
+				this.currentIndex = e.detail.current;
+			},
+			// 点击轮播操做
+			swiperClick(e) {
+				uni.navigateTo({
+					url: '../../pages/activity/activity?id=' + e
+				})
+			},
+			goOperation(e){
+				console.log(e)
+				uni.navigateTo({
+					url:'../../homeOperation/homeOperation?id='+ e
+				})
+			},
+			
 		}
 	}
 </script>
 
-<style>
-	.category_list{
-		width: 45%;
-		margin-left: 3%;
-		height: 160upx;
-		background-color: #FFFFFF;
-		border-radius: 20upx;
-		display: inline-flex;
+<style lang="less">
+	// 轮播
+	.imageContainer {
+		width: 100%;
+		height: 300upx;
 	}
-	.category_list image{
-		width: 150upx;
-		height: 150upx;
+	
+	.itemImg {
+		width: 100%;
+		height: 300upx;
 	}
 </style>
