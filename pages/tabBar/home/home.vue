@@ -12,21 +12,16 @@
 					</block>
 				</swiper>
 			</view>
-
-			<!-- 分类 -->
-			<view class="margin_top3">
-				<view class="width25 text_center display_inline" v-for="(item,index) in tabList" :key="index" @click="goOperation(item.name)">
-					<view class="">
-						<image src="../../../static/image/pathUrl/tab1.png" mode="" style="width: 80upx;height: 80upx;"></image>
-					</view>
-					<view class="font_size26">
-						{{item.name}}
-					</view>
-				</view>
+			
+			<view class="">
+				轮播：
+				1.物业公告
+				2.点进去可以看到物业详情
+				
 			</view>
-
+			
 			<!-- 公告栏 -->
-			<view v-if="daiDF" class="uni-flex gong_g_m">
+			<view  class="uni-flex gong_g_m">
 				<view class="img_cnter">
 					<image src="../../../static/image/home/notice.png" style="width: 56upx;height: 28upx;" mode=""></image>
 				</view>
@@ -40,6 +35,30 @@
 				</view>
 			</view>
 			<!-- 公告栏end -->
+			<!-- 分类 -->
+			<view class="margin_top3">
+				<view class="width25 text_center display_inline" v-for="(item,index) in tabList" :key="index" @click="goOperation(item.name)">
+					<view class="">
+						<image src="../../../static/image/pathUrl/tab1.png" mode="" style="width: 80upx;height: 80upx;"></image>
+					</view>
+					<view class="font_size26">
+						{{item.name}}
+					</view>
+				</view>
+			</view>
+			<view class="">
+				进入需看是否缴纳物业费
+			</view>
+			
+			
+			<view class="margin_top5">
+				内容区域：
+				1.做自己的产品放置这里用户进行购买？
+				2.接入物流 上门取件？
+				3.公益活动 废物捐赠 捐血
+				4.社区活动 组队
+			</view>
+			
 
 
 			<!-- 广告图 -->

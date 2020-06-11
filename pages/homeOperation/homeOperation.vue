@@ -9,7 +9,8 @@
 				</block>
 			</swiper>
 		</view>
-		内容待定
+		缴费 ：物业费 车位费用
+		1.进行小区选择
 		<view class="uni-form-item uni-column margin_left3">
 			<picker @change="bindPickerChange" :range="array">
 				<label>区域：</label>

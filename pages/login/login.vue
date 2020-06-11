@@ -35,6 +35,21 @@
 					<view class="bottom_btn " style="border: 1px solid #EDCB80;margin-top: 30upx;color: #CAAA65;">
 						注册
 					</view>
+					
+					<view class="">
+						业主：
+						已注册 未认证
+						已注册 已认证
+						未缴费 可见 家 ，我的
+						已缴费VIP 可见 家 便民 我的
+						1注册：
+						1.1.手机号码验证
+						1.2.小区绑定已运行 下拉 
+						2.进入提示进行房屋认证
+						2.1.认证需填写 手机号默认账户可以修改 名字 性别 单元 
+						如果不进行认证：无法进行缴费
+						
+					</view>
 				</view>
 				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">
 					<view class="" @click="tabFalg" style="margin-right: 2%;margin-top: .3%;">
