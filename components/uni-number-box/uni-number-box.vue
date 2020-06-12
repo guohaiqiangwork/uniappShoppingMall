@@ -28,11 +28,15 @@
 			disabled: {
 				type: Boolean,
 				default: false
+			},
+			type:{
+				type:String,
 			}
 		},
 		data() {
 			return {
-				inputValue: this.value
+				inputValue: this.value,
+				type:this.type
 			}
 		},
 		computed: {
