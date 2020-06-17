@@ -23,7 +23,7 @@
 							 Hi~	王大锤
 						</view>
 						<view class="">
-							<image src="../../../static/image/pathUrl/tab1.png" mode="" class="header_img"></image>
+							<image src="../../../static/image/heard.png" mode="" class="header_img"></image>
 						</view>
 					</view>
 					

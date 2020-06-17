@@ -104,13 +104,24 @@
 			"style":{
 				"navigationBarTitleText":"房屋详情"
 			}
+		},{
+			"path":"pages/convenient/convenient",
+			"style":{
+				"navigationBarTitleText":"便民操作"
+			}
+		},
+		{
+			"path":"pages/convenientDetails/convenientDetails",
+			"style":{
+				"navigationBarTitleText":"店铺详情"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "商城",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
 		// "navigationStyle": "custom"
 	},
 	"tabBar": {
