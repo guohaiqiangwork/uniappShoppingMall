@@ -121,7 +121,9 @@
 .text_right {
 	text-align: right;
 }
-
+.margin_top1 {
+	margin-top: 1%;
+}
 .margin_top2 {
 	margin-top: 2%;
 }
@@ -325,7 +327,7 @@
 .page {
 	padding-top: 128upx;
 	padding-bottom: 5%;
-
+	background-color: #F8F8F8;
 }
 
 .uni-scroll-view::-webkit-scrollbar {
@@ -348,7 +350,7 @@
 }
 
 .border_bottom {
-	border-bottom: 1px solid #484848;
+	border-bottom: 1px solid #CCCCCC;
 }
 
 .jb_view {

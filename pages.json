@@ -1,9 +1,8 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		
 		{
-		    "path" : "pages/login/login",
-		    "style" : {
+			"path": "pages/login/login",
+			"style": {
 				"app-plus": {
 					"titleNView": false,
 					"backgroundTextStyle": "dark"
@@ -20,7 +19,8 @@
 				},
 				"enablePullDownRefresh": false
 			}
-		}, {
+		},
+		{
 			"path": "pages/tabBar/category/category",
 			"style": {
 				"app-plus": {
@@ -29,7 +29,7 @@
 				},
 				"enablePullDownRefresh": false
 			}
-		},{
+		}, {
 			"path": "pages/tabBar/my/my",
 			"style": {
 				"app-plus": {
@@ -43,24 +43,69 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		},{
+		}, {
 			"path": "pages/lunBDetails/lunBDetails",
 			"style": {
 				"navigationBarTitleText": "轮播详情"
 			}
-		}
-	    
-        ,{
-            "path" : "pages/homeOperation/homeOperation",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/setUp/setUp",
-            "style" : {
+		}, {
+			"path": "pages/homeOperation/homeOperation",
+			"style": {
+				"navigationBarTitleText":"建议意见"
+			}
+		}, {
+			"path": "pages/setUp/setUp",
+			"style": {
 				"navigationBarTitleText": "设置中心"
 			}
-        }
-    ],
+		}, {
+			"path": "pages/register/register",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/tabBar/property/property",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/houseCertification/houseCertification",
+			"style": {
+				"navigationBarTitleText":"房屋认证"
+			}
+		},
+		{
+			"path": "pages/payMoney/payMoney",
+			"style": {
+				"navigationBarTitleText":"费用缴纳"
+			}
+		},{
+			"path":"pages/houseRepair/houseRepair",
+			"style": {
+				"navigationBarTitleText":"报修"
+			}
+		},{
+			"path":"pages/houseRental/houseRental",
+			"style":{
+				"navigationBarTitleText":"房屋租售"
+			}
+		},{
+			"path":"pages/houseRentalDetails/houseRentalDetails",
+			"style":{
+				"navigationBarTitleText":"房屋详情"
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "商城",
@@ -73,21 +118,29 @@
 		"selectedColor": "#333333",
 		"backgroundColor": "#ffffff",
 		"list": [{
-			"pagePath": "pages/tabBar/home/home",
-			"enablePullDownRefresh": false,
-			"text": "家",
-			"iconPath": "static/image/tab/home.png",
-			"selectedIconPath": "static/image/tab/homeZ.png"
-		}, {
-			"pagePath": "pages/tabBar/category/category",
-			"text": "便民",
-			"iconPath": "static/image/tab/category.png",
-			"selectedIconPath": "static/image/tab/categoryZ.png"
-		},  {
-			"pagePath": "pages/tabBar/my/my",
-			"text": "我的",
-			"iconPath": "static/image/tab/my.png",
-			"selectedIconPath": "static/image/tab/myZ.png"
-		}]
+				"pagePath": "pages/tabBar/home/home",
+				"enablePullDownRefresh": false,
+				"text": "家",
+				"iconPath": "static/image/tab/home.png",
+				"selectedIconPath": "static/image/tab/homeZ.png"
+			},
+			{
+				"path": "pages/tabBar/property/property",
+				"text": "物业",
+				"iconPath": "static/image/tab/home.png",
+				"selectedIconPath": "static/image/tab/homeZ.png"
+			},
+			{
+				"pagePath": "pages/tabBar/category/category",
+				"text": "便民",
+				"iconPath": "static/image/tab/category.png",
+				"selectedIconPath": "static/image/tab/categoryZ.png"
+			}, {
+				"pagePath": "pages/tabBar/my/my",
+				"text": "我的",
+				"iconPath": "static/image/tab/my.png",
+				"selectedIconPath": "static/image/tab/myZ.png"
+			}
+		]
 	}
 }

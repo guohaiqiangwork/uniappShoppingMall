@@ -3,7 +3,6 @@
 		<view class="login">
 			<image src="../../static/image/beij/logB.png" mode="" class="image_width"></image>
 			<view class="login_moudel">
-			
 				<!--登录模块 -->
 				<view class="login_moudel_width font_colorff">
 					<view class="font_weight600 font_size44 margin_top5">
@@ -32,10 +31,10 @@
 					<view class="bottom_btn jb_view" @click="goToLogin">
 						登录
 					</view>
-					<view class="bottom_btn " style="border: 1px solid #EDCB80;margin-top: 30upx;color: #CAAA65;">
+					<view class="bottom_btn" @click="goToRegister" style="border: 1px solid #EDCB80;margin-top: 30upx;color: #CAAA65;">
 						注册
 					</view>
-					
+
 					<view class="">
 						业主：
 						已注册 未认证
@@ -44,11 +43,11 @@
 						已缴费VIP 可见 家 便民 我的
 						1注册：
 						1.1.手机号码验证
-						1.2.小区绑定已运行 下拉 
+						1.2.小区绑定已运行 下拉
 						2.进入提示进行房屋认证
-						2.1.认证需填写 手机号默认账户可以修改 名字 性别 单元 
+						2.1.认证需填写 手机号默认账户可以修改 名字 性别 单元
 						如果不进行认证：无法进行缴费
-						
+
 					</view>
 				</view>
 				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">
@@ -158,9 +157,9 @@
 					--that.countdown;
 				}
 			},
+			
 			// 去登录
 			goToLogin: function() {
-
 				uni.switchTab({
 					url: '../tabBar/home/home'
 				});
@@ -213,11 +212,18 @@
 				}).catch(err => {})
 
 			},
-			// 去用户协议 去隐私协议
+			// 去用户协议 去隐私协议	
 			goUserConter(page) {
 				uni.navigateTo({
 					url: '../' + page + '/' + page,
 				});
+			},
+			// 去注册
+			goToRegister() {
+				console.log('99')
+				uni.navigateTo({
+					url: '../register/register'
+				})
 			}
 
 		}

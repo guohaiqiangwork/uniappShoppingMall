@@ -24,6 +24,13 @@
 			</view>
 		</view>
 		
+		
+		<view class="">
+			热门推荐：收费位置
+			好评
+			距离最近
+		</view>
+		
 	</view>
 </template>
 

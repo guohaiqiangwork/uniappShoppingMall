@@ -12,16 +12,16 @@
 					</block>
 				</swiper>
 			</view>
-			
+
 			<view class="">
 				轮播：
 				1.物业公告
 				2.点进去可以看到物业详情
-				
+
 			</view>
-			
+
 			<!-- 公告栏 -->
-			<view  class="uni-flex gong_g_m">
+			<view class="uni-flex gong_g_m">
 				<view class="img_cnter">
 					<image src="../../../static/image/home/notice.png" style="width: 56upx;height: 28upx;" mode=""></image>
 				</view>
@@ -36,8 +36,8 @@
 			</view>
 			<!-- 公告栏end -->
 			<!-- 分类 -->
-			<view class="margin_top3">
-				<view class="width25 text_center display_inline" v-for="(item,index) in tabList" :key="index" @click="goOperation(item.name)">
+			<view class="margin_top3 padding_bottom3 padding_top3">
+				<view class="width25 text_center display_inline" v-for="(item,index) in tabList" :key="index" @click="goOperation(item)">
 					<view class="">
 						<image src="../../../static/image/pathUrl/tab1.png" mode="" style="width: 80upx;height: 80upx;"></image>
 					</view>
@@ -49,8 +49,8 @@
 			<view class="">
 				进入需看是否缴纳物业费
 			</view>
-			
-			
+
+
 			<view class="margin_top5">
 				内容区域：
 				1.做自己的产品放置这里用户进行购买？
@@ -58,15 +58,15 @@
 				3.公益活动 废物捐赠 捐血
 				4.社区活动 组队
 			</view>
-			
+
 
 
 			<!-- 广告图 -->
-			<image  v-if="daiDF" class="margin_top3" style="height:172upx;width: 100%;" :src="imgList[1].banner" mode=""></image>
+			<image v-if="daiDF" class="margin_top3" style="height:172upx;width: 100%;" :src="imgList[1].banner" mode=""></image>
 
 			<!-- 推荐购买 -->
 
-			<view  v-if="daiDF" class="hot_moudel">
+			<view v-if="daiDF" class="hot_moudel">
 				<view class="display_flex">
 					<!-- 左面 -->
 					<view class="width50" style="border-right: 1px solid #DEDEDE;">
@@ -153,7 +153,7 @@
 			</view>
 
 			<!-- 精调细选 -->
-			<view  v-if="daiDF" class="">
+			<view v-if="daiDF" class="">
 				<view class="display_flex">
 					<view class="font_size30 font_weight600">
 						精挑细选
@@ -162,7 +162,7 @@
 						你的生活美学指南
 					</view>
 				</view>
-				
+
 				<view class="margin_top3">
 					<swiper class="bottom_imageContainer" @change="handleChange" circular autoplay>
 						<block v-for="(item,index) in imgList" :key="index">
@@ -172,9 +172,30 @@
 						</block>
 					</swiper>
 				</view>
-				
+
 			</view>
 		</view>
+
+		<!-- 是否缴费弹窗 -->
+		<template v-if="Unpaid">
+			<view class="moudel_content_my">
+				<view class="phone_moudel_my">
+					<view class="text_center font_size28 margin_top5">
+						{{moudelConter}}
+					</view>
+
+					<view class="uni-flex display_center margin_top5">
+						<view class="btn_moudel " @click="closeMoudel" style="background: linear-gradient(to right, #b8c3ba,#e0dfee);">
+							再等等
+						</view>
+						<view @click="goToOperation" class="btn_moudel margin_left3" style="background: linear-gradient(to right, #ff6100,#ff4e00);">
+							{{moudelBtn}}
+						</view>
+					</view>
+				</view>
+			</view>
+		</template>
+
 
 	</view>
 </template>
@@ -183,7 +204,10 @@
 	export default {
 		data() {
 			return {
-				daiDF:false,//待确认
+				daiDF: false, //待确认
+				moudelConter: '您还没有进行房屋认证，请进行认证', //弹出框内容
+				moudelBtn: '去认证', //弹出框按钮
+				Unpaid: false, //是否缴费弹窗
 				imgList: [{
 					banner: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3538793755,2857666234&fm=26&gp=0.jpg'
 				}, {
@@ -198,22 +222,34 @@
 				}, {
 					content: '1'
 				}],
-				tabList:[
-					{name:'报修'},
-					{name:'房屋租售'},
-					{name:'缴费'},
-					{name:'投诉建议'},
-					{name:'待定'},
-					{name:'待定'},
-					{name:'待定'},
-					{name:'待定'}
+				tabList: [{
+						name: '报修',
+						url:'../../houseRepair/houseRepair'
+					},
+					{
+						name: '房屋租售',
+						url:'../../houseRental/houseRental'
+					},
+					{
+						name: '缴费',
+						url:'../../payMoney/payMoney'
+					},
+					{
+						name: '投诉建议',
+						url:'../../homeOperation/homeOperation'
+					}
 				]
 			}
 		},
 		onShow() {
-			this.init();
+			this.init(); //初始化一些状态验证
 		},
 		methods: {
+			init() {
+				if (!uni.getStorageSync('houseFalg')) {
+					this.Unpaid = true; //房屋认证标示
+				}
+			},
 			Search(e) {
 				console.log(e);
 			},
@@ -225,30 +261,54 @@
 			swiperClick(e) {
 				console.log(e);
 				uni.navigateTo({
-					url:'../../lunBDetails/lunBDetails'
+					url: '../../lunBDetails/lunBDetails'
 				})
 			},
-			goOperation(e){
-				console.log(e)
+			goOperation(e) {
+				console.log(e);
+				if (e.name == '报修') {
+					if (!uni.getStorageSync('moneyFalge')) {
+						this.Unpaid = true;
+						this.moudelConter = '您还未缴纳物业费，请你进行物业费缴纳';
+						this.moudelBtn = '去缴费'
+						uni.hideTabBar(); //隐藏tab
+						return;
+					}
+					
+				
+				}
 				uni.navigateTo({
-					url:'../../homeOperation/homeOperation?id='+ e
-				})
+					url:e.url
+				});
+			
 			},
-			
-			
-			
-			init() {
 
-			}
+			// 关闭提示
+			closeMoudel() {
+				this.Unpaid = false;
+				uni.showTabBar(); //显示tab
+			},
+
+			// 弹窗操作
+			goToOperation() {
+				if (this.moudelBtn == '去缴费') {
+					console.log('去缴费');
+					uni.navigateTo({
+						url: '../../payMoney/payMoney'
+					})
+				} else {
+					console.log('进行房屋认证');
+					uni.navigateTo({
+						url: '../../houseCertification/houseCertification'
+					})
+				}
+			},
 		}
 	}
 </script>
 
-<style lang="less">
-	page {
-		background-color: #F8F8F8;
-	}
-
+<style lang="scss">
+	
 	.content_moudel {
 		width: 100%;
 		// margin-left: 3%;
@@ -307,7 +367,7 @@
 		text-align: center;
 		margin: auto, 0;
 		margin-left: 30upx;
-		
+
 	}
 
 	.hot_img_one {
@@ -321,22 +381,55 @@
 	.hot_img_two_right {
 		height: 170upx;
 	}
-	.hot_moudel{
+
+	.hot_moudel {
 		background-color: #FFFFFF;
 		border-radius: .3rem;
 		margin-top: 3%;
 		padding: 2%;
 	}
-	
+
 	.bottom_imageContainer {
 		width: 100%;
 		height: 300upx;
 	}
-	
+
 	.bottom_itemImg {
 		border-radius: 40upx;
 		width: 80%;
 		height: 250upx;
 	}
-	
+
+	// 弹出框
+	.moudel_content_my {
+		height: 100%;
+		width: 100%;
+		position: fixed;
+		background-color: $uni-bg-color-mask;
+		z-index: 99;
+		top: 0;
+		left: 0;
+	}
+
+	.phone_moudel_my {
+		background-color: #FFFFFF;
+		border-radius: 30upx;
+		position: absolute;
+		top: 30%;
+		width: 80%;
+		margin-left: 10%;
+		// height: 362upx;
+		padding: 40upx;
+	}
+
+	.btn_moudel {
+		width: 180upx;
+		height: 60upx;
+		border-radius: 50upx;
+		line-height: 60upx;
+		text-align: center;
+		color: #FFFFFF;
+		font-size: 32upx;
+		align-items: center;
+	}
 </style>
