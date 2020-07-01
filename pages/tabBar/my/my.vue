@@ -132,7 +132,22 @@
 				</view>
 			</view>
 	
-		
+			
+			<view class="">
+			  店铺管理
+			</view>
+			<view class="">
+			  缴费记录
+			</view>
+			<view class="">
+			  小区切换
+			</view>
+			<view class="">
+			  房屋发布
+			</view>
+			
+			
+			
 			<view class="text_center margin_top5">
 				此块区域待定
 				<image src="../../../static/image/beij/myHot.png" mode="" style="width: 150upx;height: 30upx;"></image>

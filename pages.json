@@ -21,6 +21,17 @@
 			}
 		},
 		{
+			"path": "pages/tabBar/property/property",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
+		
+		{
 			"path": "pages/tabBar/category/category",
 			"style": {
 				"app-plus": {
@@ -68,16 +79,7 @@
 				"enablePullDownRefresh": false
 			}
 		},
-		{
-			"path": "pages/tabBar/property/property",
-			"style": {
-				"app-plus": {
-					"titleNView": false,
-					"backgroundTextStyle": "dark"
-				},
-				"enablePullDownRefresh": false
-			}
-		},
+		
 		{
 			"path": "pages/houseCertification/houseCertification",
 			"style": {
@@ -136,10 +138,10 @@
 				"selectedIconPath": "static/image/tab/homeZ.png"
 			},
 			{
-				"path": "pages/tabBar/property/property",
+				"pagePath": "pages/tabBar/property/property",
 				"text": "物业",
-				"iconPath": "static/image/tab/home.png",
-				"selectedIconPath": "static/image/tab/homeZ.png"
+				"iconPath": "static/image/tab/my.png",
+				"selectedIconPath": "static/image/tab/myZ.png"
 			},
 			{
 				"pagePath": "pages/tabBar/category/category",

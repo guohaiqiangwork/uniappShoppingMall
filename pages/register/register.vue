@@ -170,7 +170,6 @@
 		text-align: center;
 		border-radius: 20upx;
 		color: #FBECDF;
-
 		background: linear-gradient(to right, #EDCB80, #A58747);
 	}
 </style>
