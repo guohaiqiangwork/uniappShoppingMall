@@ -59,7 +59,7 @@
 		
 		<!-- 列表 -->
 		<view class="page_width">
-			<view class="uni-flex margin_top3">
+			<view class="uni-flex margin_top3" v-for="(item,index) in  [1,,2,3]" :key="index">
 				<view class="font_size26 width20 text_center">
 					提现
 				</view>
