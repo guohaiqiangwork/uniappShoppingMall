@@ -3,14 +3,14 @@
 
 		<view class="title_top"></view>
 		<view class="uni-flex background_colorff padding_top2 padding_bottom2">
-			<view class="width33 margin_left3 margin_top2" >
-				<!-- <image src="../../../static/image/icon/left.png" class="header_title_img" mode=""></image> -->
+			<view class="width33 margin_left3 margin_top2" @click="goBack">
+				<image src="../../static/image/icon/left.png" class="header_title_img" mode=""></image>
 			</view>
 			<view class="width33 text_center font_size36">
 				购物车
 			</view>
 			<view class="width33 text_right margin_right3 margin_top2">
-				<image src="../../../static/image/icon/delete.png" class="header_title_imgr" mode=""></image>
+				<image src="../../static/image/icon/delete.png" class="header_title_imgr" mode=""></image>
 			</view>
 		</view>
 
@@ -29,7 +29,7 @@
 						</checkbox-group>
 					</view>
 					<view class="">
-						<image src="../../../static/image/shopTitle.png" mode="" class="shopTitle"></image>
+						<image src="../../static/image/shopTitle.png" mode="" class="shopTitle"></image>
 					</view>
 					<view class="font_size28">
 						联想官方旗舰店
@@ -45,7 +45,7 @@
 						</checkbox-group>
 					</view>
 					<view class="">
-						<image src="../../../static/image/beij/myTopb.png" class="product_moudel_img" mode=""></image>
+						<image src="../../static/image/beij/myTopb.png" class="product_moudel_img" mode=""></image>
 					</view>
 					<view class="width60 margin_left2">
 						<view class="font_size28 ">
@@ -85,7 +85,7 @@
 						失效
 					</view>
 					<view class="margin_left3">
-						<image src="../../../static/image/beij/myTopb.png" class="product_moudel_img" mode=""></image>
+						<image src="../../static/image/beij/myTopb.png" class="product_moudel_img" mode=""></image>
 					</view>
 					<view class="width60 margin_left2">
 						<view class="font_size28 font_weight600">
@@ -114,12 +114,12 @@
 
 					<view class="width20 text_right font_size24" v-if="invalidList.length == 1" @click="openinvalidList">
 						展开
-						<image class="margin_left3" src="../../../static/image/icon/sj.png" style="width: 10upx;height: 7upx;" mode=""></image>
+						<image class="margin_left3" src="../../static/image/icon/sj.png" style="width: 10upx;height: 7upx;" mode=""></image>
 					</view>
 
 					<view class="width20 text_right font_size24" v-if="invalidList.length != 1" @click="openinvalidList">
 						关闭
-						<image class="margin_left3" src="../../../static/image/icon/sj.png" style="width: 10upx;height: 7upx;" mode=""></image>
+						<image class="margin_left3" src="../../static/image/icon/sj.png" style="width: 10upx;height: 7upx;" mode=""></image>
 					</view>
 				</view>
 
@@ -145,7 +145,7 @@
 			<view class="bottom_z_center font_size28 font_color33">
 				总价：<text class="font_colorde">{{totalPrice}}</text>
 			</view>
-			<view class="bottom_z_right" @click="goConfirmOrder">
+			<view class="bottom_z_right">
 				去结算({{totalPriceNum}})
 			</view>
 		</view>
@@ -333,11 +333,10 @@
 			openinvalidList() {
 				this.invalidList = [1, 2, 3, 4]
 			},
-			// 去确认订单
-			goConfirmOrder(){
-				uni.navigateTo({
-					url:'../../confirmOrder/confirmOrder'
-				})
+
+			// 返回
+			goBack() {
+				uni.navigateBack()
 			}
 		}
 	}

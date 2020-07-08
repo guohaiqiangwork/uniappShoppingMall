@@ -1,6 +1,16 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/login/login",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/tabBar/home/home",
 			"style": {
 				"app-plus": {
@@ -41,17 +51,129 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		},{
-		    "path" : "pages/login/login",
-		    "style" : {
+		}
+
+		, {
+			"path": "pages/noPassword/noPassword",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		}, {
+			"path": "pages/search/search",
+			"style": {
 				"app-plus": {
 					"titleNView": false,
 					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "搜索"
 				},
 				"enablePullDownRefresh": false
 			}
+		}, {
+			"path": "pages/searchList/searchList",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "搜索列表"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/productDetails/productDetails",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "产品详情"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/productComment/productComment",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "产品评论"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/shopIndex/shopIndex",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "店铺首页"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/shopSearch/shopSearch",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "店铺搜索"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/categoryOne/categoryOne",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "分类子页面"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/shopCart/shopCart",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "非tab购物车"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/confirmOrder/confirmOrder",
+			"style": {
+				"navigationBarTitleText": "确认订单"
+			}
 		}
-	    
+	    ,{
+            "path" : "pages/invalidProduct/invalidProduct",
+            "style": {
+            	"app-plus": {
+            		"titleNView": false,
+            		"backgroundTextStyle": "dark"
+            		// "navigationBarTitleText": "商品列表"
+            	},
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/pageOrder/pageOrder",
+            "style" : {
+				"app-plus": {
+					"backgroundTextStyle": "dark",
+					"navigationBarTitleText": "支付订单",
+					"navigationBarBackgroundColor": "#333333",
+					"navigationBarTextStyle":"white"
+				
+				},
+				"enablePullDownRefresh": false
+			}
+        }
+        ,{
+            "path" : "pages/payResult/payResult",
+            "style" : {
+				"navigationBarTitleText": "支付结果"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

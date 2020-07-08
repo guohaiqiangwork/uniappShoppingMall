@@ -10,41 +10,87 @@
 				<!--登录模块 -->
 				<view class="login_moudel_width font_colorff">
 					<view class="font_weight600 font_size44 margin_top5">
-						登录
+						{{loginTitle}}
 					</view>
-					<view class="margin_top5 font_size36">
-						手机号码
-					</view>
-					<view class="border_bottom padding_bottom3 margin_top5">
-						<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
-					</view>
-					<view class="margin_top5 font_size36">
-						验证码
-					</view>
-					<view class="border_bottom padding_bottom3 margin_top5 uni-flex">
-						<input class="width70" type="number" maxlength="6" @input="keyCode" placeholder="请输入验证码" placeholder-style='color:#484848' />
-						<view class="yzm_moudel" @click="yzm_function">
-							{{countdown}}<text v-show="timestatus" class="forgetpwd2">秒重获</text>
+					<!-- 登录某块 -->
+					<template v-if="loginFalg == 1">
+						<view class="margin_top5 font_size36">
+							手机号码
 						</view>
-					</view>
-
-					<view class="font_size24 margin_top2" style="color: #FF3131;">
-						{{msgErr}}
-					</view>
-
-					<view class="bottom_btn jb_view" @click="goToLogin">
-						登录
-					</view>
-					<view class="bottom_btn " style="border: 1px solid #EDCB80;margin-top: 30upx;color: #CAAA65;">
-						注册
-					</view>
+						<view class="border_bottom padding_bottom3 margin_top5">
+							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
+						</view>
+						<view class="margin_top5 font_size36">
+							验证码
+						</view>
+						<view class="border_bottom padding_bottom3 margin_top5 uni-flex">
+							<input class="width70" type="number" maxlength="6" @input="keyCode" placeholder="请输入验证码" placeholder-style='color:#484848' />
+							<view class="yzm_moudel" @click="yzm_function">
+								{{countdown}}<text v-show="timestatus" class="forgetpwd2">秒重获</text>
+							</view>
+						</view>
+						
+						<view class="font_size24 margin_top2" style="color: #FF3131;">
+							{{msgErr}}
+						</view>
+						
+						<view class="bottom_btn jb_view" @click="bingYCode">
+							登录
+						</view>
+						<view class=" font_size28 font_colorff text_right margin_top5 margin_right3" @click="goPassword">
+							密码登录
+						</view>
+					</template>
+					
+					
+					<!-- 密码登录 -->
+					<template v-if="loginFalg == 3">
+						<view class="margin_top5 font_size36">
+							手机号码
+						</view>
+						<view class="border_bottom padding_bottom3 margin_top5">
+							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
+						</view>
+						<view class="margin_top5 font_size36">
+							密码
+						</view>
+						<view class="border_bottom padding_bottom3 margin_top5">
+							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入密码" placeholder-style='color:#484848' />
+						</view>
+						<view class="font_size24 margin_top2" style="color: #FF3131;">
+							{{msgErr}}
+						</view>
+						
+						<view class="bottom_btn jb_view" @click="bingYCode">
+							登录
+						</view>
+						<view class="display_space uni-flex font_size28 font_colorff text_right margin_top5 margin_right3">
+							<view class="margin_left3" @click="goToPassword">
+								忘记密码
+							</view>
+							<view class="margin_right3" @click="goCode">
+								验证码登录
+							</view>
+						</view>
+					</template>
+						
+					<!-- 绑定用户 -->
+					<template v-if="loginFalg == 2">
+						<view class=" font_size36" style="margin-top: 260upx;">
+							邀请码
+						</view>
+						<view class="border_bottom padding_bottom3 margin_top5" >
+							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入对方邀请码" placeholder-style='color:#484848' />
+						</view>
+						<view class="bottom_btn jb_view" @click="goToLogin">
+							确认
+						</view>
+					</template>
+						
+			
 				</view>
-				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">
-					<view class="" @click="tabFalg" style="margin-right: 2%;margin-top: .3%;">
-						<image src="../../static/image/icon/check.png" v-if="usefalg" class="img_1"></image>
-						<image src="../../static/image/icon/check1.png" v-if="!usefalg" class="img_1"></image>
-					</view>
-					我已阅读并同意<text @click="goUserConter('userAgreement')" style="color: #B99445;">用户协议</text>和 <text @click=" goUserConter('userPrivacy')"
+				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">		
+					登录即代表您已经同意<text @click="goUserConter('userAgreement')" style="color: #B99445;">用户协议</text>和 <text @click=" goUserConter('userPrivacy')"
 					 style="color: #B99445;">隐私政策</text>
 				</view>
 
@@ -59,6 +105,10 @@
 	export default {
 		data() {
 			return {
+				loginTitle:'登录',
+				loginFalg:1,
+				
+				
 				datan: '登录',
 				countdown: '获取验证码',
 				disabled: false,
@@ -72,7 +122,7 @@
 					b: '3',
 					c: '4'
 				},
-				usefalg: true, // 是的阅读
+				
 				imgUrl: 'http://xypay.expresslines.cn/images/sysImage/logo.jpg '
 			}
 		},
@@ -85,11 +135,7 @@
 			keyCode: function(e) {
 				this.phoneCode = e.target.value
 			},
-			// 是的阅读
-			tabFalg: function() {
-				this.usefalg = !this.usefalg
-			},
-
+			
 			// 获取验证码
 			yzm_function: function() {
 				var that = this;
@@ -146,9 +192,30 @@
 					--that.countdown;
 				}
 			},
+			// 绑定邀请码
+			bingYCode:function(){
+				this.loginFalg = 2;
+				this.loginTitle ='请输入邀请码'
+			},
+			// 密码登录
+			goPassword:function(){
+				this.loginFalg = 3;
+				this.loginTitle ='登录'
+			},
+			// 验证码登录
+			goCode:function(){
+				this.loginFalg = 2;
+				this.loginTitle ='登录'
+			},
+			// 忘记密码
+			goToPassword:function(){
+				uni.navigateTo({
+					url:'../noPassword/noPassword'
+				})
+			},
+			
 			// 去登录
 			goToLogin: function() {
-
 				uni.switchTab({
 					url: '../tabBar/home/home'
 				});
@@ -173,15 +240,7 @@
 						position: 'top',
 					});
 					return false;
-				} else if (this.usefalg) {
-					uni.showToast({
-						title: '请勾选协议',
-						icon: 'none',
-						duration: 1500,
-						position: 'top',
-					});
-					return false;
-				}
+				} 
 				this.$http.post('/wx/send/login', loginData).then(res => {
 					console.log(JSON.stringify(res))
 					if (res.data.code == 200) {

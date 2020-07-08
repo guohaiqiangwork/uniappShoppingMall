@@ -2,7 +2,7 @@
 	<view>
 		<view class="title_top"></view>
 		<!-- 搜索框 -->
-		<view class="top_border">
+		<view class="background_colorff padding_top3 padding_bottom3">
 			<view class="uni-flex searce_moudel">
 				<view class="searce_left">
 					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>
@@ -55,7 +55,7 @@
 
 
 			<!-- 广告图 -->
-			<image class="margin_top3" style="height:172upx;width: 100%;" :src="imgList[1].banner" mode=""></image>
+			<image class="margin_top3" style="height:172upx;width: 100%;border-radius: 12upx;" :src="imgList[1].banner" mode=""></image>
 
 			<!-- 推荐购买 -->
 
@@ -198,6 +198,9 @@
 		methods: {
 			Search(e) {
 				console.log(e);
+				uni.navigateTo({
+					url:'../../search/search?searchName=' + e.detail.value
+				})
 			},
 			// 轮播滑动操作
 			handleChange(e) {
@@ -225,50 +228,6 @@
 		width: 94%;
 		margin-left: 3%;
 	}
-
-	// .title_top {
-	// 	height: 40upx;
-	// 	width: 100%;
-	// 	background: rgba(0, 0, 0, 0.4);
-
-	// }
-
-	.top_border {
-		// border-top: 1px solid #CCCCCC;
-		margin-top: 2%;
-	}
-
-	// // 搜索框
-	// .searce_moudel {
-	// 	width: 94%;
-	// 	margin-left: 3%;
-	// 	// margin-top: 3%;
-	// 	-moz-box-shadow: 0px 5px 5px #CCCCCC;
-	// 	-webkit-box-shadow: 0px 0px 5px #CCCCCC;
-	// 	box-shadow: 0px 0px 5px #CCCCCC;
-	// 	height: 60upx;
-	// 	border-radius: 40upx;
-	// 	line-height: 60upx;
-	// }
-
-	// .searce_left {
-	// 	width: 5%;
-	// 	margin-left: 2%;
-	// 	margin-top: 1%;
-
-	// }
-
-	// .searce_right {
-	// 	margin-top: 1%;
-	// 	margin-left: 2%;
-	// }
-
-	// .searce_width {
-	// 	width: 34upx;
-	// 	height: 34upx;
-	// 	margin-top: 1%;
-	// }
-
 	// 轮播
 	.imageContainer {
 		width: 100%;
