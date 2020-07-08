@@ -193,9 +193,11 @@
 				console.log('0')
 				this.payFalgY = false
 			},
-
+			
 			//倒计时计时器
 			jishiqi: function() {
+				// this.clear = setInterval(that.jishiqi, 1000);
+				// clearInterval(that.clear);
 				var dj = '900000';
 				if (dj <= 0) {
 					clearInterval(interval);

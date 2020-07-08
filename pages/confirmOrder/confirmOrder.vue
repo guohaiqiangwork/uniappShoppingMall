@@ -2,11 +2,11 @@
 	<view>
 		<view class="page_width">
 			<!-- 地址块 -->
-			<view class="margin_top3" v-if="addressF">
+			<view class="margin_top3" v-if="addressF" @click="goAddAddress('new')">
 				<image src="../../static/image/beij/orderConfirm.png" class="orderimg" mode=""></image>
 			</view>
 
-			<view class="margin_top3" v-else style="height: 200upx;">
+			<view class="margin_top3" v-else style="height: 200upx;" @click="goAddAddress('new')">
 				<image src="../../static/image/beij/address.png" mode="" class="image_width"></image>
 				<view class="address_order_moudel uni-flex">
 					<view class="width15"></view>
@@ -301,9 +301,20 @@
 				this.changeList = false
 			},
 			// 去支付
-			goPageOrder(){
+			goPageOrder() {
 				uni.navigateTo({
-					url:'../pageOrder/pageOrder'
+					url: '../pageOrder/pageOrder'
+				})
+			},
+			
+			// 去添加地址
+			goAddAddress(e) {
+				console.log(e);
+				// uni.redirectTo({
+				// 	url: '../addAddress/addAddress?falg=' + e ,
+				// });
+				uni.navigateTo({
+					url:'../addAddress/addAddress?falg=' + e ,
 				})
 			}
 		}

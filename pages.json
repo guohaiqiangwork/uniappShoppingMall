@@ -143,42 +143,139 @@
 			"style": {
 				"navigationBarTitleText": "确认订单"
 			}
-		}
-	    ,{
-            "path" : "pages/invalidProduct/invalidProduct",
-            "style": {
-            	"app-plus": {
-            		"titleNView": false,
-            		"backgroundTextStyle": "dark"
-            		// "navigationBarTitleText": "商品列表"
-            	},
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/pageOrder/pageOrder",
-            "style" : {
+		}, {
+			"path": "pages/invalidProduct/invalidProduct",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "商品列表"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/pageOrder/pageOrder",
+			"style": {
 				"app-plus": {
 					"backgroundTextStyle": "dark",
 					"navigationBarTitleText": "支付订单",
 					"navigationBarBackgroundColor": "#333333",
-					"navigationBarTextStyle":"white"
-				
+					"navigationBarTextStyle": "white"
+
 				},
 				"enablePullDownRefresh": false
 			}
-        }
-        ,{
-            "path" : "pages/payResult/payResult",
-            "style" : {
+		}, {
+			"path": "pages/payResult/payResult",
+			"style": {
 				"navigationBarTitleText": "支付结果"
 			}
-        }
+		},
+		{
+			"path": "pages/addAddress/addAddress",
+			"style": {
+				"navigationBarTitleText": "添加收货地址"
+			}
+		},
+		{
+			"path": "pages/addAEdit/addAEdit",
+			"style": {
+				"navigationBarTitleText": "编辑收货地址"
+			}
+		},
+		{
+			"path": "pages/msg/msg",
+			"style": {
+				"navigationBarTitleText": "消息中心"
+			}
+		},
+		{
+			"path": "pages/msgDetails/msgDetails",
+			"style": {
+				"navigationBarTitleText": "消息详情"
+			}
+		},
+		{
+			"path": "pages/myQRCode/myQRCode",
+			"style": {
+				"navigationBarTitleText": "我的二维码"
+			}
+		}, {
+			"path": "pages/setUp/setUp",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/editData/editData",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/editTelephon/editTelephon",
+			"style": {
+				"navigationBarTitleText": "更换手机"
+			}
+		}, {
+			"path": "pages/myBankCard/myBankCard",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "我的银行卡"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/aboutUs/aboutUs",
+			"style": {
+				"navigationBarTitleText": "关于我们"
+			}
+		},
+		{
+			"path": "pages/userAgreement/userAgreement",
+			"style": {
+				"navigationBarTitleText": "用户协议"
+			}
+		}, {
+			"path": "pages/userPrivacy/userPrivacy",
+			"style": {
+				"navigationBarTitleText": "隐私政策"
+			}
+		},
+		{
+			"path": "pages/realName/realName",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
+		}, {
+			"path": "pages/addBack/addBack",
+			"style": {
+				"navigationBarTitleText": "绑定银行卡"
+			}
+		}
+	    ,{
+            "path" : "pages/loginPassword/loginPassword",
+            "style" : {
+				"navigationBarTitleText": "设置密码"
+			}
+        },{
+			"path" : "pages/moreThan/moreThan",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "我的余额"
+				},
+				"enablePullDownRefresh": false
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "商城",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 		// "navigationStyle": "custom"
 	},
