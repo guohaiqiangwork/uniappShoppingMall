@@ -149,7 +149,7 @@
 				"app-plus": {
 					"titleNView": false,
 					"backgroundTextStyle": "dark"
-					// "navigationBarTitleText": "商品列表"
+					// "navigationBarTitleText": "失效商品"
 				},
 				"enablePullDownRefresh": false
 			}
@@ -271,6 +271,58 @@
 				"enablePullDownRefresh": false
 			}
 		}
+        ,{
+            "path" : "pages/withdrawal/withdrawal",
+            "style" : {
+				"navigationBarTitleText":"余额提现"
+			}
+        }
+        ,{
+            "path" : "pages/withdrawalResult/withdrawalResult",
+            "style" : {
+				"navigationBarTitleText":"提现结果"
+			}
+        }
+        ,{
+            "path" : "pages/productFollow/productFollow",
+            "style": {
+            	"app-plus": {
+            		"titleNView": false,
+            		"backgroundTextStyle": "dark"
+            		// "navigationBarTitleText": "商品关注"
+            	},
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/shopFollow/shopFollow",
+           "style": {
+           	"app-plus": {
+           		"titleNView": false,
+           		"backgroundTextStyle": "dark"
+           		// "navigationBarTitleText": "店铺关注"
+           	},
+           	"enablePullDownRefresh": false
+           }
+        }
+        ,{
+            "path" : "pages/couponCard/couponCard",
+            "style" : {
+				"navigationBarTitleText":"优惠券"
+			}
+        }
+        ,{
+            "path" : "pages/myOrder/myOrder",
+            "style" : {
+				"navigationBarTitleText":"我的订单"
+			}
+        }
+        ,{
+            "path" : "pages/orderDetail/orderDetail",
+            "style" : {
+				"navigationBarTitleText":"订单详情"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

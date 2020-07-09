@@ -30,6 +30,7 @@
 .display_right {
 	justify-content: right;
 	-webkit-justify-content: right;
+	justify-content:flex-end
 }
 
 .display_left {
@@ -313,7 +314,8 @@
 .font_colorc1 {
 	color: #C19B87;
 }
-.font_colorb2{
+
+.font_colorb2 {
 	color: #B2B2B2;
 }
 
@@ -442,7 +444,18 @@
 	margin-left: 3%;
 }
 
-.no_img_msg{
+.no_img_msg {
 	width: 380upx;
 	height: 275upx;
+}
+
+
+.moudel_content {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 99;
+	top: 0;
+	left: 0;
 }

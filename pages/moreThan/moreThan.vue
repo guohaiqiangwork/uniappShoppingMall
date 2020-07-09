@@ -9,7 +9,7 @@
 			<view class="width50 text_center font_size36">
 				我的余额
 			</view>
-			<view class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">
+			<view @click="topRight" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">
 				余额说明
 			</view>
 		</view>
@@ -26,7 +26,7 @@
 					</view>
 				</view>
 				<view class="width50">
-					<view class="moreRight">
+					<view class="moreRight" @click="goWithdrawal">
 						提现
 					</view>
 				</view>
@@ -46,17 +46,33 @@
 			</view>
 
 			<!-- 时间筛选 -->
-			<view class="uni-flex">
-				<view class="">
 
+			<view class="uni-flex padding_top2 padding_bottom2">
+				<view class="text_center width50 border_right">
+					<view class="font_size22 font_color66">
+						起始日期
+					</view>
+					<view class="font_size26">
+						<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
+							<view class="uni-input">{{startDateOne}}</view>
+						</picker>
+					</view>
 				</view>
-				<view class="">
-
+				<view class="text_center width50">
+					<view class="font_size22 font_color66">
+						截至日期
+					</view>
+					<view class="font_size26">
+						<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChangeEnd">
+							<view class="uni-input">{{endDateOne}}</view>
+						</picker>
+					</view>
 				</view>
 			</view>
 
+
 		</view>
-		
+
 		<!-- 列表 -->
 		<view class="page_width">
 			<view class="uni-flex margin_top3" v-for="(item,index) in  [1,,2,3]" :key="index">
@@ -70,13 +86,38 @@
 					-￥100.00
 				</view>
 			</view>
-			
+
 		</view>
-	
+
+
+		<!-- 余额说明 -->
+		<template v-if="explainFalg">
+			<view class="moudel_content">
+				<view class="content_block">
+					等法律看见了就开始减肥快睡觉记录开始减肥快了时间连接科林斯发动机了克己复礼凯撒奖分类卡佳龙课程框架
+				</view>
+			</view>
+		</template>
 	</view>
 </template>
 
 <script>
+	function getDate(type) {
+		const date = new Date();
+		let year = date.getFullYear();
+		let month = date.getMonth() + 1;
+		let day = date.getDate();
+
+		if (type === 'start') {
+			year = year - 60;
+		} else if (type === 'end') {
+			year = year + 2;
+		}
+		month = month > 9 ? month : '0' + month;;
+		day = day > 9 ? day : '0' + day;
+
+		return `${year}-${month}-${day}`;
+	}
 	export default {
 		data() {
 			return {
@@ -91,6 +132,15 @@
 					},
 				],
 				tabIndexT: 0,
+				explainFalg: false,
+
+				startDateOne: '请选择',
+				endDateOne: '请选择',
+				startDate: getDate('start'),
+				endDate: getDate('end'),
+				date: getDate({
+					format: true
+				}),
 			}
 		},
 		methods: {
@@ -103,11 +153,77 @@
 				console.log(index)
 				this.tabIndexT = index
 			},
+			// 余额说明
+			topRight() {
+				this.explainFalg = true
+			},
+			// 去提现
+			goWithdrawal() {
+				console.log('9')
+				uni.navigateTo({
+					url: '../withdrawal/withdrawal'
+				})
+			},
+
+			// 时间格式话
+			formatDate: function(value) {
+				var date = new Date(value); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+				var Y = date.getFullYear();
+				var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+				var D = date.getDate();
+				var h = date.getHours() + ':';
+				var m = date.getMinutes() + ':';
+				var s = date.getSeconds();
+				return Y + '年' + M + '月' + D + '日';
+			},
+			// 时间开始
+			bindDateChange: function(e) {
+				this.startDateOne = e.detail.value;
+				console.log(this.startDateOne)
+				this.dataStartDate = this.formatDate(this.startDateOne);
+				console.log(this.dataStartDate)
+			},
+			// 时间结束
+			bindDateChangeEnd: function(e) {
+				this.endDateOne = e.detail.value;
+				console.log(this.endDateOne)
+				this.dataEndDate = this.formatDate(this.endDateOne);
+				console.log(this.dataEndDate)
+			},
+
+
+			// var d1 = new Date(this.startDateOne.replace(/\-/g, "\/"));
+			// var d2 = new Date(this.endDateOne.replace(/\-/g, "\/"));
+			// console.log(d1)
+			// console.log(d2)
+			// if (!d1) {
+			// 	uni.showToast({
+			// 		title: '请选择开始日期',
+			// 		icon: 'none',
+			// 		duration: 2000,
+			// 		position: 'top',
+			// 	});
+			// } else if (!d2) {
+			// 	uni.showToast({
+			// 		title: '请选择结束日期',
+			// 		icon: 'none',
+			// 		duration: 2000,
+			// 		position: 'top',
+			// 	});
+			// } else if (d1 > d2) {
+			// 	uni.showToast({
+			// 		title: '结束时间小于开始日期',
+			// 		icon: 'none',
+			// 		duration: 2000,
+			// 		position: 'top',
+			// 	});
+			// 	return;
+			// }
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="scss">
 	.balk_img {
 		width: 16upx;
 		height: 28upx;
@@ -153,5 +269,26 @@
 		background-color: #BE8100;
 		border-radius: 3upx;
 		margin-left: 35%;
+	}
+
+	// 🈷️说明
+	.moudel_content {
+		height: 100%;
+		width: 100%;
+		position: fixed;
+		background-color: rgba(0, 0, 0, 0.4);
+		; //
+		z-index: 99;
+		top: 0;
+		left: 0;
+	}
+
+	.content_block {
+		background-color: #FFFFFF;
+		width: 90%;
+		margin-left: 5%;
+		border-radius: 16px;
+		position: absolute;
+		top: 18%;
 	}
 </style>

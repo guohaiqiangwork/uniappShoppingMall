@@ -204,6 +204,7 @@
 				}
 
 			},
+		
 			// 设置支付密码
 			getSetPassword() {
 				var data = {

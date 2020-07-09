@@ -72,8 +72,8 @@
 
 				<template v-if="!listNumber">
 					<view class="uni-flex">
-						<scroll-view scroll-x="true" style="max-width: 85%;">
-							<view class="uni-flex">
+						<scroll-view scroll-x="true" class="wrapper">
+							<!-- <view class="uni-flex"> -->
 								<view class="dimg_moudel " v-for="(item,index) in [1,2,3,4,5,6,7]" :key="index">
 									<view class="">
 										<image src="../../static/image/beij/logB.png" class="dimg" mode=""></image>
@@ -82,7 +82,7 @@
 										4799.00
 									</view>
 								</view>
-							</view>
+							<!-- </view> -->
 						</scroll-view>
 						<view class="width25 font_size30 text_center" style="align-items: center;padding-top: 40upx;" @click="goInvalidProduct('d')">
 							共4件>
@@ -465,7 +465,9 @@
 		width: 130upx;
 		text-align: center;
 		margin-left: 20upx;
+		  display: inline-block;
 	}
+	
 
 	.dimg {
 		width: 120upx;
@@ -533,5 +535,11 @@
 		border-radius: 10upx;
 		margin-left: 5%;
 		margin-top: 3%;
+	}
+	.wrapper {
+		width: 90%;
+		white-space: nowrap;
+		display: flex;
+		margin-top: 2%;
 	}
 </style>

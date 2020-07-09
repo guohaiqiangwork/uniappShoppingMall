@@ -26,7 +26,7 @@
 							<image src="../../../static/image/pathUrl/tab1.png" mode="" class="header_img"></image>
 						</view>
 					</view>
-					<view class="font_size24 font_colorff" @click="goMoreThan">
+					<view class="font_size24 font_colorff" @click="goMyPage('moreThan')">
 						可用余额(元)>
 					</view>
 					<view class="font_size44" style="color: #FCD07D;">
@@ -36,7 +36,7 @@
 						<view class="font_size24 width70">
 							累计余额：100,000,00
 						</view>
-						<view class="left_btn" style="margin-top: -3%;">
+						<view class="left_btn" style="margin-top: -3%;" @click="goMyPage('withdrawal')">
 							提现
 						</view>
 					</view>
@@ -45,7 +45,7 @@
 
 				<!-- 订单 -->
 				<view class="margin_left5" style="margin-top: 80upx;">
-					<view class="display_inline text_center width20" v-for="(item,index) in myOrderList" :key="index">
+					<view @click="goMyPage('myOrder')" class="display_inline text_center width20" v-for="(item,index) in myOrderList" :key="index">
 						<view class="">
 							<image :src="item.url" class="order_width" mode=""></image>
 						</view>
@@ -58,7 +58,7 @@
 				<!-- 商品关注 -->
 				<view class="my_topmoudel">
 					<view class="uni-flex">
-						<view class="width33 text_center" style="border-right: 1px solid #999999;">
+						<view @click="goMyPage('productFollow')" class="width33 text_center" style="border-right: 1px solid #999999;">
 							<view class="font_size34 font_colorfc">
 								3000
 							</view>
@@ -66,7 +66,7 @@
 								商品关注
 							</view>
 						</view>
-						<view class="width33 text_center" style="border-right: 1px solid #999999;">
+						<view @click="goMyPage('shopFollow')" class="width33 text_center" style="border-right: 1px solid #999999;">
 							<view class="font_size34 font_colorfc">
 								3000
 							</view>
@@ -74,7 +74,7 @@
 								店铺关注
 							</view>
 						</view>
-						<view class="width33 text_center">
+						<view @click="goMyPage('couponCard')" class="width33 text_center">
 							<view class="font_size34 font_colorfc">
 								3000
 							</view>
@@ -156,8 +156,8 @@
 				</view>
 			</view>
 		</view>
-		
-		
+
+
 
 	</view>
 </template>
@@ -211,13 +211,6 @@
 				console.log()
 				uni.navigateTo({
 					url: '../../' + urlFalg + '/' + urlFalg
-				})
-			},
-			
-			// 去余额
-			goMoreThan(){
-				uni.navigateTo({
-					url:'../../moreThan/moreThan'
 				})
 			}
 		}
