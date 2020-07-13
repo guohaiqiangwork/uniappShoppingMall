@@ -1,15 +1,6 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/login/login",
-			"style": {
-				"app-plus": {
-					"titleNView": false,
-					"backgroundTextStyle": "dark"
-				},
-				"enablePullDownRefresh": false
-			}
-		},
+	
 		{
 			"path": "pages/tabBar/home/home",
 			"style": {
@@ -254,14 +245,13 @@
 			"style": {
 				"navigationBarTitleText": "绑定银行卡"
 			}
-		}
-	    ,{
-            "path" : "pages/loginPassword/loginPassword",
-            "style" : {
+		}, {
+			"path": "pages/loginPassword/loginPassword",
+			"style": {
 				"navigationBarTitleText": "设置密码"
 			}
-        },{
-			"path" : "pages/moreThan/moreThan",
+		}, {
+			"path": "pages/moreThan/moreThan",
 			"style": {
 				"app-plus": {
 					"titleNView": false,
@@ -270,59 +260,136 @@
 				},
 				"enablePullDownRefresh": false
 			}
+		}, {
+			"path": "pages/withdrawal/withdrawal",
+			"style": {
+				"navigationBarTitleText": "余额提现"
+			}
+		}, {
+			"path": "pages/withdrawalResult/withdrawalResult",
+			"style": {
+				"navigationBarTitleText": "提现结果"
+			}
+		}, {
+			"path": "pages/productFollow/productFollow",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "商品关注"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/shopFollow/shopFollow",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "店铺关注"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/couponCard/couponCard",
+			"style": {
+				"navigationBarTitleText": "优惠券"
+			}
+		}, {
+			"path": "pages/myOrder/myOrder",
+			"style": {
+				"navigationBarTitleText": "我的订单"
+			}
+		}, {
+			"path": "pages/orderDetail/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		}, {
+			"path": "pages/commentOrder/commentOrder",
+			"style": {
+				"navigationBarTitleText": "发表评论"
+			}
+		}, {
+			"path": "pages/comment/comment",
+			"style": {
+				"navigationBarTitleText": "发表评论"
+			}
+		}, {
+			"path": "pages/returnProduct/returnProduct",
+			"style": {
+				"navigationBarTitleText": "退换货"
+			}
+		}, {
+			"path": "pages/returnProductDetail/returnProductDetail",
+			"style": {
+				"navigationBarTitleText": "退换货申请"
+			}
+		}, {
+			"path": "pages/myTeam/myTeam",
+			"style": {
+				"navigationBarTitleText": "我的团队"
+			}
+		}, {
+			"path": "pages/myTeamDetail/myTeamDetail",
+			"style": {
+				"navigationBarTitleText": "我的团队"
+			}
+		}, {
+			"path": "pages/detailsOfFenrun/detailsOfFenrun",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "店铺关注"
+				},
+				"enablePullDownRefresh": false
+			}
 		}
-        ,{
-            "path" : "pages/withdrawal/withdrawal",
+	    ,{
+            "path" : "pages/activity/activity",
             "style" : {
-				"navigationBarTitleText":"余额提现"
+				"navigationBarTitleText": "活动详情"
 			}
         }
         ,{
-            "path" : "pages/withdrawalResult/withdrawalResult",
+            "path" : "pages/headlines/headlines",
             "style" : {
-				"navigationBarTitleText":"提现结果"
+				"navigationBarTitleText": "头条信息"
 			}
         }
         ,{
-            "path" : "pages/productFollow/productFollow",
+            "path" : "pages/bindingCode/bindingCode",
             "style": {
             	"app-plus": {
             		"titleNView": false,
             		"backgroundTextStyle": "dark"
-            		// "navigationBarTitleText": "商品关注"
+            		// "navigationBarTitleText": "绑定邀请码"
             	},
             	"enablePullDownRefresh": false
             }
         }
         ,{
-            "path" : "pages/shopFollow/shopFollow",
-           "style": {
-           	"app-plus": {
-           		"titleNView": false,
-           		"backgroundTextStyle": "dark"
-           		// "navigationBarTitleText": "店铺关注"
-           	},
-           	"enablePullDownRefresh": false
-           }
-        }
-        ,{
-            "path" : "pages/couponCard/couponCard",
-            "style" : {
-				"navigationBarTitleText":"优惠券"
+            "path" : "pages/passwordLogin/passwordLogin",
+            "style": {
+            	"app-plus": {
+            		"titleNView": false,
+            		"backgroundTextStyle": "dark"
+            		// "navigationBarTitleText": "密码登录"
+            	},
+            	"enablePullDownRefresh": false
+            }
+        },
+		{
+			"path": "pages/login/login",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
 			}
-        }
-        ,{
-            "path" : "pages/myOrder/myOrder",
-            "style" : {
-				"navigationBarTitleText":"我的订单"
-			}
-        }
-        ,{
-            "path" : "pages/orderDetail/orderDetail",
-            "style" : {
-				"navigationBarTitleText":"订单详情"
-			}
-        }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

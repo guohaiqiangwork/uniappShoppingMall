@@ -17,9 +17,9 @@
 			<!-- 轮播图 -->
 			<view class="margin_top3">
 				<swiper class="imageContainer" @change="handleChange" circular autoplay>
-					<block v-for="(item,index) in imgList" :key="index">
-						<swiper-item @click="swiperClick(item.id)">
-							<image class="itemImg" :src="item.banner" lazy-load mode="scaleToFill"></image>
+					<block v-for="(item,index) in rotationList" :key="index">
+						<swiper-item @click="swiperClick(item)">
+							<image class="itemImg" :src="item.carousel" lazy-load mode="scaleToFill"></image>
 						</swiper-item>
 					</block>
 				</swiper>
@@ -27,12 +27,12 @@
 
 			<!-- 分类 -->
 			<view class="margin_top3">
-				<view class="width18 margin_left2 display_inline" v-for="(item,index) in [1,2,3,4,5,6,7,8,9,10]" :key="index">
+				<view class="width18 margin_left2 display_inline" v-for="(item,index) in tabList" :key="index">
 					<view class="">
-						<image src="../../../static/image/pathUrl/tab1.png" mode="" style="width: 80upx;height: 80upx;"></image>
+						<image :src="item.imageUrl" mode="" style="width: 80upx;height: 80upx;"></image>
 					</view>
 					<view class="font_size26">
-						数码电器
+						{{item.name}}
 					</view>
 				</view>
 			</view>
@@ -45,8 +45,8 @@
 				<!-- 公告内容 -->
 				<view class="uni-swiper-msg margin_left2">
 					<swiper class="swiper" vertical="true" autoplay="false" duration="500" interval="4000">
-						<swiper-item v-for="(item, index) in msg" :key="index" class="swiper_item_font">
-							<view @tap="notice(item.id)">{{item.content}}</view>
+						<swiper-item v-for="(item, index) in msg" :key="index" class="swiper_item_font text_hidden">
+							<view @tap="notice(item.id)">{{item.title}}</view>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -55,11 +55,11 @@
 
 
 			<!-- 广告图 -->
-			<image class="margin_top3" style="height:172upx;width: 100%;border-radius: 12upx;" :src="imgList[1].banner" mode=""></image>
-
+			<image @click="goActivity(bannerData.id)" class="margin_top3" style="height:172upx;width: 100%;border-radius: 12upx;" :src="bannerData.banner" mode=""></image>
+			
 			<!-- 推荐购买 -->
 
-			<view class="hot_moudel">
+			<view class="hot_moudel" v-if="false">
 				<view class="display_flex">
 					<!-- 左面 -->
 					<view class="width50" style="border-right: 1px solid #DEDEDE;">
@@ -100,6 +100,8 @@
 						</view>
 
 					</view>
+
+
 				</view>
 				<view class="display_flex" style="border-top: 1px solid #DEDEDE;">
 					<!-- 左面 -->
@@ -144,6 +146,26 @@
 
 				</view>
 			</view>
+			<!-- 图片展示 -->
+			<view class="hot_moudel text_center" v-if="true">
+				<view class="uni-flex" style="padding-left: 20upx;padding-top: 20upx;">
+					<view @click="goProductD(hotList[0].spuId)" class="" style="border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;padding-right: 20upx;">
+						<image :src="hotList[0].image" style="width: 315upx;height: 352upx;" mode=""></image>
+					</view>
+					<view @click="goProductD(hotList[1].spuId)" class="" style="border-bottom: 1px solid #DEDEDE;padding-left: 10upx;">
+						<image :src="hotList[1].image" style="width: 315upx;height: 352upx;" mode=""></image>
+					</view>
+				</view>
+				<view class="uni-flex" style="padding-left: 20upx;">
+					<view @click="goProductD(hotList[2].spuId)" class="padding_top2" style="border-right: 1px solid #DEDEDE;padding-right: 20upx;">
+						<image :src="hotList[2].image" style="width: 315upx;height: 352upx;" mode=""></image>
+					</view>
+					<view @click="goProductD(hotList[3].spuId)" class="padding_top2" style="padding-left: 10upx;">
+						<image :src="hotList[3].image" style="width: 315upx;height: 352upx;" mode=""></image>
+					</view>
+				</view>
+
+			</view>
 
 			<!-- 精调细选 -->
 			<view class="">
@@ -155,25 +177,51 @@
 						你的生活美学指南
 					</view>
 				</view>
-				
-				<view class="margin_top3">
-					<swiper class="bottom_imageContainer" @change="handleChange" circular autoplay>
-						<block v-for="(item,index) in imgList" :key="index">
-							<swiper-item @click="swiperClick(item.id)">
-								<image class="bottom_itemImg" :src="item.banner" lazy-load mode="scaleToFill"></image>
-							</swiper-item>
-						</block>
-					</swiper>
-				</view>
-				
+
+
 			</view>
 		</view>
+		<!-- 底部滑块 -->
+		<view class="margin_top3">
+			<!-- <swiper class="bottom_imageContainer" @change="handleChange" circular autoplay>
+					<block v-for="(item,index) in imgList" :key="index">
+						<swiper-item @click="swiperClick(item.id)" >
+							<image class="bottom_itemImg" :src="item.banner" lazy-load mode="scaleToFill"></image>
+						</swiper-item>
+					</block>
+				</swiper>
+			 -->
+			<!-- <customSwiper :swiper-list="imgList" /> -->
+			<scroll-view scroll-x="true" class="wrapper">
+				<view class="uni-flex " v-for="(item,index) in newlist" :key="index">
+					<view class="width50">
+						<image :src="item.image" @click="goProductD(item.id)" :class="index== 0 ? 'dimgn'  : 'dimg' " mode="">
+						</image>
+					</view>
+					<view class="width45  right_bj " style="white-space: normal;">
+						<view class=" text_hidden2">
+							{{item.title}}
+						</view>
+						<view class="margin_top2 text_hidden2">
+							{{item.subTitle}}
+						</view>
+					</view>
+
+
+				</view>
+			</scroll-view>
+		</view>
+
 
 	</view>
 </template>
 
 <script>
+	import customSwiper from '../../../components/blackmonth-swiper/index.vue'
 	export default {
+		components: {
+			customSwiper
+		},
 		data() {
 			return {
 				imgList: [{
@@ -181,15 +229,17 @@
 				}, {
 					banner: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3984473917,238095211&fm=26&gp=0.jpg'
 				}],
-				msg: [{
-					content: '1'
-				}, {
-					content: '2'
-				}, {
-					content: '1'
-				}, {
-					content: '1'
-				}],
+				rotationList: '', //轮播数组
+				tabList: '', //分类数据
+				msg: '', //消息列表
+				bannerData: '', //banner
+				newlist: '', //新品推荐
+				hotList: [
+					'../../../static/image/icon/search.png',
+					'../../../static/image/icon/search.png',
+					'../../../static/image/icon/search.png',
+					'../../../static/image/icon/search.png'
+				], //人气推荐
 			}
 		},
 		onShow() {
@@ -199,7 +249,7 @@
 			Search(e) {
 				console.log(e);
 				uni.navigateTo({
-					url:'../../search/search?searchName=' + e.detail.value
+					url: '../../search/search?searchName=' + e.detail.value
 				})
 			},
 			// 轮播滑动操作
@@ -208,11 +258,93 @@
 			},
 			// 点击轮播操做
 			swiperClick(e) {
+				console.log(e)
+				let urlPath
+				if(e.type == 1){
+					 urlPath = e.url +  '?productid=' + e.linkId
+				}else{
+					 urlPath = e.url +  '?productid=' + e.id
+				}
+				// 是否登录
+				this.$http.get('/api/common/mb/isLogin','',true).then(res => {
+					if (res.data.code == 200) {
+						if(res.data.data){
+							uni.navigateTo({
+								url: urlPath
+							})
+						}else{
+							uni.navigateTo({
+								url:'../../login/login'
+							})
+						}
+					}
+				})
+				
+				
+				
+			},
+			//点击信息
+			notice(e) {
 				uni.navigateTo({
-					url: '../../pages/activity/activity?id=' + e
+					url: '../../headlines/headlines?id=' + e
+				})
+			},
+			// 去产品详情
+			goProductD(productId) {
+				
+				
+				// uni.navigateTo({
+				// 	url: '../../productDetails/productDetails?productId=' + productId
+				// })
+			},
+			// 去活动详细
+			goActivity(e){
+				uni.navigateTo({
+					url: '../../activity/activity?id=' + e
 				})
 			},
 			init() {
+				// 获取首页轮播
+				this.$http.get('/api/common/index/queryIndexCarousel').then(res => {
+					if (res.data.code == 200) {
+						this.rotationList = res.data.data
+					}
+				})
+				// 获取分类   
+				this.$http.get('/api/common/index/queryIndexCategory').then(res => {
+					if (res.data.code == 200) {
+						this.tabList = res.data.data
+					}
+				})
+
+				// 获取公告
+				this.$http.get('/api/common/index/queryIndexPublish').then(res => {
+
+					if (res.data.code == 200) {
+						this.msg = res.data.data
+					}
+				})
+				// 获取barren
+				this.$http.get('/api/common/index/queryIndexBanner').then(res => {
+					if (res.data.code == 200) {
+						this.bannerData = res.data.data
+					}
+				})
+				// 获取人气推荐 
+				this.$http.get('/api/common/index/queryIndexPoplar').then(res => {
+					console.log('99')
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						this.hotList = res.data.data
+					}
+				})
+				// 获取新品推荐
+				this.$http.get('/api/common/index/queryIndexNewProduct').then(res => {
+					console.log('00')
+					if (res.data.code == 200) {
+						this.newlist = res.data.data
+					}
+				})
 
 			}
 		}
@@ -228,6 +360,7 @@
 		width: 94%;
 		margin-left: 3%;
 	}
+
 	// 轮播
 	.imageContainer {
 		width: 100%;
@@ -276,7 +409,7 @@
 		text-align: center;
 		margin: auto, 0;
 		margin-left: 30upx;
-		
+
 	}
 
 	.hot_img_one {
@@ -290,22 +423,56 @@
 	.hot_img_two_right {
 		height: 170upx;
 	}
-	.hot_moudel{
+
+	.hot_moudel {
 		background-color: #FFFFFF;
 		border-radius: .3rem;
 		margin-top: 3%;
-		padding: 2%;
+		// padding: 30upx;
 	}
-	
+
 	.bottom_imageContainer {
 		width: 100%;
 		height: 300upx;
 	}
-	
+
 	.bottom_itemImg {
 		border-radius: 40upx;
 		width: 80%;
 		height: 250upx;
 	}
-	
+
+
+	.wrapper {
+		width: 100%;
+		white-space: nowrap;
+		display: flex;
+		margin-top: 2%;
+	}
+
+	.dimg {
+		width: 100%;
+		height: 250upx;
+		border-top-left-radius: 20upx;
+		border-bottom-left-radius: 20upx;
+		margin-left: 14upx;
+	}
+
+	.dimgn {
+		width: 100%;
+		height: 250upx;
+
+		border-top-left-radius: 20upx;
+		border-bottom-left-radius: 20upx;
+		margin-left: 3%;
+	}
+
+	.right_bj {
+		background: url(../../../static/image/beij/home.png) no-repeat;
+		width: 310upx;
+		height: 250upx;
+		background-size: 100% 100%;
+		color: #FFFFFF;
+		padding: 30upx;
+	}
 </style>

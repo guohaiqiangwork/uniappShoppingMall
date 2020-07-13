@@ -60,7 +60,7 @@ export default class Request {
 				let statusCode = response.statusCode
 				response.config = _config
 				response = Request.requestComFun(response)
-				if (statusCode === 200) { // 成功
+				if (statusCode === 200 || statusCode === 500) { // 成功
 					resolve(response)
 				} else {
 					reject(response)
@@ -85,14 +85,25 @@ export default class Request {
 		})
 	}
 
-	get(url, data, options = {}) {
+	get(url, data,noHeard, options = {}) {
+		// console.log('第一个' + url)
+		// console.log('第2个' + data)
+		// console.log('第3个' + noHeard)
 		options.url = url
 		options.data = data
 		options.method = 'GET'
+		if(noHeard){
+			options.header = {
+				'Authorization': "Bearer " + uni.getStorageSync('token'),
+				'client': 'APP',
+				...options.header
+			}
+		}
+		
 		return this.request(options)
 	}
 
-	post(url, data, type, options = {}) {
+	post(url, data,noHeard,type, options = {}) {
 		if (type) {
 			options.header = {
 					'Content-Type': 'application/json;charset=UTF-8',
@@ -100,6 +111,13 @@ export default class Request {
 		}else{
 			options.header = {
 				'content-type': 'application/x-www-form-urlencoded', // 默认值 
+			}
+		}
+		if(noHeard){
+			options.header = {
+				'Authorization': "Bearer " + uni.getStorageSync('token'),
+				'client': 'APP',
+				...options.header
 			}
 		}
 		options.url = url

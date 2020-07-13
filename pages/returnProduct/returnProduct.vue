@@ -15,14 +15,14 @@
 
 		</view>
 
-		<!-- 列表 -->
+		<!-- 可申请列表 -->
 		<template v-if="tabIndexT == 0">
 			<view class="page_width">
-				<view class="order_list" >
+				<view class="order_list"   @click="goOrderDetail">
 					<!-- 标题栏 -->
 					<view class="uni-flex">
 						<view class="uni-flex width50 ">
-							<view class="width20" @click="goOrderDetail">
+							<view class="width20">
 								<image src="../../static/image/beij/card2.png" class="order_listimg" mode=""></image>
 							</view>
 							<view class="width80 text_hidden font_sise28 margin_top2 margin_left5">
@@ -83,15 +83,95 @@
 					<!-- 底部操作栏 -->
 					<view class="uni-flex margin_top3 display_right">
 						<view class="order_listbtn">
-							取消订单
+							退换货
 						</view>
 						<view class="order_listbtn1 margin_left5">
-							立即支付
+							退款
 						</view>
 					</view>
 
 
 
+				</view>
+			</view>
+		</template>
+		<!-- 申请记录 -->
+		<template v-if="tabIndexT == 1">
+			<view class="page_width">
+				<view class="order_list" >
+					<!-- 标题栏 -->
+					<view class="uni-flex">
+						<view class="uni-flex width50 ">
+							<view class="width20">
+								<image src="../../static/image/beij/card2.png" class="order_listimg" mode=""></image>
+							</view>
+							<view class="width80 text_hidden font_sise28 margin_top2 margin_left5">
+								联想官方旗舰店
+							</view>
+						</view>
+						<view class="uni-flex font_size26 display_right width50">
+							<view class=" font_colorde width30">已完成</view>
+							<view class=" font_color99 width30" @click="goCommentOrder">待评价</view>
+						</view>
+					</view>
+					<!-- 单个商品 -->
+					<view class="" v-if="true">
+						<view class="uni-flex">
+							<view class="width30">
+								<image src="../../static/image/beij/myTopb.png" class="order_productimg" mode=""></image>
+							</view>
+							<view class="width75">
+								<view class="">
+									联想拯救者R7000笔记本电脑
+								</view>
+								<view class="margin_top5">
+									屏幕尺寸：15.6英寸
+								</view>
+								<view class="">
+									<text class="font_size22 font_colorbe">¥</text>
+									<text class="font_colorbe font_size30">4799.00</text>
+									<text class="font_size22 font_color99">/件</text>
+								</view>
+							</view>
+						</view>
+		
+					</view>
+					<!-- 多个商品 -->
+					<view class="" v-if="false" >
+						<view class="uni-flex">
+							<scroll-view scroll-x="true" class="wrapper">
+								<!-- <view class="dimg_moudel "> -->
+								<image src="../../static/image/beij/logB.png" class="dimg" mode="" v-for="(item,index) in [1,2,3,4,5,6,7]" :key="index"></image>
+								<!-- </view> -->
+							</scroll-view>
+						</view>
+		
+					</view>
+					<!-- 总计 -->
+					<view class="uni-flex display_right">
+						<view class="font_size26 font_color99   margin_top1">
+							共5件
+						</view>
+						<view class="font_size26 margin_left3  text_right">
+							实付款：
+							<text class="font_size22 font_colorbe">¥</text>
+							<text class="font_colorbe font_size30">4799.00</text>
+							<text class="font_size22 font_color99">/件</text>
+						</view>
+					</view>
+		
+					<!-- 底部操作栏 -->
+					<view class="uni-flex margin_top3 display_right">
+						<view class="order_listbtn">
+							取消申请
+						</view>
+						<view class="order_listbtn1 margin_left5">
+							退款
+						</view>
+					</view>
+		
+		
+		
 				</view>
 			</view>
 		</template>
@@ -103,21 +183,11 @@
 		data() {
 			return {
 				tabListThree: [{
-						name: '全部'
+						name: '可申请订单'
 					},
 					{
-						name: '待支付'
-					},
-					{
-						name: '待发货'
-					},
-					{
-						name: '待收货'
-					},
-					{
-						name: '待评价'
+						name: '申请记录'
 					}
-
 				],
 				tabIndexT: 0,
 			}
@@ -131,7 +201,7 @@
 			// 去订单详情
 			goOrderDetail(){
 				uni.navigateTo({
-					url:'../orderDetail/orderDetail'
+					url:'../returnProductDetail/returnProductDetail'
 				})
 			},
 			// 待评价
@@ -139,7 +209,9 @@
 				uni.navigateTo({
 					url:'../commentOrder/commentOrder'
 				})
-			}
+			},
+			
+			// 
 		}
 	}
 </script>
@@ -147,7 +219,7 @@
 <style lang="less">
 	.item_tab_three {
 		display: inline-block;
-		width: 20%;
+		width: 50%;
 		text-align: center;
 		color: #0C0C0C;
 		font-size: 30upx;
@@ -158,7 +230,7 @@
 
 	.item_tab_threen {
 		display: inline-block;
-		width: 20%;
+		width: 50%;
 		text-align: center;
 		color: #0C0C0C;
 		font-size: 30upx;

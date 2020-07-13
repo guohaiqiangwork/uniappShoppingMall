@@ -63,7 +63,16 @@
 						所在地区
 					</view>
 					<view class="list_right uni-flex">
-						<input class="list_input width90" placeholder="省,市,区" disabled="disabled" @click="keyArea" :value="area" />
+						<view class="">
+						<!-- 	<picker mode="selector" @change="bindPickerChange"  :value="index" :range="provinceList">
+								<view class="uni-input">{{provinceList[index].label}}</view>
+							</picker> -->
+							
+							 <picker @change="bindPickerChange" :value="index" :range="provinceList">
+							                        <view class="uni-input">{{provinceList[index]}}</view>
+							                    </picker>
+						</view>
+		
 						<image src="../../static/image/icon/down.png" class="right_img" mode=""></image>
 					</view>
 				</view>
@@ -78,7 +87,7 @@
 				</view>
 			</view>
 			<view class="mar_bt"></view>
-			<!-- <uni-list style="font-size: 30upx;">
+			<!-- 	<uni-list style="font-size: 30upx;">
 				<uni-list-item title="设置默认地址" show-switch="true" show-arrow="false" @switchChange='defAddr'></uni-list-item>
 			</uni-list> -->
 			<view class=" background_colorff">
@@ -99,7 +108,7 @@
 				</view>
 			</view>
 			<!-- 地址框 -->
-			<w-picker mode="region" :defaultVal="[4,1,1]" @confirm="onConfirm" ref="region" themeColor="#f00"></w-picker>
+			<!-- <w-picker mode="region" :defaultVal="[4,1,1]" @confirm="onConfirm" ref="region" themeColor="#f00"></w-picker> -->
 		</block>
 
 	</view>
@@ -108,12 +117,12 @@
 <script>
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
-	import wPicker from "@/components/w-picker/w-picker.vue";
+	// import wPicker from "@/components/w-picker/w-picker.vue";
 	export default {
 		components: {
 			uniList,
-			uniListItem,
-			wPicker
+			uniListItem
+			// wPicker
 		},
 		data() {
 			return {
@@ -126,6 +135,11 @@
 				addressData: '', //地址列表数据
 				newAddress: false, //展示列表还是新增
 				isDefault: 2,
+
+				provinceList:  ['中国', '美国', '巴西', '日本'], //省
+				cityList: [], //市
+				areaList: [], //区
+				index: 0,
 			}
 		},
 		onLoad(option) {
@@ -135,8 +149,8 @@
 			this.falgUrl = option.falgUrl;
 		},
 		onShow() {
-			// this.getAddressList(); //获取地址列表
-
+			this.getProvince(); //获取省数据
+			this.getAddressList(); //获取地址列表
 		},
 		methods: {
 			keyName: function(event) {
@@ -169,7 +183,7 @@
 				this.newAddress = false;
 			},
 			// 添加地址
-			addAddr() {
+			addAddr: function() {
 				var that = this;
 				if (this.name == '' || this.phone == '' || this.area == '' || this.addr == '') {
 					uni.showToast({
@@ -232,8 +246,11 @@
 				})
 			},
 			// 获取地址列表
-			getAddressList() {
-				this.$http.get('/address/findAll/' + uni.getStorageSync('userId')).then(res => {
+			getAddressList: function() {
+				var dataA = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/address/list', dataA, true).then(res => {
 					if (res.data.code == 200) {
 						if (res.data.data.length > 0) {
 							uni.setNavigationBarTitle({
@@ -259,19 +276,34 @@
 				}).catch(err => {})
 			},
 			// 去地址编辑
-			goAddressEdit(e) {
+			goAddressEdit: function(e) {
 				uni.navigateTo({
 					url: '../addAEdit/addAEdit?addressId=' + e + '&falg=list',
 				});
 			},
 			// 回商城
-			goShop(e) {
+			goShop: function(e) {
 				if (this.sign == 'new') {
 					uni.redirectTo({
 						url: '../fillInOrder/fillInOrder?addressId=' + e.id + '&goodsId=' + this.goodsId + '&falgD=addList' +
 							'&falgUrl=' + this.falgUrl,
 					});
 				}
+			},
+
+			// 获取省数据
+			getProvince: function() {
+				var data = {
+					parentId: ''
+				}
+				this.$http.get('/api/common/area/list', data).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.provinceList = res.data.data
+					}
+				})
+
+
 			}
 		}
 	}

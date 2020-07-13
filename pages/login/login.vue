@@ -29,11 +29,11 @@
 								{{countdown}}<text v-show="timestatus" class="forgetpwd2">秒重获</text>
 							</view>
 						</view>
-						
+
 						<view class="font_size24 margin_top2" style="color: #FF3131;">
 							{{msgErr}}
 						</view>
-						
+
 						<view class="bottom_btn jb_view" @click="bingYCode">
 							登录
 						</view>
@@ -41,55 +41,12 @@
 							密码登录
 						</view>
 					</template>
-					
-					
-					<!-- 密码登录 -->
-					<template v-if="loginFalg == 3">
-						<view class="margin_top5 font_size36">
-							手机号码
-						</view>
-						<view class="border_bottom padding_bottom3 margin_top5">
-							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
-						</view>
-						<view class="margin_top5 font_size36">
-							密码
-						</view>
-						<view class="border_bottom padding_bottom3 margin_top5">
-							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入密码" placeholder-style='color:#484848' />
-						</view>
-						<view class="font_size24 margin_top2" style="color: #FF3131;">
-							{{msgErr}}
-						</view>
-						
-						<view class="bottom_btn jb_view" @click="bingYCode">
-							登录
-						</view>
-						<view class="display_space uni-flex font_size28 font_colorff text_right margin_top5 margin_right3">
-							<view class="margin_left3" @click="goToPassword">
-								忘记密码
-							</view>
-							<view class="margin_right3" @click="goCode">
-								验证码登录
-							</view>
-						</view>
-					</template>
-						
-					<!-- 绑定用户 -->
-					<template v-if="loginFalg == 2">
-						<view class=" font_size36" style="margin-top: 260upx;">
-							邀请码
-						</view>
-						<view class="border_bottom padding_bottom3 margin_top5" >
-							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入对方邀请码" placeholder-style='color:#484848' />
-						</view>
-						<view class="bottom_btn jb_view" @click="goToLogin">
-							确认
-						</view>
-					</template>
-						
-			
+
+
+
+
 				</view>
-				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">		
+				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">
 					登录即代表您已经同意<text @click="goUserConter('userAgreement')" style="color: #B99445;">用户协议</text>和 <text @click=" goUserConter('userPrivacy')"
 					 style="color: #B99445;">隐私政策</text>
 				</view>
@@ -105,10 +62,10 @@
 	export default {
 		data() {
 			return {
-				loginTitle:'登录',
-				loginFalg:1,
-				
-				
+				loginTitle: '登录',
+				loginFalg: 1,
+				inviteCode: '', //邀请码
+
 				datan: '登录',
 				countdown: '获取验证码',
 				disabled: false,
@@ -116,13 +73,13 @@
 				yzm_stuas: 0,
 				yzm_code: '',
 				timed: 59,
-				msgErr: '*验证码储物',
+				msgErr: '',
 				jsonData: {
 					a: '1',
 					b: '3',
 					c: '4'
 				},
-				
+
 				imgUrl: 'http://xypay.expresslines.cn/images/sysImage/logo.jpg '
 			}
 		},
@@ -135,7 +92,6 @@
 			keyCode: function(e) {
 				this.phoneCode = e.target.value
 			},
-			
 			// 获取验证码
 			yzm_function: function() {
 				var that = this;
@@ -160,7 +116,7 @@
 				var phoneData = {
 					phone: that.userPhone
 				}
-				that.$http.post('/wx/send/messages', phoneData).then(res => {
+				that.$http.get('/api/common/mb/sendCode', phoneData, false).then(res => {
 					if (res.data.code == 200) {
 						that.countdown = 60;
 						that.timestatus = true;
@@ -193,36 +149,10 @@
 				}
 			},
 			// 绑定邀请码
-			bingYCode:function(){
-				this.loginFalg = 2;
-				this.loginTitle ='请输入邀请码'
-			},
-			// 密码登录
-			goPassword:function(){
-				this.loginFalg = 3;
-				this.loginTitle ='登录'
-			},
-			// 验证码登录
-			goCode:function(){
-				this.loginFalg = 2;
-				this.loginTitle ='登录'
-			},
-			// 忘记密码
-			goToPassword:function(){
-				uni.navigateTo({
-					url:'../noPassword/noPassword'
-				})
-			},
-			
-			// 去登录
-			goToLogin: function() {
-				uni.switchTab({
-					url: '../tabBar/home/home'
-				});
-				return;
+			bingYCode: function() {
 				var loginData = {
 					phone: this.userPhone,
-					phoneCode: this.phoneCode
+					code: this.phoneCode
 				};
 				if (!(/^1[3456789]\d{9}$/.test(this.userPhone))) {
 					uni.showToast({
@@ -240,33 +170,55 @@
 						position: 'top',
 					});
 					return false;
-				} 
-				this.$http.post('/wx/send/login', loginData).then(res => {
+				}
+				this.$http.post('/api/common/mb/verifyCodeLogin', loginData).then(res => {
 					console.log(JSON.stringify(res))
 					if (res.data.code == 200) {
 						uni.setStorageSync('token', res.data.data.token);
-						uni.setStorageSync('userId', res.data.data.id);
-						uni.switchTab({
-							url: '/tabBar/home/home'
-						});
-					} else {
-						uni.showToast({
-							title: res.data.message,
-							icon: 'none',
-							duration: 1500,
-							position: 'top',
-						});
+						uni.setStorageSync('userId', res.data.data.mbId);
+						// uni.switchTab({
+						// 	url: '../tabBar/home/home'
+						// });
+
+						uni.navigateBack()
+					} else if (res.data.code == 300) {
+						uni.navigateTo({
+							url: '../bindingCode/bindingCode?phone=' + this.userPhone
+						})
 					}
-				}).catch(err => {})
+				}).catch(err => {
+					uni.showToast({
+						title: err.data.message,
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					this.msgErr = err.data.message
+				})
+
+
 
 			},
+			// 密码登录
+			goPassword: function() {
+				uni.navigateTo({
+					url: '../passwordLogin/passwordLogin'
+				})
+
+			},
+			// 忘记密码
+			goToPassword: function() {
+				uni.navigateTo({
+					url: '../noPassword/noPassword'
+				})
+			},
 			// 去用户协议 去隐私协议
-			goUserConter(page) {
+			goUserConter: function(page) {
 				uni.navigateTo({
 					url: '../' + page + '/' + page,
 				});
 			},
-			goToBack() {
+			goToBack: function() {
 				uni.navigateBack()
 			}
 

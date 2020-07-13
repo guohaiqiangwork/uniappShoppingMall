@@ -131,6 +131,7 @@
 			/* 退出登录 */
 			returnFun() {
 				uni.removeStorageSync("userId");
+				uni.removeStorageSync("token");
 				uni.navigateTo({
 					url: "../login/login"
 				})

@@ -7,8 +7,13 @@ import validCode from './components/validCode.vue'
 Vue.component('validcode',validCode)
 import store from './store'
 Vue.prototype.$store = store
-import http from './components/http/http.js'
+// import http from './components/http/http.js'
+// Vue.prototype.$http = http;
+import {
+	http
+} from './components/http/http.js'
 Vue.prototype.$http = http;
+
 import {bankType} from './components/bankType.js' 
 Vue.prototype.$bankType = bankType;
 

@@ -241,6 +241,8 @@
 				}
 				this.judgeQAllChoose(); //验证底部全选
 			},
+			
+			
 			// 多选复选框改变事件
 			changeCheckbox(shopCartId, index) {
 				console.log(shopCartId + '//店铺id');
@@ -329,6 +331,8 @@
 					}
 				}
 			},
+			
+			
 			// 展开失效商品
 			openinvalidList() {
 				this.invalidList = [1, 2, 3, 4]

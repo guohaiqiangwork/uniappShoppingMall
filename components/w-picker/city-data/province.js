@@ -1,5 +1,6 @@
 /* eslint-disable */
-var provinceData = [{
+var provinceData = [
+	{
     "label": "北京市",
     "value": "11"
   },

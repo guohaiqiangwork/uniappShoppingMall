@@ -3,9 +3,9 @@
 		<!-- 轮播图 -->
 		<view class="">
 			<swiper class="imageContainer" @change="handleChange" circular autoplay>
-				<block v-for="(item,index) in imgList" :key="index">
-					<swiper-item @click="swiperClick(item.id)">
-						<image class="itemImg" :src="item.banner" lazy-load mode="scaleToFill"></image>
+				<block v-for="(item,index) in lunBoList" :key="index">
+					<swiper-item>
+						<image class="itemImg" :src="item" lazy-load mode="scaleToFill"></image>
 					</swiper-item>
 				</block>
 			</swiper>
@@ -18,22 +18,23 @@
 			</view>
 			<view class="width20">
 				<image src="../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
-				<image src="../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
+				<image @click="goFollow" src="../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5"
+				 mode=""></image>
 				<image src="../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
 			</view>
 		</view>
 
 		<!-- content -->
 		<view class="background_colorff " style="padding-bottom: 150upx;">
-			<view class="page_width">
-				<view class="font_size36">
-					联想小新Air14 锐龙版 学生轻薄本笔记本电脑 6核12线程游戏本
+			<view class="page_width padding_top3">
+				<view class="font_size36 text_hidden2">
+					{{goodsDetail.title}}
 				</view>
-				<view class="font_size26" style="color: #A3A3A3;">
-					2020新款 锐龙六核 100%SRGB高色域
+				<view class="font_size26 text_hidden" style="color: #A3A3A3;">
+					{{productDetailList.subTitle}}
 				</view>
 				<view class="font_size30 font_colorb2">
-					<text class="font_size26 font_colorbe">¥</text><text class="font_size50 font_colorbe">4799.00</text>/件
+					<text class="font_size26 font_colorbe">¥</text><text class="font_size50 font_colorbe">{{goodsDetail.price}}</text>/件
 				</view>
 			</view>
 
@@ -46,8 +47,8 @@
 					<view class="width15 text_center">
 						<image src="../../static/image/icon/diz.png" style="width: 21upx;height: 26upx;" mode=""></image>
 					</view>
-					<view class="width65 text_hidden">
-						内蒙古包头市九原区华城中心A座13层…
+					<view class="width65 text_hidden" @click="goMyAddress">
+						{{AddressList}}
 					</view>
 					<view class="width10 text_center">
 						<image src="../../static/image/icon/dizx.png" style="width: 21upx;height: 7upx;" mode=""></image>
@@ -76,23 +77,14 @@
 			<view class="page_width">
 				<view class="list_moudel_details">
 					<view class="page_width">
-						<view class="uni-flex font_size26 border_bottom padding_top3 padding_bottom3">
-							<view class="width20">
-								原料产地
+						<view v-for="(item,key) in productDetailList.genericParamMaps" :key="key" class="uni-flex  font_size26 border_bottom padding_top3 padding_bottom3">
+							<view class="">
+								{{key}}
 							</view>
-							<view class="font_color66">
-								丹麦
-							</view>
-						</view>
-						<view class="uni-flex font_size26 border_bottom padding_top3 padding_bottom3">
-							<view class="width20">
-								原料产地
-							</view>
-							<view class="font_color66">
-								丹麦
+							<view class="font_color66 margin_left3">
+								{{item}}
 							</view>
 						</view>
-
 					</view>
 				</view>
 
@@ -278,28 +270,35 @@
 				}],
 
 				normsFalg: false, //规格标示
-				collection: false,
+				collection: true, //是否关注 true 未关注
 				shareFalg: false, //分享
+
+				productId: '', //产品id
+				productDetailList: '', //获取接口详情数据
+				lunBoList: '', //轮播图数据
+				goodsDetail: '', //详情数据
+				AddressList: '', //地址列表
+				evaluate: '', //评价内容
 				// urlFalgD: '', //返回路径
 			}
 		},
 		onLoad(option) {
 			console.log(option.urlFalg);
+			console.log(option.productid)
+			this.productId = option.productid
 			// this.urlFalgD = option.urlFalg
+		},
+		mounted() {
+			this.init() //初始化接口查询
 		},
 		methods: {
 			// 轮播滑动操作
-			handleChange(e) {
+			handleChange: function(e) {
 				this.currentIndex = e.detail.current;
 			},
-			// 点击轮播操做
-			swiperClick(e) {
-				uni.navigateTo({
-					url: '../../pages/activity/activity?id=' + e
-				})
-			},
+
 			// 数字框处理
-			numStatistics(shopCartId, shopId, num, type) {
+			numStatistics: function(shopCartId, shopId, num, type) {
 				for (let item of this.productList) {
 					if (item.id == shopCartId) {
 						for (let items of item.list1) {
@@ -316,37 +315,164 @@
 				}
 			},
 			// 关闭规格弹窗
-			close_moudel() {
+			close_moudel: function() {
 				this.normsFalg = false;
 			},
-			open_moudel() {
+			open_moudel: function() {
 				this.normsFalg = true;
 			},
 
 			// 分享
-			close_moudelS() {
+			close_moudelS: function() {
 				this.shareFalg = false;
 			},
-			open_moudelS() {
+			open_moudelS: function() {
 				this.shareFalg = true;
 			},
 			//去评论去
-			goComment() {
+			goComment: function() {
 				uni.navigateTo({
 					url: '../productComment/productComment?urlFalg=productDetails'
 				})
 			},
 			// 返回
 
-			goBack() {
+			goBack: function() {
 				uni.navigateBack()
-			
+
 			},
-			goShopCart(){
+			goShopCart: function() {
 				uni.switchTab({
-					url:'../shopCart/shopCart'
+					url: '../shopCart/shopCart'
 				})
-			}
+			},
+			//产品关注
+			goFollow: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					spuId: _this.productId
+				}
+				_this.$http.get('/api/goods/follow', followData, true).then(res => {
+					if (res.data.code == 200) {
+						_this.queryFollow();
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+			// 查询是否关注
+			queryFollow: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					spuId: _this.productId
+				}
+				_this.$http.get('/api/goods/ckeckUserFollow', followData, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						_this.collection = !res.data.data; //是否关注
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+			// 去地址列表
+			goMyAddress: function() {
+				if (this.AddressList == '选择收货地址') { //去新增地址
+					uni.navigateTo({
+						url: '../addAddress/addAddress'
+					})
+				} else {
+					uni.navigateTo({
+						url: '../addAddress/addAddress'
+					})
+				}
+
+			},
+
+			init: function() {
+				var _this = this;
+				// 获取商品详情
+				var data = {
+					indexes: '',
+					spuId: this.productId
+				}
+				this.$http.get('/api/common/goods/detail', data).then(res => {
+					if (res.data.code == 200) {
+						_this.productDetailList = res.data.data;
+						_this.lunBoList = _this.productDetailList.goodsDetail.imgArr; //轮播数据
+						_this.goodsDetail = _this.productDetailList.goodsDetail; //详细数据
+
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+				// 查询是否关注商品
+				// if (uni.getStorageSync('userId')) {
+				_this.queryFollow(); //查询是否关注		
+				// }
+				// 获取地址列表
+				var dataA = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/address/list', dataA, true).then(res => {
+					if (res.data.code == 200) {
+						if (res.data.data.length > 0) {
+							_this.AddressList = res.data.data
+						} else {
+							_this.AddressList = '选择收货地址'
+						}
+
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+				// 查询评价
+				var dataP = {
+					spuId: this.productId
+				}
+				this.$http.get('/api/common/evaluation/find', dataP).then(res => {
+					if (res.data.code == 200) {
+						console.log('评论' + JSON.stringify(res))
+						this.evaluate = res.data.data
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+
+			},
+
 		}
 	}
 </script>

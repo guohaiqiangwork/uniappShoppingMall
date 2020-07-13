@@ -7,11 +7,11 @@ let token = uni.getStorageSync('token');
 http.setConfig((config) => { /* 设置全局配置 */
 	if (process.env.VUE_APP_PLATFORM === 'h5') {
 		// config.baseUrl = '/dep';　
-		config.baseUrl = 'http://xypay.expresslines.cn';
+		config.baseUrl = 'http://101.201.180.222:8080';
 		// console.log('开发环境H5')　　https://www.bjxrkj.com/api　　　　　　　　　　　　　　
 	} else {
 		//config.baseUrl = 'http://47.105.108.144:8080/primary';　
-		config.baseUrl = 'http://xypay.expresslines.cn';
+		config.baseUrl = 'http://101.201.180.222:8080';
 
 	}
 	config.header = {
@@ -23,23 +23,22 @@ http.setConfig((config) => { /* 设置全局配置 */
 })
 
 http.interceptor.request((config, cancel) => { /* 请求之前拦截器 */
-	config.header = {
-		// 'content-type': 'application/x-www-form-urlencoded', // 默认值 
-		// 'Content-Type': 'application/json;charset=UTF-8',
-		'Authorization': "Bearer " + uni.getStorageSync('token'),
-		'client': 'APP',
-		...config.header
-	}
+	// config.header = {
+		
+	// 	'Authorization': "Bearer " + uni.getStorageSync('token'),
+	// 	'client': 'APP',
+	// 	...config.header
+	// }
 	uni.showLoading({
 		title: '加载中'
 	});
 	return config;
 })
 http.interceptor.response((response) => { /* 请求之后拦截器 */
-	console.log(response)
+	// console.log(response)
 	uni.hideLoading();
 	if (response.data) {
-		if (response.data.code == 200) {
+		if (response.data.code == 200 || response.data.code == 300   || response.data.code == 500) {
 			return response;
 		} else if (response.data.code == 401) {
 			if (noLoginFalg) {

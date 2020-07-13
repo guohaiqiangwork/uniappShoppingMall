@@ -6,7 +6,7 @@
 					手机号码
 				</view>
 				<view class="margin_left3 font_size30 ">
-					<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入您的联系电话" placeholder-style='color:#cccccc' />
+					<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#cccccc' />
 				</view>
 			</view>
 			<view class="uni-flex border_bottom padding_bottom3 padding_top3">
@@ -27,7 +27,7 @@
 					新密码
 				</view>
 				<view class="margin_left3 font_size30 ">
-					<input type="number" @input="keyCard" placeholder="请输入您的身份证号码" placeholder-style='color:#cccccc' />
+					<input type="password" @input="keyPassword" placeholder="请输入密码" placeholder-style='color:#cccccc' />
 				</view>
 			</view>
 			<view class="uni-flex  padding_bottom3 padding_top3">
@@ -35,7 +35,7 @@
 					确认密码
 				</view>
 				<view class="margin_left3 font_size30 ">
-					<input type="text" @input="keyName" placeholder="请输入您的真实姓名" placeholder-style='color:#cccccc' />
+					<input type="password" @input="keyPassword1" placeholder="请再次输入密码" placeholder-style='color:#cccccc' />
 				</view>
 			</view>
 		</view>
@@ -54,6 +54,8 @@
 			return {
 				countdown: '获取验证码',
 				timestatus: false,
+				password:'',
+				password1:''
 			}
 		},
 		methods: {
@@ -66,15 +68,15 @@
 			keyCode: function(e) {
 				this.phoneCode = e.target.value
 			},
-			// 获取证件号码
-			keyCard: function(e) {
-				console.log(e)
-				this.userCardtarget = e.target.value
+			keyPassword: function(e) {
+				this.password = e.target.value
 			},
-			// 获取姓名
-			keyName: function(e) {
-				this.userNam = e.target.value
+			keyPassword1: function(e) {
+				this.password1 = e.target.value
 			},
+
+
+
 			// 获取验证码
 			yzm_function: function() {
 				var that = this;
@@ -97,9 +99,9 @@
 				}
 				that.disabled = true; //禁用点击
 				var phoneData = {
-					mobile: that.userPhone
+					phone: that.userPhone
 				}
-				this.$http.post('/send/code', phoneData).then(res => {
+				that.$http.get('/api/common/mb/sendCode', phoneData, false).then(res => {
 					if (res.data.code == 200) {
 						that.countdown = 60;
 						that.timestatus = true;
@@ -134,17 +136,9 @@
 
 
 			funBindMobileAndIdCard: function() {
-				if (!this.phoneCode) {
+				if (!this.phoneCode || this.phoneCode.length < 6 ) {
 					uni.showToast({
-						title: '请填写验证码',
-						icon: 'none',
-						duration: 2000,
-						position: 'top',
-					});
-					return
-				} else if (!this.userCardtarget) {
-					uni.showToast({
-						title: '请填写证件号码',
+						title: '请检查验证码',
 						icon: 'none',
 						duration: 2000,
 						position: 'top',
@@ -158,9 +152,17 @@
 						position: 'top',
 					});
 					return
-				} else if (!this.userNam) {
+				}else if (!this.password || !this.password1) {
 					uni.showToast({
-						title: '请填写姓名',
+						title: '请检查密码',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+					return
+				}else if (this.password != this.password1) {
+					uni.showToast({
+						title: '密码不一致',
 						icon: 'none',
 						duration: 2000,
 						position: 'top',
@@ -168,30 +170,22 @@
 					return
 				}
 				var data = {
-					memberId: uni.getStorageSync('memberId'),
 					code: this.phoneCode,
-					idCard: this.userCardtarget,
-					mobile: this.userPhone,
-					name: this.userNam
+					password: this.password,
+					phone: this.userPhone
+
 				}
-				this.$http.post('/mb/bindMobileAndIdCard', data).then(res => {
+				this.$http.post('/api/common/mb/changePwd', data).then(res => {
 					if (res.data.code == 200) {
 						uni.showToast({
-							title: '绑定成功',
+							title: '修改成功',
 							icon: 'none',
 							duration: 2000,
 							position: 'top',
 						});
-						uni.switchTab({
-							url: '/pages/tabBar/home/home'
-						});
-					} else {
-						uni.showToast({
-							title: '姓名与身份证' + res.data.message,
-							icon: 'none',
-							duration: 2000,
-							position: 'top',
-						});
+						uni.reLaunch({
+							url: '../passwordLogin/passwordLogin'
+						})
 					}
 				});
 			}

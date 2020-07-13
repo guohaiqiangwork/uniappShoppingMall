@@ -45,7 +45,8 @@
 
 				<!-- 订单 -->
 				<view class="margin_left5" style="margin-top: 80upx;">
-					<view @click="goMyPage('myOrder')" class="display_inline text_center width20" v-for="(item,index) in myOrderList" :key="index">
+					<view @click="goMyPage(item.urlFalg)" class="display_inline text_center width20" v-for="(item,index) in myOrderList"
+					 :key="index">
 						<view class="">
 							<image :src="item.url" class="order_width" mode=""></image>
 						</view>
@@ -88,10 +89,10 @@
 			</view>
 
 			<!-- 邀请 -->
-			<image src="../../../static/image/beij/myy.png" mode="" style="height: 140upx;width: 94%;margin-left: 3%;margin-top: 30upx;"></image>
+			<image  @click="goMyPage('myQRCode')" src="../../../static/image/beij/myy.png" mode="" style="height: 140upx;width: 94%;margin-left: 3%;margin-top: 30upx;"></image>
 
 			<!-- 我的团队 -->
-			<view class="my_team">
+			<view class="my_team" @click="goMyPage('myTeam')">
 				<view class="uni-flex">
 					<view class="font_size30 font_colorff width90" style="margin-left: 20upx;margin-top: 30upx;">
 						我的团队
@@ -169,27 +170,32 @@
 				myOrderList: [{
 						name: '全部订单',
 						url: '../../../static/image/icon/ordeq.png',
-						falg: 'qb'
+						falg: 'qb',
+						urlFalg: 'myOrder'
 					},
 					{
 						name: '待支付',
 						url: '../../../static/image/icon/orderd.png',
-						falg: 'dzf'
+						falg: 'dzf',
+						urlFalg: 'myOrder'
 					},
 					{
 						name: '待收货',
 						url: '../../../static/image/icon/orders.png',
-						falg: 'dsh'
+						falg: 'dsh',
+						urlFalg: 'myOrder'
 					},
 					{
 						name: '评价',
 						url: '../../../static/image/icon/ordep.png',
-						falg: 'pj'
+						falg: 'pj',
+						urlFalg: 'myOrder'
 					},
 					{
 						name: '退换货',
 						url: '../../../static/image/icon/ordert.png',
-						falg: 'th'
+						falg: 'th',
+						urlFalg: 'returnProduct'
 					},
 
 				]
