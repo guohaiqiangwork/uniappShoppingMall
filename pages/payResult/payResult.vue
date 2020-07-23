@@ -2,7 +2,7 @@
 	<view>
 		<view class="">
 			<!-- 支付失败 -->
-			<template v-if="payFalg">
+			<template v-if="!payFalg">
 				<view class="text_center margin_top18">
 					<image src="../../static/image/yhj/pay0.png" class="pay_img" mode=""></image>
 					<view class="font_size30">
@@ -24,7 +24,7 @@
 					<view class="font_size30">
 						支付成功
 					</view>
-					<view class="paybtn">
+					<view class="paybtn" @click="goHome">
 						去首页逛逛
 					</view>
 				</view>
@@ -38,11 +38,19 @@
 	export default {
 		data() {
 			return {
-				payFalg: true
+				payFalg: ''
 			}
 		},
+		onLoad(option) {
+			console.log(option);
+			this.payFalg = option.payFalg
+		},
 		methods: {
-
+			goHome:function(){
+				uni.switchTab({
+					url:'../tabBar/home/home'
+				})
+			}
 		}
 	}
 </script>

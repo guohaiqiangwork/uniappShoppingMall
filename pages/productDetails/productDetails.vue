@@ -17,9 +17,10 @@
 				<image src="../../static/image/icon/top_left.png" class="top_img_width" mode=""></image>
 			</view>
 			<view class="width20">
-				<image src="../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
+				<image @click="open_moudelS" src="../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
 				<image @click="goFollow" src="../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5"
 				 mode=""></image>
+
 				<image src="../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
 			</view>
 		</view>
@@ -60,7 +61,7 @@
 			<view class="page_width">
 				<view class="norms_moudel uni-flex display_space">
 					<view class="">
-						规格：8G内存 256G固态
+						规格：{{spec}}
 					</view>
 					<view class="uni-flex margin_right3 width20" @click="open_moudel">
 						<view class="">
@@ -89,10 +90,10 @@
 				</view>
 
 				<!-- 评论 -->
-				<view class="comment_moudel">
+				<view class="comment_moudel" v-if="this.evaluate">
 					<view class="uni-flex display_space " @click="goComment">
 						<view class="margin_left3">
-							宝贝评价（44万+）
+							宝贝评价（{{evaluate.count}}）
 						</view>
 						<view class="uni-flex margin_right3">
 							<view class="">
@@ -106,14 +107,14 @@
 
 					<view class="uni-flex margin_top2">
 						<view class="margin_left3">
-							<image src="../../static/image/beij/myTopb.png" class="img_heard1" mode=""></image>
+							<image :src="evaluate.headImgurl" class="img_heard1" mode=""></image>
 						</view>
 						<view class="font_size24 margin_top1 margin_left3">
-							王**
+							{{evaluate.nickName}}
 						</view>
 					</view>
 					<view class="font_size24  margin_left3 ">
-						性能好，性价比高，外观也好看，屏幕效果很舒服。
+						{{evaluate.content}}
 					</view>
 				</view>
 
@@ -124,7 +125,7 @@
 
 			<!-- 图片区域 -->
 			<view class="margin_top2 ">
-				<image src="../../static/image/beij/mybj.png" style="width: 100%;" mode=""></image>
+				<u-parse :content="productDetailList.spuDetail.description" :loading="loading" />
 			</view>
 
 
@@ -135,7 +136,7 @@
 		<!-- bottom -->
 		<view class="uni-flex bottom_view">
 			<view class="uni-flex text_center width33 margin_top2">
-				<view class="width50">
+				<view class="width50" @click="goToShop">
 					<view class="">
 						<image src="../../static/image/icon/dianp.png" class="bottom_img" mode=""></image>
 					</view>
@@ -143,9 +144,9 @@
 						店铺
 					</view>
 				</view>
-				<view class="width50">
-					<view class="number_moudel">72+</view>
-					<view class="" @click="goShopCart">
+				<view class="width50" @click="goShopCart">
+					<view class="number_moudel" v-if="shopCarNumber > 0">{{shopCarNumber}}</view>
+					<view class="">
 						<image src="../../static/image/icon/shopC.png" class="bottom_img" mode=""></image>
 					</view>
 					<view class="font_size22" style="margin-top: -8%;">
@@ -153,10 +154,10 @@
 					</view>
 				</view>
 			</view>
-			<view class="width33 left_bottom">
+			<view class="width33 left_bottom" @click="addShopCard">
 				加入购物车
 			</view>
-			<view class="width33 left_bottom" style="background-color: #BE8100;">
+			<view class="width33 left_bottom" style="background-color: #BE8100;" @click="goConfirmOrder">
 				立即购买
 			</view>
 		</view>
@@ -169,38 +170,44 @@
 					<view class="text_right" @click="close_moudel">
 						<image src="../../static/image/icon/close.png" class="margin_right3" style="width: 26upx;height: 26upx;" mode=""></image>
 					</view>
-					<view class="page_width">
+					<view class="page_width padding_bottom3">
 						<!-- 商品 -->
 						<view class="uni-flex">
 							<view class="width35">
-								<image src="../../static/image/beij/mybj.png" class="moudel_product_img" mode=""></image>
+								<image :src="goodsDetail.imgArr[0]" class="moudel_product_img" mode=""></image>
 							</view>
-							<view class="margin_top2">
-								<view class="font_size30">
-									联想 小新Air14 2020热销款
+							<view class="margin_top2 width60">
+								<view class="font_size30 text_hidden2">
+									{{goodsDetail.title}}
 								</view>
 								<view class="font_colorbe font_size40 margin_top3">
 									<text class="font_size26">￥</text>
-									4799.00
+									{{goodsDetail.price}}
 								</view>
 								<view class="font_size24 font_color99">
-									已选：1只
+									已选：{{productNumber}}只
 								</view>
 							</view>
 						</view>
 						<!-- 规格 -->
-						<view class="margin_top3">
+
+
+						<view class="margin_top3" v-for="(item,key) in this.productDetailList.specParamMaps" :key="key">
+
 							<view class="font_size26">
-								规格
+								{{key}}
 							</view>
 							<view class="" style="margin-left: -20upx;">
-								<view class="moudel_item" :style="index != 1 ? 'backgroundColor:#F4F4F4;color:#666666':''" v-for="(item,index) in [1,3,3,2,2,2]"
-								 :key="index">
-									8G内存 256G固态
+								<view @click="tabCCCC(key,chainditem)" v-for="(chainditem,chKey) in item" :key="chKey" class="moudel_item"
+								 :style=" chainditem != indexes[key] ? 'backgroundColor:#F4F4F4;color:#666666':''">
+
+									{{chainditem}}
+
 								</view>
 							</view>
 
 						</view>
+
 						<!-- 购买数量 -->
 						<view class="uni-flex display_space margin_top3">
 							<view class="font_size26">
@@ -208,14 +215,14 @@
 							</view>
 							<view class="">
 								<view class="uni-flex num_moudel">
-									<view class="num_moudel_left font_color99" @click="numStatistics(item.id,items.id,items.num,'')">
+									<view class="num_moudel_left font_color99" @click="numStatistics()">
 										-
 									</view>
 									<view class="num_moudel_center">
-										0
+										{{productNumber}}
 										<!-- {{items.num > items.stock ? items.stock :items.num}} -->
 									</view>
-									<view class="num_moudel_right" @click="numStatistics(item.id,items.id,items.num,'add')">
+									<view class="num_moudel_right" @click="numStatistics('add')">
 										+
 									</view>
 								</view>
@@ -244,7 +251,7 @@
 					</view>
 
 					<view class="text_center padding_top3 padding_bottom3">
-						<view class="margin_top2">
+						<view class="margin_top2" @click="wxShare">
 							<image src="../../static/image/icon/wxf.png" class="img_widthf" mode=""></image>
 						</view>
 
@@ -260,7 +267,11 @@
 </template>
 
 <script>
+	import uParse from '../../components/feng-parse/parse.vue' //富文本展示
 	export default {
+		components: {
+			uParse
+		},
 		data() {
 			return {
 				imgList: [{
@@ -273,45 +284,66 @@
 				collection: true, //是否关注 true 未关注
 				shareFalg: false, //分享
 
+				addressId: '', //地址id 
 				productId: '', //产品id
-				productDetailList: '', //获取接口详情数据
+				productDetailList: {
+					spuDetail: {
+						description: ''
+					}
+				}, //获取接口详情数据
 				lunBoList: '', //轮播图数据
 				goodsDetail: '', //详情数据
 				AddressList: '', //地址列表
 				evaluate: '', //评价内容
+				spec: '', //规格
+				productNumber: 1, //数量
 				// urlFalgD: '', //返回路径
+				Specific: '', //规格参数
+				indexes: '', //dsfa
+				shopCarNumber: '', //购物车数量
+				loading: false, //开启loading不显示默认值
+				description: ''
+
 			}
 		},
 		onLoad(option) {
-			console.log(option.urlFalg);
-			console.log(option.productid)
-			this.productId = option.productid
-			// this.urlFalgD = option.urlFalg
+			// console.log(option.urlFalg);
+			// console.log(option.productId)
+			this.productId = option.productId //产品编码
+			this.addressId = option.addressId //地址ID
+			if (this.addressId) {
+				this.getAddress(); //获取详情
+			}
 		},
+
 		mounted() {
 			this.init() //初始化接口查询
 		},
+
+
 		methods: {
+			tabCCCC(one, two) {
+				this.indexes[one] = two;
+				let index = Object.values(this.indexes).join("_");
+				this.Specific = index;
+				this.getDetail(); //查询
+			},
+
+
 			// 轮播滑动操作
 			handleChange: function(e) {
 				this.currentIndex = e.detail.current;
 			},
 
 			// 数字框处理
-			numStatistics: function(shopCartId, shopId, num, type) {
-				for (let item of this.productList) {
-					if (item.id == shopCartId) {
-						for (let items of item.list1) {
-							if (items.id == shopId) {
-								if (type == 'add') {
-									items.num = Number(num) + 1
-								} else {
-									items.num = Number(num) - 1
-								}
-
-							}
-						}
+			numStatistics: function(type) {
+				if (type == 'add') {
+					this.productNumber = Number(this.productNumber) + 1
+				} else {
+					if (this.productNumber == 1) {
+						return
 					}
+					this.productNumber = Number(this.productNumber) - 1
 				}
 			},
 			// 关闭规格弹窗
@@ -332,7 +364,7 @@
 			//去评论去
 			goComment: function() {
 				uni.navigateTo({
-					url: '../productComment/productComment?urlFalg=productDetails'
+					url: '../productComment/productComment?urlFalg=productDetails' + '&pruductId=' + this.productId
 				})
 			},
 			// 返回
@@ -342,9 +374,12 @@
 
 			},
 			goShopCart: function() {
-				uni.switchTab({
+				uni.navigateTo({
 					url: '../shopCart/shopCart'
 				})
+				// uni.switchTab({
+				// 	url:'../tabBar/shopCart/shopCart'
+				// })
 			},
 			//产品关注
 			goFollow: function() {
@@ -367,6 +402,8 @@
 				})
 
 			},
+
+
 			// 查询是否关注
 			queryFollow: function() {
 				let _this = this;
@@ -389,25 +426,42 @@
 				})
 
 			},
+
+
 			// 去地址列表
 			goMyAddress: function() {
-				if (this.AddressList == '选择收货地址') { //去新增地址
-					uni.navigateTo({
-						url: '../addAddress/addAddress'
-					})
-				} else {
-					uni.navigateTo({
-						url: '../addAddress/addAddress'
-					})
+				uni.navigateTo({
+					url: '../addAddress/addAddress?falgUrl=productDetails' + '&productId=' + this.productId
+				})
+			},
+
+			// 通过地址id 获取详情
+			getAddress: function() {
+				var data = {
+					addressId: this.addressId
 				}
+				this.$http.get('/api/address/detail', data, true, ).then(res => {
+					console.log(res)
+					if (res.data.code == 200) {
+						this.AddressList = res.data.data.province + res.data.data.city + res.data.data.area + res.data.data.address
+					} else {
+						//有误
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+					}
+				}).catch(err => {})
 
 			},
 
-			init: function() {
+			// 获取产品详情
+			getDetail: function() {
 				var _this = this;
-				// 获取商品详情
 				var data = {
-					indexes: '',
+					indexes: this.Specific,
 					spuId: this.productId
 				}
 				this.$http.get('/api/common/goods/detail', data).then(res => {
@@ -415,6 +469,10 @@
 						_this.productDetailList = res.data.data;
 						_this.lunBoList = _this.productDetailList.goodsDetail.imgArr; //轮播数据
 						_this.goodsDetail = _this.productDetailList.goodsDetail; //详细数据
+						_this.spec = _this.productDetailList.goodsDetail.indexes.replace(/_/g, " ");
+						if (!data.indexes) {
+							_this.indexes = _this.productDetailList.ownSpec
+						}
 
 					} else {
 						uni.showToast({
@@ -426,6 +484,50 @@
 					}
 				})
 
+			},
+
+			// 去店铺
+			goToShop: function() {
+				uni.navigateTo({
+					url: '../shopIndex/shopIndex?shopId=' + this.productDetailList.sellerId + '&urlFalg=productDetails' +
+						'&searchName='
+				})
+			},
+			// 加入购物车
+			addShopCard: function() {
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					oper: 'add',
+					sellerId: this.productDetailList.sellerId,
+					skuId: this.productDetailList.goodsDetail.id,
+					spuId: this.productDetailList.goodsDetail.spuId
+				}
+				this.$http.post('/api/cart/save', data, true).then(res => {
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '添加成功',
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+						this.findShopNumber()
+
+					}
+				})
+			},
+			// 去结算
+			goConfirmOrder: function() {
+				console.log(this.goodsDetail.id)
+				console.log(this.productNumber)
+				uni.navigateTo({
+					url: '../confirmOrder/confirmOrder?productSkuId=' + this.goodsDetail.id + '&productNumber=' + this.productNumber +
+						'&urlFalg=productDetails'
+				})
+			},
+
+			init: function() {
+				var _this = this;
+				_this.getDetail(); //获取详情
 				// 查询是否关注商品
 				// if (uni.getStorageSync('userId')) {
 				_this.queryFollow(); //查询是否关注		
@@ -437,7 +539,7 @@
 				this.$http.get('/api/address/list', dataA, true).then(res => {
 					if (res.data.code == 200) {
 						if (res.data.data.length > 0) {
-							_this.AddressList = res.data.data
+							_this.AddressList = res.data.data[0].address
 						} else {
 							_this.AddressList = '选择收货地址'
 						}
@@ -458,8 +560,30 @@
 				}
 				this.$http.get('/api/common/evaluation/find', dataP).then(res => {
 					if (res.data.code == 200) {
-						console.log('评论' + JSON.stringify(res))
-						this.evaluate = res.data.data
+						_this.evaluate = res.data.data
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				});
+
+
+				_this.findShopNumber()
+
+			},
+
+			findShopNumber: function() {
+				// 查询购物车数量
+				var shopNumber = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/cart/countShopCartNum', shopNumber, true).then(res => {
+					if (res.data.code == 200) {
+						this.shopCarNumber = res.data.data
 					} else {
 						uni.showToast({
 							title: res.data.message,
@@ -470,8 +594,30 @@
 					}
 				})
 
-
 			},
+
+			// 微信分享
+			wxShare: function() {
+				//分享到微信朋友
+				uni.share({
+					provider: "weixin",
+					scene: "WXSceneSession",
+					type: 0,
+					href: "http:*******************", //这地址太长了，就省略了
+					title: "你笑起来真好看",
+					summary: "唐艺昕，你有火吗？没有,为何你点燃了我的心？",
+					imageUrl: "http:*******************",
+					success: function(res) {
+						if(res){
+							console.log("success:" + JSON.stringify(res));
+						}
+					},
+					fail: function(err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
+			}
+
 
 		}
 	}

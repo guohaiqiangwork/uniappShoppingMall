@@ -42,6 +42,20 @@
 						</view>
 					</template>
 
+					<view class="margin_top18">
+						<view class="uni-flex display_center">
+							<view class="login_left"></view>
+
+							<view class="font_sise28 font_colorff margin_left5">
+								第三方账号登录
+							</view>
+							<view class="login_left margin_left5"></view>
+						</view>
+						<view class="text_center margin_top3" @click="goWxLogin">
+							<image src="../../static/image/icon/loginW.png" class="img_log" mode=""></image>
+						</view>
+					</view>
+
 
 
 
@@ -172,19 +186,21 @@
 					return false;
 				}
 				this.$http.post('/api/common/mb/verifyCodeLogin', loginData).then(res => {
-					console.log(JSON.stringify(res))
+					console.log('登录返回结果' + JSON.stringify(res))
 					if (res.data.code == 200) {
 						uni.setStorageSync('token', res.data.data.token);
 						uni.setStorageSync('userId', res.data.data.mbId);
-						// uni.switchTab({
-						// 	url: '../tabBar/home/home'
-						// });
-
-						uni.navigateBack()
+						uni.switchTab({
+							url: '../tabBar/home/home'
+						});
+						// uni.navigateBack()
 					} else if (res.data.code == 300) {
+
 						uni.navigateTo({
 							url: '../bindingCode/bindingCode?phone=' + this.userPhone
 						})
+
+
 					}
 				}).catch(err => {
 					uni.showToast({
@@ -220,6 +236,47 @@
 			},
 			goToBack: function() {
 				uni.navigateBack()
+			},
+			goWxLogin: function() {
+				var self = this;
+				uni.login({
+					provider: "weixin",
+					success: (res) => {
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: function(infoRes) {
+								console.log(JSON.stringify(infoRes))
+								let formdata = {
+									nickName: infoRes.userInfo.nickName, //昵称
+									avatarUrl: infoRes.userInfo.avatarUrl, //头像
+									openId: infoRes.userInfo.openId, //
+								};
+								var data = {
+									openid: infoRes.userInfo.openId
+								}
+								self.$http.post('/api/common/mb/wx',data).then(res => {
+									console.log('微信登录返沪' + JSON.stringify(res))
+									if (res.data.code == 200) {
+										uni.setStorageSync('token', res.data.data.token);
+										uni.setStorageSync('userId', res.data.data.mbId);
+										uni.switchTab({
+											url: '../tabBar/home/home'
+										});
+									}else{
+										uni.navigateTo({
+											url: '../bindPhone/bindPhone?wxData=' + JSON.stringify(formdata)
+										})
+									}
+								})
+
+
+
+							}
+						})
+					},
+					fail: (err) => {}
+				});
+
 			}
 
 		}
@@ -275,5 +332,17 @@
 	.img_1 {
 		width: 30upx;
 		height: 30upx;
+	}
+
+	.img_log {
+		width: 98upx;
+		height: 98upx;
+		border-radius: 50%;
+	}
+
+	.login_left {
+		border-top: 1px solid #484848;
+		width: 175upx;
+		margin-top: 4%;
 	}
 </style>

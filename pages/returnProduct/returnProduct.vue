@@ -18,168 +18,259 @@
 		<!-- 可申请列表 -->
 		<template v-if="tabIndexT == 0">
 			<view class="page_width">
-				<view class="order_list"   @click="goOrderDetail">
-					<!-- 标题栏 -->
-					<view class="uni-flex">
-						<view class="uni-flex width50 ">
-							<view class="width20">
-								<image src="../../static/image/beij/card2.png" class="order_listimg" mode=""></image>
-							</view>
-							<view class="width80 text_hidden font_sise28 margin_top2 margin_left5">
-								联想官方旗舰店
-							</view>
-						</view>
-						<view class="uni-flex font_size26 display_right width50">
-							<view class=" font_colorde width30">已完成</view>
-							<view class=" font_color99 width30" @click="goCommentOrder">待评价</view>
-						</view>
-					</view>
-					<!-- 单个商品 -->
-					<view class="" v-if="false">
+				<template v-if="applyOrderList.length > 0">
+					<view class="order_list"  v-for="(item,index) in applyOrderList" :key="index">
+						<!-- 标题栏 -->
 						<view class="uni-flex">
-							<view class="width30">
-								<image src="../../static/image/beij/myTopb.png" class="order_productimg" mode=""></image>
-							</view>
-							<view class="width75">
-								<view class="">
-									联想拯救者R7000笔记本电脑
+							<view class="uni-flex width50 ">
+								<view class="width20">
+									<image :src="item.storeLogo" class="order_listimg" mode=""></image>
 								</view>
-								<view class="margin_top5">
-									屏幕尺寸：15.6英寸
-								</view>
-								<view class="">
-									<text class="font_size22 font_colorbe">¥</text>
-									<text class="font_colorbe font_size30">4799.00</text>
-									<text class="font_size22 font_color99">/件</text>
+								<view class="width80 text_hidden font_sise28 margin_top2 margin_left5">
+									{{item.storeName}}
 								</view>
 							</view>
+							<view class="uni-flex font_size26 display_right width50">
+
+								<view class="font_colorde" v-if="item.status == 1">待支付</view>
+								<view class="font_colorde" v-if="item.status == 2">待发货</view>
+								<view class="font_colorde" v-if="item.status == 3">待收货</view>
+								<view class=" font_colorde width30" v-if="item.status == 4">已完成</view>
+								<view class=" font_color99 width30" v-if="item.status == 4">待评价</view>
+								<view class="font_colorde margin_right3" v-if="item.status == 5">已取消</view>
+								<view class="font_colorde" v-if="item.status == 5" @click="deldectOrder(item)">
+									<image src="../../static/image/icon/sdelect.png" style="width: 26upx;height: 26upx;margin-top: 1%;" mode=""></image>
+								</view>
+								<view class="font_colorde" v-if="item.status == 6">已完成</view>
+
+							</view>
 						</view>
+						<!-- 单个商品 -->
+						<view class="" v-if="item.details.length == 1">
+							<view class="uni-flex" v-for="(items,index) in item.details" :key="index">
+								<view class="width30">
+									<image :src="items.image" class="order_productimg" mode=""></image>
+								</view>
+								<view class="width75">
+									<view class="text_hidden2">
+										{{items.title}}
+									</view>
+									<view class="margin_top5">
+										{{items.ownSpecMap}}
+									</view>
+									<view class="">
+										<text class="font_size22 font_colorbe">¥</text>
+										<text class="font_colorbe font_size30">{{items.price}}</text>
+										<text class="font_size22 font_color99">/件</text>
+									</view>
+								</view>
+							</view>
+
+						</view>
+						<!-- 多个商品 -->
+						<view class="" v-if="item.details.length > 1">
+							<view class="uni-flex">
+								<scroll-view scroll-x="true" class="wrapper">
+
+									<image :src="items.image" class="dimg" mode="" v-for="(items,index) in  item.details" :key="index"></image>
+
+								</scroll-view>
+							</view>
+
+						</view>
+						<!-- 总计 -->
+						<view class="uni-flex display_right">
+							<view class="font_size26 font_color99   margin_top1">
+								共{{item.goodsNum}}件
+							</view>
+							<view class="font_size26 margin_left3  text_right">
+								实付款：
+								<text class="font_size22 font_colorbe">¥</text>
+								<text class="font_colorbe font_size30">{{item.payment}}</text>
+								<text class="font_size22 font_color99">/件</text>
+							</view>
+						</view>
+
+						<!-- 底部操作栏 -->
+						<view class="uni-flex margin_top3 display_right" @click="goOrderDetail(item.orderId)">
+							<view class="order_listbtn1" v-if="item.status == 4 || item.status == 6">
+								退换货
+							</view>
+							<view class="order_listbtn1 margin_left5" v-if="item.status == 2">
+								退款
+							</view>
+						</view>
+
+
 
 					</view>
-					<!-- 多个商品 -->
-					<view class="" v-if="true" >
-						<view class="uni-flex">
-							<scroll-view scroll-x="true" class="wrapper">
-								<!-- <view class="dimg_moudel "> -->
-								<image src="../../static/image/beij/logB.png" class="dimg" mode="" v-for="(item,index) in [1,2,3,4,5,6,7]" :key="index"></image>
-								<!-- </view> -->
-							</scroll-view>
-						</view>
 
+
+				</template>
+
+				<view v-if="applyOrderList.length == 0" class="text_center margin_top18">
+					<image src="../../static/image/default/noMsg.png" class="no_img_msg" mode=""></image>
+					<view class="font_size28 font_color99 margin_top5">
+						暂无消息~
 					</view>
-					<!-- 总计 -->
-					<view class="uni-flex display_right">
-						<view class="font_size26 font_color99   margin_top1">
-							共5件
-						</view>
-						<view class="font_size26 margin_left3  text_right">
-							实付款：
-							<text class="font_size22 font_colorbe">¥</text>
-							<text class="font_colorbe font_size30">4799.00</text>
-							<text class="font_size22 font_color99">/件</text>
-						</view>
-					</view>
-
-					<!-- 底部操作栏 -->
-					<view class="uni-flex margin_top3 display_right">
-						<view class="order_listbtn">
-							退换货
-						</view>
-						<view class="order_listbtn1 margin_left5">
-							退款
-						</view>
-					</view>
-
-
-
 				</view>
 			</view>
 		</template>
+		
+		
+		
 		<!-- 申请记录 -->
 		<template v-if="tabIndexT == 1">
 			<view class="page_width">
-				<view class="order_list" >
+				<view v-if="applyRecordList.length > 0" class="order_list"  v-for="(item,index) in applyRecordList" :key="index">
 					<!-- 标题栏 -->
-					<view class="uni-flex">
+					<view class="uni-flex" @click="goAfter(item.retId)">
 						<view class="uni-flex width50 ">
 							<view class="width20">
-								<image src="../../static/image/beij/card2.png" class="order_listimg" mode=""></image>
+								<image :src="item.storeLogo" class="order_listimg" mode=""></image>
 							</view>
 							<view class="width80 text_hidden font_sise28 margin_top2 margin_left5">
-								联想官方旗舰店
+								{{item.storeName}}
 							</view>
 						</view>
 						<view class="uni-flex font_size26 display_right width50">
-							<view class=" font_colorde width30">已完成</view>
-							<view class=" font_color99 width30" @click="goCommentOrder">待评价</view>
+				
+							<view class="font_colorde" v-if="item.retStatus == 1">待审核</view>
+							<view class="font_colorde" v-if="item.retStatus == 2">审核通过</view>
+							<view class="font_colorde" v-if="item.retStatus == 3">审核未通过</view>
+							<view class=" font_color99 width30" v-if="item.retStatus == 4">已退款</view>
+							<view class="font_colorde margin_right3" v-if="item.retStatus == 5">已取消</view>
+							<view class="font_color99" v-if="item.retStatus == 6">已完成</view>
+				
 						</view>
 					</view>
 					<!-- 单个商品 -->
-					<view class="" v-if="true">
-						<view class="uni-flex">
+					<view class="" v-if="item.returnDetails.length == 1">
+						<view class="uni-flex" v-for="(items,index) in item.returnDetails" :key="index">
 							<view class="width30">
-								<image src="../../static/image/beij/myTopb.png" class="order_productimg" mode=""></image>
+								<image :src="items.image" class="order_productimg" mode=""></image>
 							</view>
 							<view class="width75">
-								<view class="">
-									联想拯救者R7000笔记本电脑
+								<view class="text_hidden2">
+									{{items.title}}
 								</view>
 								<view class="margin_top5">
-									屏幕尺寸：15.6英寸
+									{{items.ownSpecMap}}
 								</view>
 								<view class="">
 									<text class="font_size22 font_colorbe">¥</text>
-									<text class="font_colorbe font_size30">4799.00</text>
+									<text class="font_colorbe font_size30">{{items.price}}</text>
 									<text class="font_size22 font_color99">/件</text>
 								</view>
 							</view>
 						</view>
-		
+				
 					</view>
 					<!-- 多个商品 -->
-					<view class="" v-if="false" >
+					<view class="" v-if="item.returnDetails.length > 1">
 						<view class="uni-flex">
 							<scroll-view scroll-x="true" class="wrapper">
-								<!-- <view class="dimg_moudel "> -->
-								<image src="../../static/image/beij/logB.png" class="dimg" mode="" v-for="(item,index) in [1,2,3,4,5,6,7]" :key="index"></image>
-								<!-- </view> -->
+				
+								<image :src="items.image" class="dimg" mode="" v-for="(items,index) in  item.returnDetails" :key="index"></image>
+				
 							</scroll-view>
 						</view>
-		
+				
 					</view>
 					<!-- 总计 -->
 					<view class="uni-flex display_right">
 						<view class="font_size26 font_color99   margin_top1">
-							共5件
+							共{{item.num}}件
 						</view>
 						<view class="font_size26 margin_left3  text_right">
-							实付款：
-							<text class="font_size22 font_colorbe">¥</text>
-							<text class="font_colorbe font_size30">4799.00</text>
-							<text class="font_size22 font_color99">/件</text>
+							实付款
+							<text class="font_colorbe font_size34" :style="item.retStatus == 4 ? 'color:#999999' : 'color:#BE8100'">{{item.retPrice}}</text>
+	
 						</view>
 					</view>
-		
+				
 					<!-- 底部操作栏 -->
 					<view class="uni-flex margin_top3 display_right">
-						<view class="order_listbtn">
+						<view class="order_listbtn1" v-if="item.retStatus == 2" @click="saveLogisticsFalg(item.retId)">
+							填写物流单号
+						</view>
+						<view class="order_listbtn1 margin_left5" @click="getApplyCancel(item.retId)" v-if="item.retStatus == 1 || item.retStatus == 3">
 							取消申请
 						</view>
-						<view class="order_listbtn1 margin_left5">
-							退款
+					</view>
+				
+				
+				
+				</view>
+
+
+				<view v-if="applyRecordList.length == 0" class="text_center margin_top18">
+					<image src="../../static/image/default/noMsg.png" class="no_img_msg" mode=""></image>
+					<view class="font_size28 font_color99 margin_top5">
+						暂无消息~
+					</view>
+				</view>
+
+			</view>
+		</template>
+
+		<view v-if="applyRecordList.length > 0 || applyOrderList.length > 0" >
+			<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+		</view>
+		
+		<!-- 提示框 -->
+		<template v-if="pfalg">
+			<view class="moudel_content">
+				<view class="product_content_block">
+					<view class="font_size34 text_center" style="margin-top: 100upx;">
+						是否取消申请
+					</view>
+					<view class="uni-flex " style="margin-top: 80upx;"> 
+						<view class="leftbtn" @click="closemoudel">
+							取消
+						</view>
+						<view class="rightbtn" @click="okMoudel">
+							确认
 						</view>
 					</view>
-		
-		
-		
 				</view>
 			</view>
 		</template>
+		<!-- 填写物流单号 -->
+		<template v-if="logisticsFalg">
+			<view class="moudel_content">
+				<view class="product_content_block_wu">
+					<view class="uni-flex">
+						<view class="width33" >
+							<image  @click="closelogisticsFalg" src="../../static/image/icon/close.png" style="width: 26upx;height: 26upx;" mode=""></image>
+						</view>
+						<view class="">
+							填写物流单号
+						</view>
+					</view>
+					<view class="text_center margin_top5">
+						<input @input="keylogistics" type="text" value="" placeholder="请填写物流单号" placeholder-class="font_size30 font_color99"/>
+					</view>
+					<view class="margin_top5">
+						<view class="rightbtn_one" @click="oklogisticsFalg">
+							确认
+						</view>
+					</view>
+				</view>
+			</view>
+		</template>
+		
+		
+		
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 	export default {
+		components: {
+			uniLoadMore
+		},
 		data() {
 			return {
 				tabListThree: [{
@@ -190,27 +281,181 @@
 					}
 				],
 				tabIndexT: 0,
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
+
+				applyOrderList: [], //可申请订单
+				applyRecordList: [],//申请记录
+				pfalg:false,
+				retId:'',
+				logisticsFalg:false,
+				logisticsNumber:''
 			}
+		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			// uni.showNavigationBarLoading()
+			this.pageNum = this.pageNum + 1;
+			this.getApplyOrder(); //调取列表
+			_self.status = 'more'
+			// uni.hideNavigationBarLoading()
+		},
+		onShow() {
+			this.getApplyOrder() //获取列表
 		},
 		methods: {
 			// tab two
 			tabSwichThree: function(index) {
-				console.log(index)
-				this.tabIndexT = index
+				this.tabIndexT = index;
+				this.pageNum = 1;
+				if (this.tabIndexT == 0) {
+					this.applyOrderList = [];
+					this.getApplyOrder()
+				} else {
+					this.applyRecordList = [];
+					this.getApplyRecord()
+				}
 			},
+
+			//查询可申请订单
+			getApplyOrder: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					limit: '10',
+					page: this.pageNum
+				}
+				_this.$http.get('/api/retOrder/applyOrder', followData, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res));
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.applyOrderList = this.applyOrderList.concat(res.data.data);
+							}
+						} else {
+							this.applyOrderList = res.data.data
+						}
+					}
+				})
+
+			},
+
+
+			//查询可申请记录
+			getApplyRecord: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					limit: '10',
+					page: _this.pageNum
+				}
+				_this.$http.get('/api/retOrder/applyRecord', followData, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res));
+						if (_this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								_this.applyRecordList = _this.applyRecordList.concat(res.data.data);
+							}
+						} else {
+							_this.applyRecordList = res.data.data
+						}
+					}
+				})
+
+			},
+			
+			
+			// 填写物流单号
+			keylogistics:function(e){
+				this.logisticsNumber = e.detail.value
+			},
+			saveLogisticsFalg:function(id){
+				this.retId = id;
+				this.logisticsFalg = true
+			},
+			oklogisticsFalg:function(){
+				var _this = this
+				var followData = {
+					logistics:this.logisticsNumber,
+					retId: this.retId,
+				}
+				_this.$http.post('/api/retOrder/logistics', followData, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res));
+						this.logisticsFalg = false
+						this.getApplyRecord()
+					}
+				})
+				
+			},
+			closelogisticsFalg:function(){
+				this.logisticsFalg = false
+			},
+			
+			// 取消申请
+			getApplyCancel: function(id) {
+				this.retId = id
+				this.pfalg = true;
+			},
+			
+			
+			// 显示提示
+			okMoudel:function(){
+				let _this = this;
+				var followData = {
+					retId: this.retId,
+				}
+				_this.$http.post('/api/retOrder/cancel', followData, true).then(res => {
+					if (res.data.code == 200) {
+						this.pfalg = false;
+						console.log(JSON.stringify(res));
+						this.getApplyRecord();//刷新
+					}
+				})
+			},
+			closemoudel:function(){
+				this.pfalg = false;
+			
+			},
+	
+				
 			// 去订单详情
-			goOrderDetail(){
+			goOrderDetail:function(orderId) {
 				uni.navigateTo({
-					url:'../returnProductDetail/returnProductDetail'
+					url: '../returnProductDetail/returnProductDetail?orderId=' + orderId
 				})
 			},
 			// 待评价
-			goCommentOrder(){
+			goCommentOrder:function() {
 				uni.navigateTo({
-					url:'../commentOrder/commentOrder'
+					url: '../commentOrder/commentOrder'
 				})
 			},
 			
+			// 去售后详情
+			goAfter:function(e){
+				uni.navigateTo({
+					url:'../afterSaleDetails/afterSaleDetails?id='  + e
+				})
+			}
+
 			// 
 		}
 	}
@@ -301,5 +546,56 @@
 		height: 120upx;
 		border-radius: 10upx;
 		margin-left: 20upx;
+	}
+	.product_content_block {
+		background-color: #FFFFFF;
+		border-radius: 20upx;
+		position: absolute;
+		top: 20%;
+		height: 362upx;
+		width: 600upx;
+		margin-left: 75upx;
+	}
+	.product_content_block_wu {
+		background-color: #FFFFFF;
+		border-radius: 20upx;
+		position: absolute;
+		top: 20%;
+		height: 362upx;
+		width: 600upx;
+		margin-left: 75upx;
+		padding: 30upx;
+	}
+	.leftbtn {
+		width: 220upx;
+		height: 78upx;
+		border: 1px solid #3c3d3e;
+		border-radius: 10px;
+		text-align: center;
+		color: #3C3D3E;
+		line-height: 78upx;
+		margin-left: 45upx;
+	}
+	
+	.rightbtn {
+		width: 220upx;
+		height: 78upx;
+		background: #3c3d3e;
+		border-radius: 10px;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 78upx;
+		margin-left: 45upx;
+	}
+	.rightbtn_one{
+		width: 220upx;
+		height: 78upx;
+		background: #3c3d3e;
+		border-radius: 10px;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 78upx;
+		margin-left: 30%;
+		margin-top: 50upx;
 	}
 </style>

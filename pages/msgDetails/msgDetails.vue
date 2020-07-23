@@ -32,7 +32,10 @@
 			},
 			// 获取消息详情
 			getMsgDetails() {
-				this.$http.get('/mbMessage/MessageDetail/' + this.msgId).then(res => {
+				var data={
+					id:this.msgId
+				}
+				this.$http.get('/api/message/find',data,true).then(res => {
 					if (res.data.code == 200) {
 						this.msgDetails = res.data.data
 					}

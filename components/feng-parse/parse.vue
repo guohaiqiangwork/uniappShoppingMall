@@ -5,24 +5,23 @@
  *
  * for: uni-app框架下 富文本解析
  * 
- * 优化 by gaoyia@qq.com  https://github.com/gaoyia/parse
+ * 优化 by zhiqiang.feng@qq.com
  */-->
 
 <template>
 	
 	<!--基础元素-->
-	<div class="wxParse" :class="className" :style="'user-select:' + userSelect">
+	<view class="wxParse" :class="className" :style="'user-select:' + userSelect">
 		<block v-for="(node, index) of nodes" :key="index" v-if="!loading">
 			<wxParseTemplate :node="node" />
 		</block>
-	</div>
+	</view>
 </template>
 
 <script>
 import HtmlToJson from './libs/html2json';
 import wxParseTemplate from './components/wxParseTemplate0';
 
-	
 	export default {
 		name: 'wxParse',
 		props: {
@@ -65,7 +64,7 @@ import wxParseTemplate from './components/wxParseTemplate0';
 			},
 			noData: {
 				type: String,
-				default: '<div style="color: red;">数据不能为空</div>'
+				default: ''
 			},
 			startHandler: {
 				type: Function,
@@ -78,11 +77,19 @@ import wxParseTemplate from './components/wxParseTemplate0';
 			},
 			endHandler: {
 				type: Function,
-				default: null
+				default() {
+					return node => {
+						node = node
+					};
+				}
 			},
 			charsHandler: {
 				type: Function,
-				default: null
+				default() {
+					return node => {
+						node = node
+					};
+				}
 			},
 			imageProp: {
 				type: Object,
@@ -136,13 +143,15 @@ import wxParseTemplate from './components/wxParseTemplate0';
 				this.imageUrls = results.imageUrls;
 				// this.nodes = results.nodes;
 				
-				
 				this.nodes = [];
 				results.nodes.forEach((item) => {
 					setTimeout(() => {
-						this.nodes.push(item)
+						if(item.node){
+							this.nodes.push(item)
+						}
 					}, 0);
 				})
+				
 			},
 			getWidth() {
 				return new Promise((res, rej) => {
@@ -212,7 +221,7 @@ import wxParseTemplate from './components/wxParseTemplate0';
 			};
 		},
 		watch: {
-			content(){
+			content(val){
 				this.setHtml()
 			}
 			// content: {

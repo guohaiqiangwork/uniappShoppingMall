@@ -1,6 +1,6 @@
 <template>
 	<image
-		:mode="node.attr.mode"
+		mode="widthFix"
 		:lazy-load="node.attr.lazyLoad"
 		:class="node.classStr"
 		:style="newStyleStr || node.styleStr"
@@ -58,7 +58,7 @@ export default {
 			const { styleStr } = this.node;
 			const imageHeightStyle = mode === 'widthFix' ? '' : `height: ${imageheight}px;`;
 
-			this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px; padding: 0 ${+padding}px;`;//删除padding
+			if(!styleStr) this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px; padding: 0 ${+padding}px;`;//删除padding
 			// this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px;`;
 		},
 		// 计算视觉优先的图片宽高

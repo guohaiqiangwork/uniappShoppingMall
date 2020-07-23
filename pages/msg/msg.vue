@@ -4,7 +4,7 @@
 			<view class="msg_moudel" v-for="(item,index) in productList " :key="index" @click="goToProduct(item)">
 				<view class="right_border margin_right3" v-if="item.isRead == 0"></view>
 				<view class="uni-flex display_space margin_top2">
-					<view class="margin_left3 font_size30">
+					<view class="margin_left3 font_size30 text_hidden width50">
 						{{item.title}}
 					</view>
 					<view class="margin_right3 font_size22 font_color99">
@@ -59,6 +59,16 @@
 				pageNum: 1, //页码
 			}
 		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			// uni.showNavigationBarLoading()
+			this.pageNum = this.pageNum + 1;
+			this.getMsgList(); //调取列表
+			_self.status = 'more'
+			// uni.hideNavigationBarLoading()
+		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
@@ -68,21 +78,15 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
-		// 上拉加载
-		onReachBottom() {
-			let _self = this
-			this.status = 'loading'
-			uni.showNavigationBarLoading()
-			this.pageNum = this.pageNum + 1;
-			this.getMsgList(); //调取列表
-			_self.status = 'more'
-			uni.hideNavigationBarLoading()
-		},
+
 		onLoad() {
 			// this.getMsgList(); //调取列表
 		},
 		onShow() {
 			// this.getMsgList(); //获取列表
+		},
+		mounted() {
+			this.getMsgList(); //获取列表
 		},
 		methods: {
 			// 去详情
@@ -94,13 +98,11 @@
 			// 获取消息列表
 			getMsgList() {
 				var keyword = {
-					data: {
-						id: uni.getStorageSync('userId')
-					},
-					"pageNum": this.pageNum,
-					"pageSize": '10'
+					mbId: uni.getStorageSync('userId'),
+					"page": this.pageNum,
+					"limit": '10'
 				};
-				this.$http.post('/mbMessage/messageList', keyword, true).then(res => {
+				this.$http.get('/api/message/list', keyword, true).then(res => {
 					if (res.data.code == 200) {
 						if (this.pageNum > 1) {
 							if (res.data.data.length > 0) {

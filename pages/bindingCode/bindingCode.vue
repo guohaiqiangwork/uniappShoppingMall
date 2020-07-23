@@ -20,9 +20,13 @@
 					<view class="border_bottom padding_bottom3 margin_top5">
 						<input type="text" maxlength="8" @input="keyInviteCode" placeholder="请输入对方邀请码" placeholder-style='color:#484848' />
 					</view>
-					<view class="bottom_btn jb_view" @click="goToLogin">
+					<view class="bottom_btn jb_view" v-if="wxData" @click="bingPhoneLogin">
 						确认
 					</view>
+					<view class="bottom_btn jb_view" v-else @click="goToLogin">
+						确认
+					</view>
+					
 				</view>
 			</view>
 		</view>
@@ -36,11 +40,14 @@
 			return {
 				userPhone: '', //手机号
 				inviteCode: '', //邀请码
+				wxData:''
 			}
 		},
 		onLoad(option) {
-			console.log(option.phone)
-			this.userPhone = option.phone
+			// console.log(option.phone)
+			this.userPhone = option.phone;
+			// console.log(JSON.parse(option.wxData))
+			this.wxData = JSON.parse(option.wxData)
 		},
 		methods: {
 			// 获取邀请码
@@ -71,7 +78,7 @@
 					return false;
 				}
 				this.$http.post('/api/common/mb/bindUserRelat', loginData).then(res => {
-					console.log(JSON.stringify(res))
+					// console.log(JSON.stringify(res))
 					if (res.data.code == 200) {
 						uni.setStorageSync('token', res.data.data.token);
 						uni.setStorageSync('userId', res.data.data.mbId);
@@ -89,7 +96,64 @@
 				}).catch(err => {})
 
 			},
-
+			
+			
+			
+			
+			// 绑定收手机号
+			bingPhoneLogin:function(){
+				var loginData = {
+					headImgurl:this.wxData.avatarUrl,
+					inviteCode:this.inviteCode,
+					mobile:this.userPhone,
+					nickName:this.wxData.nickName,
+					openid:this.wxData.openId
+				};
+				
+				if (!(/^1[3456789]\d{9}$/.test(this.userPhone))) {
+					uni.showToast({
+						title: '请输入正确的11位手机号码',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				} 
+				this.$http.post('/api/common/mb/bandWxMobile', loginData).then(res => {
+					// console.log( '绑定手机号返回'+ JSON.stringify(res))
+					if (res.data.code == 200) {
+						uni.setStorageSync('token', res.data.data.token);
+						uni.setStorageSync('userId', res.data.data.mbId);
+						uni.switchTab({
+							url: '../tabBar/home/home'
+						});
+						// uni.navigateBack()
+						
+					} else if (res.data.code == 300) {
+						uni.navigateTo({
+							url: '../bindingCode/bindingCode?phone=' + this.userPhone
+						})
+					}else{
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+					}
+				}).catch(err => {
+					// console.log('7966')
+					// uni.showToast({
+					// 	title: res.data.message,
+					// 	icon: 'none',
+					// 	duration: 1500,
+					// 	position: 'top',
+					// });
+					// this.msgErr = err.data.message
+				})
+				
+			},
+			
 			goToBack: function() {
 				uni.navigateBack()
 			}

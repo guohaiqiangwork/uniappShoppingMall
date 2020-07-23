@@ -6,38 +6,44 @@
 					<view class="width25">
 						到账银行卡
 					</view>
-					<view class="uni-flex width65">
+					<view class="uni-flex width65" >
 						<view class="margin_top1">
-							<image src="../../static/image/bank/gsy.png" mode="" class="img"></image>
+							<image :src="myBankT.imgUrl" mode="" class="img"></image>
 						</view>
 						<view class="font_size30 margin_left3">
 							<view class="">
-								工商银行 (3202)
+								{{myBankT.bankName}}
 							</view>
 							<view class="font_size26 font_color99">
 								2小时内到账
 							</view>
 						</view>
 					</view>
-					<view class="width10">
+					<view class="width10" @click="open_m">
 						<image src="../../static/image/icon/rightb.png" mode="" class="right_i"></image>
 					</view>
 				</view>
-				<view class="font_size30 margin_top8">
+				<view class="font_size30 margin_top8" @click="overMoney">
 					提现金额
 				</view>
 
 				<view class="border_bottom  margin_top5 font_size50 uni-flex">
 					¥
-					<input type="number" class="margin_left3 margin_top3" maxlength="11" @input="keyMoney" placeholder="请输入金额"
+					<input :value="moneyValue" type="number" class="margin_left3 margin_top3" maxlength="11" @input="keyMoney" placeholder="请输入金额"
 					 placeholder-style='color:#484848' />
 				</view>
 
 				<view class="uni-flex font_size26 margin_top3">
 					<view class=" font_color99">
-						余额￥80,000.00
+						余额￥{{money}}
 					</view>
-					<view class="margin_left3">
+					<view class="font_color99 margin_left2" v-if="taxationData.headFee != 0">
+						手续费:<text>{{taxationData.headFee}}</text>
+					</view>
+					<view class="font_color99 margin_left2" v-if="taxationData.taxes != 0">
+						税费:<text>{{taxationData.taxes}}</text>
+					</view>
+					<view class="margin_left3" @click="overMoney">
 						全部提现
 					</view>
 				</view>
@@ -63,14 +69,14 @@
 						</view>
 					</view>
 					<scroll-view scroll-y="true">
-						<view class="uni-flex border_bottom padding_bottom3 padding_top2" v-for="(item,index) in [1,2,3]" :key="index">
+						<view @click="selectBank(item)" class="uni-flex border_bottom padding_bottom3 padding_top2" v-for="(item,index) in bankList" :key="index">
 							<view class="width20 text_center">
-								<image src="../../static/image/bank/gsy.png" class="listimg" mode=""></image>
+								<image  :src="item.imgUrl" class="listimg" mode=""></image>
 							</view>
 							<view class="font_size32 width50">
-								中国工商银行(3552)
+								{{item.bankName}}
 							</view>
-							<view class="width20 text_right">
+							<view class="width20 text_right" v-if="bankF == item.id">
 								<image src="../../static/image/icon/dui.png" mode="" class="mi"></image>
 							</view>
 						</view>
@@ -107,7 +113,7 @@
 						提现
 					</view>
 					<view class="font_size60 font_color66 text_center" v-if="!setFalg">
-						￥200.00
+						￥{{moneyValue}}
 					</view>
 					<view class="margin_top5">
 						<validcode :maxlength="6" :isPwd="true" @finish="getPwd" ref="pwd"></validcode>
@@ -130,13 +136,91 @@
 			return {
 				backFalg: false,
 				payFalg: false,
-				setFalg: false
+				setFalg: false,
+				moneyValue:'',
+				bankList:[],
+				bankF:'',
+				myBankT:'',
+				taxationData:''
 			}
 		},
+		onLoad(option) {
+			this.money = option.money
+		},
+		mounted() {
+			this.getBankList();
+			this.getTaxation()
+		},
 		methods: {
+			overMoney:function(){
+				console.log('88')
+				this.moneyValue=this.money
+			},
+			selectBank:function(item){
+				this.bankF=item.id
+				this.myBankT  = item
+			},
+			// 获取税费
+			getTaxation:function(){
+				this.$http.get('/api/common/headFee/info').then(res => {
+					if (res.data.code == 200) {
+						this.taxationData =res.data.data
+						console.log(JSON.stringify(res))
+					}	
+				});
+							
+			},
+			// 获取银行卡
+			getBankList:function(){
+				var _this = this;
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					flag:true
+				}
+				this.$http.get('/api/bank/list', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.bankList = res.data.data
+						for (let item of _this.bankList) {
+							console.log(item)
+							switch (item.bankCode) {
+								case 'ICBC':
+									item.imgUrl = '../../static/image/bank/gsy.png';
+									break;
+								case 'ABC':
+									item.imgUrl = '../../static/image/bank/nyy.png';
+									break;
+								case 'CCB':
+									item.imgUrl = '../../static/image/bank/jsy.png';
+									break;
+								case 'BOC':
+									item.imgUrl = '../../static/image/bank/zgy.png';
+									break;
+								case 'COMM':
+									item.imgUrl = '../../static/image/bank/jty.png';
+									break;
+								case 'PSBC':
+									item.imgUrl = '../../static/image/bank/yzy.png';
+									break;
+								case 'SPDB':
+									item.imgUrl = '../../static/image/bank/qty.png';
+									break;
+								case 'CMB':
+									item.imgUrl = '../../static/image/bank/zsy.png';
+									break;
+								default:
+									item.imgUrl = '../../static/image/icon/wxf.png';
+									break;
+							}
+						}
+						_this.myBankT = _this.bankList[0]
+						_this.bankF = _this.bankList[0].id
+					}
+				});
+			},
 			// 获取金额
-			keyMoney(e) {
+			keyMoney:function(e) {
 				console.log(e)
+				this.moneyValue = e.detail.value
 			},
 			// 关闭
 			close_m() {
@@ -150,24 +234,96 @@
 				this.payFalg = false
 			},
 			// 去提现结果
-			goW(){
-				uni.navigateTo({
-					url:'../withdrawalResult/withdrawalResult'
-				})
+			goW:function(){
+				if(this.moneyValue< 0 || !this.moneyValue){
+					uni.showToast({
+						title:'请输入提现金额',
+						icon:'none',
+						duration:2000,
+						position:top
+					})
+					return
+				}
+				var data = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/account/isSetPassword', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log('99')
+						if (res.data.data) { //设定了
+							//有密码了 跳修改密码页
+							this.payFalg = true;
+							this.setFalg = false;
+						} else { //没设定
+							this.payFalg = true;
+							this.setFalg = true;
+						}
+					} else {
+						//有误
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+					}
+				}).catch(err => {})
+				
+				// uni.navigateTo({
+				// 	url:'../withdrawalResult/withdrawalResult'
+				// })
 			},
+			// 设置支付密码
+			getSetPassword: function() {
+				var data = {
+					password: this.passwordSix,
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.post('/api/account/setPassword', data, true).then(res => {
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '操作成功',
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+						this.payFalg = false;
+						this.$refs.pwd.clear(); //清空密码
+					} else {
+						//有误
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+					}
+				}).catch(err => {})
+			
+			
+			},
+			
+			
 			// 获取密码
-			getPwd(val) {
+			getPwd:function(val) {
+				console.log(this.setFalg)
 				if (this.setFalg) {
 					this.passwordSix = val
 				} else {
 					var data = {
-						memberId: uni.getStorageSync('userId'),
-						password: val
+						mbId: uni.getStorageSync('userId'),
+						password: val,
+						amount:this.moneyValue,
+						bankId:this.bankF,
 					};
-					this.$http.post('/account/passwordCheck', data).then(res => {
+					this.$http.post('/api/withdraw/apply', data,true).then(res => {
 						if (res.data.code == 200) {
+							console.log(JSON.stringify(res))
 							this.payFalg = false;
-							this.getNewOrder()
+							uni.navigateTo({
+								url:'../withdrawalResult/withdrawalResult?payFalg=' + res.data.data
+							})
+							
 						} else {
 							this.$refs.pwd.clear(); //清空密码
 							uni.showToast({
@@ -178,6 +334,24 @@
 							});
 						}
 					}).catch(err => {})
+					// var data = {
+					// 	memberId: uni.getStorageSync('userId'),
+					// 	password: val
+					// };
+					// this.$http.post('/account/passwordCheck', data).then(res => {
+					// 	if (res.data.code == 200) {
+					// 		this.payFalg = false;
+					// 		this.getNewOrder()
+					// 	} else {
+					// 		this.$refs.pwd.clear(); //清空密码
+					// 		uni.showToast({
+					// 			title: res.data.message,
+					// 			icon: 'none',
+					// 			duration: 1500,
+					// 			position: 'top',
+					// 		});
+					// 	}
+					// }).catch(err => {})
 
 				}
 
@@ -273,5 +447,21 @@
 		height: 30upx;
 		margin-top: 8%;
 		margin-left: 3%;
+	}
+	.moudel_btn {
+		width: 222upx;
+		height: 78upx;
+		background: #3c3d3e;
+		border-radius: 10px;
+		color: #FFFFFF;
+		text-align: center;
+		font-size: 30upx;
+		line-height: 80upx;
+		border-radius: 10upx;
+		font-weight: 700;
+		margin-top: 5%;
+		margin-left: 35%;
+		margin-bottom: 3%;
+		align-items: center;
 	}
 </style>

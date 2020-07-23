@@ -24,18 +24,18 @@
 
 		<!-- 内容 -->
 		<view class="background_colorf8 padding_top3 padding_bottom3">
-			<view class="page_width">
+			<view class="page_width" v-if="searchAll.length > 0 ">
 				<view class="uni-flex display_space">
 					<view class="font_size28">
 						历史搜索
 					</view>
-					<view class="">
+					<view class="" @click="closeSearchAll">
 						<image src="../../static/image/icon/sdelect.png" style="width: 29upx;height: 28upx;" mode=""></image>
 					</view>
 				</view>
-				<view class="padding_bottom3">
-					<view class="tab_item" @click="assignment('蓝牙耳机')" v-for="(item,index) in [1,2,3,4,5,6,7]" :key="index">
-						蓝牙耳机
+				<view class="padding_bottom3" >
+					<view class="tab_item" @click="assignment(item)" v-for="(item,index) in searchAll" :key="index">
+						{{item}}
 					</view>
 				</view>
 
@@ -47,7 +47,7 @@
 				<view class="font_size28">
 					热门搜索
 				</view>
-				<view class="uni-flex" v-for="(item,index) in list" :key='index'>
+				<view class="uni-flex" @click="assignment(item.label)" v-for="(item,index) in list" :key='index'>
 					<view class="list_left margin_right3" v-if="item.type == 1">
 						爆
 					</view>
@@ -55,12 +55,33 @@
 						推
 					</view>
 					<view class="">
-						{{item.name}}
+						{{item.label}}
 					</view>
 				</view>
 			</view>
 		</view>
-
+		
+		
+		<!-- 提示框 -->
+		<template v-if="pfalg">
+			<view class="moudel_content">
+				<view class="product_content_block">
+					<view class="font_size34 text_center" style="margin-top: 100upx;">
+						确认要删除历史搜索吗？
+					</view>
+					<view class="uni-flex " style="margin-top: 80upx;"> 
+						<view class="leftbtn" @click="closemoudel">
+							取消
+						</view>
+						<view class="rightbtn" @click="okMoudel">
+							确认
+						</view>
+					</view>
+				</view>
+			</view>
+		</template>
+		
+		
 	</view>
 </template>
 
@@ -68,54 +89,105 @@
 	export default {
 		data() {
 			return {
-				list: [{
-						name: '618',
-						type: 1
-					},
-					{
-						name: '监控看见开会',
-						type: 2
-					},
-					{
-						name: "监控了佳龙",
-						type: ''
-					},
-					{
-						name: '进来看见了看见',
-						type: ''
-					}
-				],
-				inputValue: ''
+				list: '', //热门
+				inputValue: '',
+
+				searchAll: [],// 搜索记录
+				pfalg: false
 			}
 		},
 		onLoad(option) {
-			console.log(option.searchName)
-			this.inputValue = option.searchName
+			// console.log(option.searchName)
+			this.inputValue = option.searchName;
+			// 查询历史搜索列表
+			const than = this // 注意this的指向
+			uni.getStorage({
+				key: 'searchAll_key',
+				success(res) {
+					than.searchAll = res.data;
+					console.log(than.searchAll)
+				}
+			})
+		},
+		mounted() {
+			this.init(); //页面初始化
 		},
 		methods: {
 			// 输入了回车键
-			Search(e) {
+			Search:function(e) {
 				console.log(e.detail.value);
-				this.inputValue = e.detail.value;
+				// this.inputValue = e.detail.value;
+
 			},
 			// 输入框输入事件
-			getInputv(e) {
+			getInputv:function(e) {
+				this.inputValue = e.detail.value;
 				console.log(e)
 			},
 			// 历史赋值
-			assignment(item) {
+			assignment:function(item) {
 				this.inputValue = item;
 			},
+			// 删除历史记录
+			closeSearchAll:function(){
+				this.pfalg = true
+			},
+			// 确认取消
+			okMoudel:function(){
+				uni.removeStorageSync('searchAll_key');
+				this.searchAll = '';
+				this.pfalg = false;
+			},
+			// 取消
+			closemoudel:function(){
+				this.pfalg = false
+			},
 			// 搜索页面跳转
-			goSearchList() {
+			goSearchList:function() {
+				// 存历史记录
+				if (this.inputValue != '') { // 输入框的值不为空时
+					if (this.searchAll.length == 10) {
+						const than = this
+						this.searchAll[0] = this.inputValue // 将输入框的值添加到搜索记录数组中存储
+						uni.setStorage({
+							key: 'searchAll_key',
+							data: than.searchAll,
+							success: function() {}
+						})
+					} else {
+						const than = this
+						this.searchAll.push(this.inputValue) // 将输入框的值添加到搜索记录数组中存储
+						uni.setStorage({
+							key: 'searchAll_key',
+							data: than.searchAll,
+							success: function() {
+
+							}
+						})
+
+					}
+
+				};
 				uni.navigateTo({
-					url: '../searchList/searchList?listF=' + this.inputValue + '&urlFalg=search'
+					url: '../searchList/searchList?searchName=' + this.inputValue + '&urlFalg=search'
 				})
 			},
 			// 返回
-			goBack(){
+			goBack:function() {
 				uni.navigateBack()
+			},
+
+			init: function() {
+				// 获取热门搜索
+				this.$http.get('/api/common/search').then(res => {
+					if (res.data.code == 200) {
+						// console.log(JSON.stringify(res))
+						this.list = res.data.data
+					}
+				})
 			}
+
+
 		}
 	}
 </script>
@@ -163,4 +235,37 @@
 		margin-top: 10upx;
 
 	}
+	
+	.product_content_block {
+		background-color: #FFFFFF;
+		border-radius: 20upx;
+		position: absolute;
+		top: 20%;
+		height: 362upx;
+		width: 600upx;
+		margin-left: 75upx;
+	}
+	
+	.leftbtn {
+		width: 220upx;
+		height: 78upx;
+		border: 1px solid #3c3d3e;
+		border-radius: 10px;
+		text-align: center;
+		color: #3C3D3E;
+		line-height: 78upx;
+		margin-left: 45upx;
+	}
+	
+	.rightbtn {
+		width: 220upx;
+		height: 78upx;
+		background: #3c3d3e;
+		border-radius: 10px;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 78upx;
+		margin-left: 45upx;
+	}
+	
 </style>

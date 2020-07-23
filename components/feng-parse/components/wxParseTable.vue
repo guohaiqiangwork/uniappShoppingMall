@@ -25,6 +25,7 @@ export default {
 	},
 	methods: {
 		loadNode(node) {
+			console.log(node)
 			let obj = [];
 			for (let children of node) {
 				if (children.node=='element') {
@@ -32,7 +33,7 @@ export default {
 						name:children.tag,
 						attrs: {
 							class: children.classStr,
-							// style: children.styleStr,
+							style: children.styleStr,
 						},
 						children: children.nodes?this.loadNode(children.nodes):[]
 					}

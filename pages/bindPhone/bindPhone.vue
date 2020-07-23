@@ -1,0 +1,332 @@
+<template>
+	<view>
+		<view class="login">
+			<image src="../../static/image/beij/logB.png" mode="" class="image_width"></image>
+			<view class="login_moudel">
+				<!-- 返回箭头 -->
+				<view class="" @click="goToBack">
+					<image src="../../static/image/icon/leftF.png" class="goBack" mode=""></image>
+				</view>
+				<!--登录模块 -->
+				<view class="login_moudel_width font_colorff">
+					<view class="font_weight600 font_size44 margin_top5">
+						{{loginTitle}}
+					</view>
+					<!-- 登录某块 -->
+					<template v-if="loginFalg == 1">
+						<view class="margin_top5 font_size36">
+							手机号码
+						</view>
+						<view class="border_bottom padding_bottom3 margin_top5">
+							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
+						</view>
+						<view class="margin_top5 font_size36">
+							验证码
+						</view>
+						<view class="border_bottom padding_bottom3 margin_top5 uni-flex">
+							<input class="width70" type="number" maxlength="6" @input="keyCode" placeholder="请输入验证码" placeholder-style='color:#484848' />
+							<view class="yzm_moudel" @click="yzm_function">
+								{{countdown}}<text v-show="timestatus" class="forgetpwd2">秒重获</text>
+							</view>
+						</view>
+
+						<view class="font_size24 margin_top2" style="color: #FF3131;">
+							{{msgErr}}
+						</view>
+
+						<view class="bottom_btn jb_view" @click="bingPhoneLogin" >
+							确认
+							<!-- bingYCode -->
+						</view>
+					
+					</template>
+					
+					
+					
+
+
+
+				</view>
+				
+
+
+			</view>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				loginTitle: '绑定手机号',
+				loginFalg: 1,
+				inviteCode: '', //邀请码
+
+				datan: '登录',
+				countdown: '获取验证码',
+				disabled: false,
+				timestatus: false,
+				yzm_stuas: 0,
+				yzm_code: '',
+				timed: 59,
+				msgErr: '',
+				jsonData: {
+					a: '1',
+					b: '3',
+					c: '4'
+				},
+
+				imgUrl: 'http://xypay.expresslines.cn/images/sysImage/logo.jpg ',
+				
+				wxData:''
+			}
+		},
+		onLoad(option) {
+			// console.log(option)
+			// console.log(JSON.parse(option.wxData))
+			this.wxData = JSON.parse(option.wxData)
+		},
+		methods: {
+			// 手机号
+			keyPhone: function(event) {
+				this.userPhone = event.target.value
+			},
+			// 验证码
+			keyCode: function(e) {
+				this.phoneCode = e.target.value
+			},
+			// 获取验证码
+			yzm_function: function() {
+				var that = this;
+				if (!(/^1[3456789]\d{9}$/.test(this.userPhone))) {
+					uni.showToast({
+						title: '请输入正确的11位手机号码',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				} else if (this.timestatus == true) {
+					uni.showToast({
+						title: '请勿重复点击',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				}
+				that.disabled = true; //禁用点击
+				var phoneData = {
+					phone: that.userPhone
+				}
+				that.$http.get('/api/common/mb/sendCode', phoneData, false).then(res => {
+					if (res.data.code == 200) {
+						that.countdown = 60;
+						that.timestatus = true;
+						that.clear = setInterval(that.countDown, 1000);
+						// console.log(JSON.stringify(data))
+					} else {
+						that.disabled = false; //获取失败开启点击
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+
+					}
+				}).catch(err => {
+					that.disabled = false; //获取失败开启点击
+				})
+			},
+			// 倒计时
+			countDown() {
+				var that = this;
+				if (!that.countdown) {
+					that.disabled = false;
+					that.timestatus = false;
+					that.countdown = '获取验证码';
+					clearInterval(that.clear);
+				} else {
+					--that.countdown;
+				}
+			},
+			
+			
+			// 绑定收手机号
+			bingPhoneLogin:function(){
+		
+				var loginData = {
+					headImgurl:this.wxData.avatarUrl,
+					inviteCode:'',
+					mobile:this.userPhone,
+					nickName:this.wxData.nickName,
+					openid:this.wxData.openId
+				};
+			
+				if (!(/^1[3456789]\d{9}$/.test(this.userPhone))) {
+					uni.showToast({
+						title: '请输入正确的11位手机号码',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				} else if (this.phoneCode.length < 6 || this.phoneCode.length > 15) {
+					uni.showToast({
+						title: '验证码请输入不少于6位',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				}
+				this.$http.post('/api/common/mb/bandWxMobile', loginData).then(res => {
+				
+					if (res.data.code == 200) {
+						// uni.setStorageSync('token', res.data.data.token);
+						// uni.setStorageSync('userId', res.data.data.mbId);
+						// uni.switchTab({
+						// 	url: '../tabBar/home/home'
+						// });
+						// uni.navigateBack()
+						
+						this.bingYCode();
+					} else if (res.data.code == 300) {
+						uni.navigateTo({
+							url: '../bindingCode/bindingCode?phone=' + this.userPhone
+						})
+					}
+				}).catch(err => {
+					uni.showToast({
+						title: err.data.message,
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					this.msgErr = err.data.message
+				})
+				
+			},
+			
+			
+			// 绑定邀请码
+			bingYCode: function() {
+				var loginData = {
+					phone: this.userPhone,
+					code: this.phoneCode
+				};
+				if (!(/^1[3456789]\d{9}$/.test(this.userPhone))) {
+					uni.showToast({
+						title: '请输入正确的11位手机号码',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				} else if (this.phoneCode.length < 6 || this.phoneCode.length > 15) {
+					uni.showToast({
+						title: '验证码请输入不少于6位',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return false;
+				}
+				this.$http.post('/api/common/mb/verifyCodeLogin', loginData).then(res => {
+					
+					if (res.data.code == 200) {
+						uni.setStorageSync('token', res.data.data.token);
+						uni.setStorageSync('userId', res.data.data.mbId);
+						uni.switchTab({
+							url: '../tabBar/home/home'
+						});
+						// uni.navigateBack()
+					} else if (res.data.code == 300) {
+					
+						uni.navigateTo({
+							url:'../bindingCode/bindingCode?phone=' + this.userPhone + '&wxData=' + JSON.stringify(this.wxData)
+						})
+					}
+				}).catch(err => {
+					uni.showToast({
+						title: err.data.message,
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					this.msgErr = err.data.message
+				})
+
+			},
+			goToBack: function() {
+				uni.navigateBack()
+			},
+		
+		}
+	}
+</script>
+
+<style lang="less">
+	.image_width {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	.login_moudel {
+		position: relative;
+		width: 94%;
+		margin-left: 3%;
+		padding-top: 8%;
+	}
+
+	.goBack {
+		width: 20upx;
+		height: 36upx;
+	}
+
+	.login_moudel_width {
+		width: 90%;
+		margin-left: 5%;
+	}
+
+	.yzm_moudel {
+		width: 184upx;
+		height: 68upx;
+		line-height: 68upx;
+		font-size: 26upx;
+		text-align: center;
+		border-radius: 20upx;
+		color: #FBECDF;
+
+		background: linear-gradient(to right, #EDCB80, #A58747);
+	}
+
+	.bottom_btn {
+		height: 102upx;
+		text-align: center;
+		line-height: 102upx;
+		color: #FBECDF;
+		margin-top: 84upx;
+		font-size: 40upx;
+		border-radius: 20upx;
+	}
+
+	.img_1 {
+		width: 30upx;
+		height: 30upx;
+	}
+	.img_log{
+		width: 98upx;
+		height: 98upx;
+		border-radius: 50%;
+	}
+	.login_left{
+		border-top: 1px solid #484848;
+		width: 175upx;
+		margin-top: 4%;
+	}
+</style>

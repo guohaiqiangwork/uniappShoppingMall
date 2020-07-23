@@ -8,11 +8,11 @@
 			<template>
 				<view class="uni-flex list_moudel_search">
 					<view class="width25">
-						<image src="../../static/image/beij/mybj.png" class="list_img" mode=""></image>
+						<image :src="orderDetail.image" class="list_img" mode=""></image>
 					</view>
 					<view class="width66">
-						<view class="">
-							联想小新Air14 锐龙版
+						<view class="text_hidden">
+							{{orderDetail.title}}
 						</view>
 						<view class="margin_top8">
 							<uni-rate size="24" active-color="#B99445" :value="rateNumber" @change="onChange"></uni-rate>
@@ -28,21 +28,21 @@
 					详细评价
 				</view>
 				<view class="margin_top3">
-					<textarea value="" placeholder="请填写内容" class="text_moudel" />
+					<textarea value="" @input="getTextValue" placeholder="请填写内容" class="text_moudel" />
 					</view>
 				<view class="font_size22 font_colorcc text_right margin_top3 margin_right3">
 					{{number}}/300
 				</view>
 				<view class="uni-flex margin_top8" >
-					<view class="width30 text_center" :class="index !=0 ? 'margin_left4' : ''" v-for="(item,index) in [1,2,3]" :key="index">
-						<image src="../../static/image/beij/jian.png" class="jian_img" mode=""></image>
-						<image src="../../static/image/beij/uplodel.png" class="img_width" mode=""></image>
+					<view  class="width30 text_center" :class="index !=0 ? 'margin_left4' : ''"  v-for="(item,index) in imgList" :key="index">
+						<image @click="delectUpload(index)" src="../../static/image/beij/jian.png" class="jian_img" mode=""></image>
+						<image @click="upload(index)" :src="item.url" class="img_width" mode=""></image>
 					</view>
 				</view>
 			</view>
 			
 			
-			<view class="btn_comment">
+			<view class="btn_comment" @click="openMoudel">
 				提交申请
 			</view>
 		</view>
@@ -58,7 +58,7 @@
 						<view class="leftbtn" @click="closemoudel">
 							取消
 						</view>
-						<view class="rightbtn" @click="okMoudel">
+						<view class="rightbtn" @click="saveComment">
 							确认
 						</view>
 					</view>
@@ -77,27 +77,175 @@
 			return {
 				rateNumber:0,
 				number:0,
-				pfalg: false
+				pfalg: false,
+				orderDetailId:'',//订单编码
+				orderDetail:'',
+				tetxDisplay:true,
+				orderId:'',
+				score:'',//规格
+				content:'',
+				imgList:[
+					{
+						'url':'../../static/image/beij/uplodel.png'
+					}
+				],
+				imgListData:[
+					{
+						path:''
+					}
+				]
 			}
 		},
 		onLoad(option) {
-			this.inputValue = option.listF;
+			this.orderDetailId = option.orderDetailId;
+			this.orderId =option.orderId
+		},
+		mounted() {
+			this.getOrderDetail()
 		},
 
 		methods: {
-			onChange(e) {
+			getTextValue:function(e){
+				this.number = e.detail.cursor
+				this.content  =  e.detail.value
+			},
+			onChange:function(e) {
 				console.log('rate发生改变:' + JSON.stringify(e));
+				this.score = e
 			},
 			// 确认取消
-			okMoudel(){
+			okMoudel:function(){
 				
 			},
 			// 取消
-			closemoudel(){
+			closemoudel:function(){
 				this.pfalg = false
-			}
+			},
+			// 获取订单数据
+			getOrderDetail:function() {
+				var data = {
+					orderDetailId: this.orderDetailId
+				}
+				this.$http.get('/api/order/queryOrderDetailItem', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.orderDetail = res.data.data
+						
+					}
+				});
+			},
+			openMoudel:function(){
+				this.pfalg =true
+			},
+			// 保存评价
+			saveComment:function(){
+				if(!this.score.value){
+					uni.showToast({
+						title: '请选择',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+					return
+				}
+				var data ={
+					content:this.content,
+					images:this.imgListData.join(','),
+					mbId:uni.getStorageSync('userId'),
+					orderDetailId:this.orderDetailId,
+					orderId:this.orderId,
+					score:this.score.value,
+					skuId:this.orderDetail.skuId,
+					spuId:this.orderDetail.spuId
+				}
+				
+				this.$http.post('/api/evaluation/save', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						uni.navigateBack()
+						
+					}
+				});
+				
+			},
+			
+			
+			delectUpload:function(index){
+				this.imgList.splice(index, 1);
+				this.imgListData.splice(index, 1);
+			},
+			upload : function(index){
+				console.log('77')
+			 var  _self = this;
+			   uni.chooseImage({
+			    count: 1,
+			    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+			    sourceType: ['album'], //从相册选择
+			    success: function (res) {
+			     const tempFilePaths = res.tempFilePaths;
+				 let id = uni.getStorageSync('userId');
+				 const token = uni.getStorageSync('token');
+				 uni.uploadFile({
+				 	url: 'http://101.201.180.222:8080/api/upload/file',
+				 	filePath: tempFilePaths[0],
+				 	name: 'file',
+				 	method: 'post',
+				 	formData: {
+				 		'file': tempFilePaths[0],
+				 		'mbId': id
+				 	},
+				 	header: {
+				 		'Authorization': "Bearer" + " " + token,
+				 		'client': 'APP',
+				 	},
+				 	success: (uploadFileRes) => {
+				 		console.log("11==" + JSON.stringify(uploadFileRes));
+				 		if (JSON.parse(uploadFileRes.data).code == 200) {
+							var a = JSON.parse(uploadFileRes.data)
+							console.log(a)
+							_self.imgList[index].url = a.data.url
+							_self.imgListData[index] = a.data.path
+							console.log(JSON.stringify(_self.imgList))
+							if(_self.imgList.length < 3){
+								_self.imgList.push({url:'../../static/image/beij/uplodel.png'})
+							}
+				 			uni.showToast({
+				 				title: '上传成功',
+				 				icon: 'none',
+				 				duration: 2000,
+				 				position: 'top',
+				 			});
+				 		} else {
+				 			uni.showToast({
+				 				title: JSON.parse(uploadFileRes.data).message,
+				 				icon: 'none',
+				 				duration: 2000,
+				 				position: 'top',
+				 			});
+				 			return
+				 		}
+				 	},
+				 	fail: (err) => {
+				 		return uni.showToast({
+				 			title: '上传失败'
+				 		});
+				 	},
+				 });
+				 		
+			    },
+			    error : function(e){
+			     console.log(e);
+			    }
+			   });
+			  },
+			 
+			  
+			 
+			
 
 		}
+	
+	
 	}
 </script>
 

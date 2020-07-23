@@ -22,11 +22,11 @@
 					</view>
 					<view class="font_size60" style="margin-top: -3%;">
 						<text class="font_size24">¥</text>
-						80,000.00
+						{{topData}}
 					</view>
 				</view>
 				<view class="width50">
-					<view class="moreRight" @click="goWithdrawal">
+					<view class="moreRight" @click="goWithdrawal(topData)">
 						提现
 					</view>
 				</view>
@@ -75,15 +75,25 @@
 
 		<!-- 列表 -->
 		<view class="page_width">
-			<view class="uni-flex margin_top3" v-for="(item,index) in  [1,,2,3]" :key="index">
+			<view class="uni-flex margin_top3" v-for="(item,index) in  productList" :key="index">
 				<view class="font_size26 width20 text_center">
-					提现
+					{{item.remark}}
 				</view>
 				<view class="font_size24 width50 text_center">
-					2020-05-0113:23:00
+					{{item.createTime}}
 				</view>
 				<view class="font_size24 width30 text_center">
-					-￥100.00
+					<text v-if="item.type == 1">+</text> <text v-else>-</text>￥{{item.amount}}
+				</view>
+			</view>
+			<view class="" v-if="productList > 0">
+				<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+			</view>
+
+			<view v-if="productList.length == 0" class="text_center margin_top18">
+				<image src="../../static/image/default/noOrder.png" class="no_img_order" mode=""></image>
+				<view class="font_size28 font_color99 margin_top5">
+					暂无记录~
 				</view>
 			</view>
 
@@ -141,9 +151,105 @@
 				date: getDate({
 					format: true
 				}),
+				topData: '',
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
+				productList: [],
+				dataIndex: 0
 			}
 		},
+		mounted() {
+			this.getTopData(); //
+			this.getMoneyList()
+		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			this.pageNum = this.pageNum + 1;
+			this.getMoneyList(); //调取列表
+			_self.status = 'more'
+		},
 		methods: {
+			getTopData: function() {
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+				}
+				this.$http.get('/api/account/balance', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.topData = res.data.data
+					}
+				})
+			},
+			// 获取列表
+			getMoneyList: function() {
+				var d1 = new Date(this.startDateOne.replace(/\-/g, "\/"));
+				var d2 = new Date(this.endDateOne.replace(/\-/g, "\/"));
+				if (!d1) {
+					uni.showToast({
+						title: '请选择开始日期',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+				} else if (!d2) {
+					uni.showToast({
+						title: '请选择结束日期',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+				} else if (d1 > d2) {
+					uni.showToast({
+						title: '结束时间小于开始日期',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+					return;
+				}
+				if (this.startDateOne == '请选择') {
+					this.startDateOne = ''
+				}
+				if (this.endDateOne == '请选择') {
+					this.endDateOne = ''
+				}
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					endTime: this.endDateOne,
+					limit: 10,
+					page: this.pageNum,
+					startTime: this.startDateOne,
+					type: this.dataIndex
+				}
+				this.$http.get('/api/account/flow', data, true).then(res => {
+					if (res.data.code == 200) {
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.productList = this.productList.concat(res.data.data);
+							}
+						} else {
+							this.productList = res.data.data
+						}
+					}
+				})
+			},
+
 			// 返回
 			goBack() {
 				uni.navigateBack()
@@ -151,17 +257,25 @@
 			// tab two
 			tabSwichThree: function(index) {
 				console.log(index)
-				this.tabIndexT = index
+				this.tabIndexT = index;
+				if (this.tabIndexT == 1) {
+					this.dataIndex = 2
+				} else if (this.tabIndexT == 2) {
+					this.dataIndex = 1
+				}
+				this.productList = [];
+				this.pageNum = 1;
+				this.getMoneyList()
 			},
 			// 余额说明
 			topRight() {
 				this.explainFalg = true
 			},
 			// 去提现
-			goWithdrawal() {
+			goWithdrawal:function(e) {
 				console.log('9')
 				uni.navigateTo({
-					url: '../withdrawal/withdrawal'
+					url: '../withdrawal/withdrawal?money=' +e
 				})
 			},
 
@@ -182,6 +296,7 @@
 				console.log(this.startDateOne)
 				this.dataStartDate = this.formatDate(this.startDateOne);
 				console.log(this.dataStartDate)
+				this.getMoneyList();
 			},
 			// 时间结束
 			bindDateChangeEnd: function(e) {
@@ -189,36 +304,12 @@
 				console.log(this.endDateOne)
 				this.dataEndDate = this.formatDate(this.endDateOne);
 				console.log(this.dataEndDate)
+				this.getMoneyList();
 			},
 
 
-			// var d1 = new Date(this.startDateOne.replace(/\-/g, "\/"));
-			// var d2 = new Date(this.endDateOne.replace(/\-/g, "\/"));
-			// console.log(d1)
-			// console.log(d2)
-			// if (!d1) {
-			// 	uni.showToast({
-			// 		title: '请选择开始日期',
-			// 		icon: 'none',
-			// 		duration: 2000,
-			// 		position: 'top',
-			// 	});
-			// } else if (!d2) {
-			// 	uni.showToast({
-			// 		title: '请选择结束日期',
-			// 		icon: 'none',
-			// 		duration: 2000,
-			// 		position: 'top',
-			// 	});
-			// } else if (d1 > d2) {
-			// 	uni.showToast({
-			// 		title: '结束时间小于开始日期',
-			// 		icon: 'none',
-			// 		duration: 2000,
-			// 		position: 'top',
-			// 	});
-			// 	return;
-			// }
+
+
 		}
 	}
 </script>

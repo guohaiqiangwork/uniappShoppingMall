@@ -1,21 +1,37 @@
 <template>
 	<view>
 		<!-- 待付款 -->
-		<view class="orderTop_moudel">
+		<view class="orderTop_moudel" v-if="orderDetail.status.status == 1">
 			<view class="uni-flex display_space">
 				<view class="font_size32">
 					待付款
 				</view>
 				<view class="font_size24 margin_top1">
-					剩余时间：15:00
+					剩余时间：{{timeDom}}
 				</view>
 			</view>
 			<view class="font_size26">
 				请再提交订单后，尽快支付超时将取消订单
 			</view>
 		</view>
+		<!-- 代发货 -->
+		<view class="orderTop_moudel " v-if="orderDetail.status.status == 2">
+			<view class="uni-flex">
+				<view class="width70">
+					<view class="font_size32">
+						待发货
+					</view>
+					<view class="font_size30">
+						已通知商家，等待商家发货
+					</view>
+				</view>
+				<view class="width30 uni-flex" style="margin-top: -40upx;">
+					<image src="../../static/image/beij/orderF.png" class="topimg" mode=""></image>
+				</view>
+			</view>
+		</view>
 		<!-- 待收货 -->
-		<view class="orderTop_moudel margin_top5">
+		<view class="orderTop_moudel " v-if="orderDetail.status.status == 3">
 			<view class="uni-flex">
 				<view class="width70">
 					<view class="font_size32">
@@ -38,7 +54,7 @@
 		</view>
 
 		<!-- 已完成 -->
-		<view class="orderTop_moudel margin_top5">
+		<view class="orderTop_moudel " v-if="orderDetail.status.status == 4">
 			<view class="uni-flex">
 				<view class="width70">
 					<view class="font_size32">
@@ -55,7 +71,7 @@
 		</view>
 
 		<!-- 已取消 -->
-		<view class="orderTop_moudel margin_top5" style="background: #3C3D3E;">
+		<view class="orderTop_moudel margin_top5" style="background: #3C3D3E;" v-if="orderDetail.status.status == 5">
 			<view class="font_size32">
 				已取消
 			</view>
@@ -63,24 +79,9 @@
 				订单取消成功
 			</view>
 		</view>
-		
-		<!-- 代发货 -->
-		<view class="orderTop_moudel margin_top5">
-			<view class="uni-flex">
-				<view class="width70">
-					<view class="font_size32">
-						待发货
-					</view>
-					<view class="font_size30">
-						已通知商家，等待商家发货
-					</view>
-				</view>
-				<view class="width30 uni-flex" style="margin-top: -40upx;">
-					<image src="../../static/image/beij/orderF.png" class="topimg" mode=""></image>
-				</view>
-			</view>
-		</view>
-		
+
+
+
 
 		<view class="page_width padding_bottom3">
 			<!-- 地址块 -->
@@ -92,15 +93,14 @@
 					<view class="width80">
 						<view class="uni-flex">
 							<view class="font_size32">
-								王大锤
+								{{orderDetail.mbAddress.name}}
 							</view>
 							<view class="font_size28 margin_top1 margin_left3">
-								184****0024
+								{{orderDetail.mbAddress.mobile}}
 							</view>
 						</view>
 						<view class="font_size28">
-							内蒙古包头市九原区华诚中心A座
-							十三层南侧
+							{{orderDetail.mbAddress.address}}
 						</view>
 					</view>
 
@@ -108,26 +108,26 @@
 			</view>
 
 			<!-- 列表 -->
-			<view class="list_orderD" v-for="(item,index) in [1,2,3]" :key="index">
+			<view class="list_orderD" v-for="(item,index) in orderDetail.details" :key="index">
 				<view class="uni-flex">
 					<view class="width30">
-						<image src="../../static/image/beij/logB.png" class="list_orderD_img" mode=""></image>
+						<image :src="item.image" class="list_orderD_img" mode=""></image>
 					</view>
 					<view class="width70">
-						<view class="font_sise28">
-							联想拯救者R7000笔记本电脑
+						<view class="font_sise28 text_hidden2">
+							{{item.title}}
 						</view>
 						<view class="uni-flex display_space margin_top3">
 							<view class="font_size22 font_color99">
-								屏幕尺寸：15.6英寸
+								{{item.ownSpecMap}}
 							</view>
 							<view class="font_size26 font_color66">
-								*1
+								*{{item.num}}
 							</view>
 						</view>
 						<view class="">
 							<text class="font_size22 font_colorbe">¥</text>
-							<text class="font_colorbe font_size30">4799.00</text>
+							<text class="font_colorbe font_size30">{{item.price}}</text>
 							<text class="font_size22 font_color99">/件</text>
 						</view>
 					</view>
@@ -142,7 +142,7 @@
 						订单编号
 					</view>
 					<view class="">
-						1234567890
+						{{orderDetail.orderNo}}
 					</view>
 				</view>
 				<view class="uni-flex font_sise28 margin_top3">
@@ -150,7 +150,7 @@
 						下单时间
 					</view>
 					<view class="">
-						2020-02-10 12:00:00
+						{{orderDetail.status.createTime}}
 					</view>
 				</view>
 				<view class="uni-flex font_sise28 border_bottom padding_bottom3 margin_top3">
@@ -158,7 +158,7 @@
 						支付方式
 					</view>
 					<view class="">
-						微信支付
+						{{orderDetail.status.paymentType == '1' ? orderDetail.status.paymentType ='微信支付 ' : orderDetail.status.paymentType == '2' ? orderDetail.status.paymentType ='支付宝支付' : orderDetail.status.paymentType ='余额支付' }}
 					</view>
 				</view>
 				<view class="uni-flex font_sise28 border_bottom padding_bottom3 padding_top3 display_space">
@@ -166,14 +166,14 @@
 						商品总额
 					</view>
 					<view class="font_size30">
-						<text class="font_size22">￥</text> 4799.00
+						<text class="font_size22">￥</text> {{orderDetail.totalPrice}}
 					</view>
 				</view>
 
 				<view class="font_size26 margin_left3  text_right padding_top3 ">
 					实付款：
 					<text class="font_size22 font_colorbe">¥</text>
-					<text class="font_colorbe font_size30">4799.00</text>
+					<text class="font_colorbe font_size30">{{orderDetail.payment}}</text>
 					<text class="font_size22 font_color99">/件</text>
 				</view>
 
@@ -183,8 +183,17 @@
 			<!-- 底部操作 -->
 
 			<view class="margin_top3 uni-flex display_right">
-				<view class="btn_orderd">
+				<view class="btn_orderd" v-if="orderDetail.status.status == 4" @click="goCommentOrder(orderDetail.orderId)">
 					立即评价
+				</view>
+				<view class="btn_orderd" v-if="orderDetail.status.status == 3" @click="confirmReceipt(orderDetail)">
+					确认收货
+				</view>
+				<view class="btn_orderd1" v-if="orderDetail.status.status == 1" @click="getCancelOrder(orderDetail)">
+					取消支付
+				</view>
+				<view class="btn_orderd" v-if="orderDetail.status.status == 1" @click="goTobuy(orderDetail)">
+					去支付
 				</view>
 			</view>
 		</view>
@@ -196,10 +205,126 @@
 	export default {
 		data() {
 			return {
-
+				orderId: '', //订单编号
+				orderDetail: {
+					mbAddress: {
+						name: '',
+						address: '',
+						mobile: ''
+					},
+					status: {
+						closeTime: ''
+					}
+				},
+				timeDom:''
 			}
 		},
+		onLoad(option) {
+			console.log(option.orderId)
+			this.orderId = option.orderId
+		},
+		mounted() {
+			this.getOrderDetail(); //获取详情
+		},
 		methods: {
+			// 倒计时
+			countTime: function(value) {
+				var _this = this
+				//获取当前时间
+				var date = new Date();
+				var now = date.getTime();
+				//alert("now=="+now);
+				//移动端必须这样写，因为ios不支持日期中间是-链接，会报错
+				var endDate = new Date(value);
+				var end = endDate.getTime();
+				//时间差
+				var differTime = end - now;
+				var h, m, s;
+				if (differTime >= 0) {
+					h = Math.floor(differTime / 1000 / 60 / 60);
+					m = Math.floor(differTime / 1000 / 60 % 60);
+					s = Math.floor(differTime / 1000 % 60);
+					h = h < 10 ? ("0" + h) : h;
+					m = m < 10 ? ("0" + m) : m;
+					s = s < 10 ? ("0" + s) : s;
+					if (h < 1) {
+						if (m > 15) {
+							_this.timeDom = "00:00";
+							// console.log(_this.timeDom)
+						} else {
+							_this.timeDom = m + ":" + s;
+							// console.log("剩余时间 " + _this.timeDom)
+							//递归调用函数所以是延时器不是定时器
+							setTimeout(function() {
+								_this.countTime(value);
+							}, 1000);
+						}
+					}
+			
+				} else {
+					_this.timeDom = "00:00";
+					// console.log("剩余时间 " + _this.timeDom)
+				}
+			},
+			
+			// 获取订单数据
+			getOrderDetail: function() {
+				var data = {
+					orderId: this.orderId
+				}
+				this.$http.get('/api/order/detail', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.orderDetail = res.data.data
+						if(this.orderDetail.status.status == 1){
+							this.countTime(new Date(this.orderDetail.status.closeTime.replace(/-/g, '/')).getTime());
+						}
+					}
+				});
+			},
+			
+			// 确认订单
+			confirmReceipt: function(item) {
+				var data = {
+					orderId: item.orderId
+				}
+				this.$http.get('/api/order/confirmReceipt', data, true).then(res => {
+					if (res.data.code == 200) {
+						uni.navigateBack()
+					}
+				});
+			},
+			// 立即支付
+			goTobuy: function(item) {
+				var data = {
+					closeTime: item.status.closeTime,
+					orderId: item.orderId,
+					orderNo: item.orderNo,
+					payment: item.payment
+				}
+				uni.navigateTo({
+					url: '../pageOrder/pageOrder?payData=' + JSON.stringify(data)
+				})
+			},
+			// 取消订单
+			getCancelOrder: function(item) {
+				var data = {
+					orderId: item.orderId
+				}
+				this.$http.get('/api/order/cancel', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.getMyorderList(); //刷新列表
+					}
+				});
+			
+			},
+			// 去评加
+			goCommentOrder: function(orderId) {
+				uni.navigateTo({
+					url: '../commentOrder/commentOrder?orderId=' + orderId
+				})
+			},
+			
 
 		}
 	}
@@ -237,7 +362,7 @@
 
 	.list_orderD {
 		// width: 690px;
-		height: 220upx;
+		// height: 220upx;
 		background: #ffffff;
 		border-radius: 20upx;
 		margin-top: 20upx;
@@ -268,5 +393,16 @@
 		line-height: 60upx;
 		color: #FFFFFF;
 		font-size: 26upx;
+	}
+	.btn_orderd1 {
+		width: 180upx;
+		height: 60upx;
+		border: 1px solid #3C3D3E;
+		border-radius: 10upx;
+		text-align: center;
+		line-height: 60upx;
+		color: #3C3D3E;
+		font-size: 26upx;
+		margin-right: 5%;
 	}
 </style>

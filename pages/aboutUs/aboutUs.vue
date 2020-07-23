@@ -38,7 +38,7 @@
 	export default {
 		data() {
 			return {
-				VCode: '1.0.0'
+				VCode: ''
 			}
 		},
 		onLoad() {
@@ -52,8 +52,7 @@
 			},
 			// 获取版本号  {version}
 			getV() {
-				this.$http.get('/appVersionNumber/getNowVersion').then(res => {
-
+				this.$http.get('/api/common/android/number').then(res => {
 					if (res.data.code == 200) {
 						this.VCode = res.data.data;
 					} else {

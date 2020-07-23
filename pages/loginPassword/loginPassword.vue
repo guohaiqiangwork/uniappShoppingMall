@@ -6,7 +6,7 @@
 					新密码
 				</view>
 				<view class="width70 font_size30">
-					<input placeholder="请输入密码" type="text" :value="newPa" />
+					<input placeholder="请输入密码" type="password" :value="newPa" @input="onePassword"/>
 				</view>
 			</view>
 			<view class="uni-flex padding_top3 padding_bottom3 border_bottom">
@@ -14,13 +14,13 @@
 					确认密码
 				</view>
 				<view class="width70 font_size30">
-					<input placeholder="请再次输入密码" type="text" :value="newPa" />
+					<input placeholder="请再次输入密码" type="password" :value="newPa"  @input="twoPassword"/>
 				</view>
 			</view>
 
 		</view>
 
-		<view class="bottom_btn_l">
+		<view class="bottom_btn_l" @click="getSetPassword">
 			确认
 		</view>
 	</view>
@@ -30,11 +30,51 @@
 	export default {
 		data() {
 			return {
-				newPa: ''
+				newPa: '',
+				oneNumber:'',
+				twoNumber:''
 			}
 		},
 		methods: {
-
+			onePassword:function(e){
+				console.log(e.detail.value)
+				this.oneNumber = e.detail.value
+			},
+			twoPassword:function(e){
+				console.log(e.detail.value)
+				this.twoNumber =e.detail.value
+			},
+			
+			getSetPassword:function(){
+				if(this.oneNumber != this.twoNumber){
+					uni.showToast({
+						title: '两次密码不一致',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+					return;
+				}
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					password:this.oneNumber
+				}
+				// 获取个人信息
+				this.$http.post('/api/member/setPassword', data, true).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '设置成功',
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+						uni.navigateBack()
+					}
+				});
+			
+			
+			},
 		}
 	}
 </script>

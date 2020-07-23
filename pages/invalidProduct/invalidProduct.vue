@@ -7,29 +7,29 @@
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
 			<view class="font_size36">
-				商品清单(2)
+				商品清单({{invalidList.length}})
 			</view>
 		</view>
 		<!-- 列表 -->
 		<view class="page_width">
-			<view class="uni-flex product_moudel_list" v-for="(item,index) in [1,2,3,4]" :key="index">
+			<view class="uni-flex product_moudel_list" v-for="(item,index) in invalidList" :key="index">
 				<view class="width30">
-					<image src="../../static/image/beij/logB.png" class="list_imgp" mode=""></image>
+					<image :src="item.image" class="list_imgp" mode=""></image>
 				</view>
 				<view class="width70">
-					<view class="font_sise28">
-						联想拯救者R7000笔记本电脑
+					<view class="font_sise28 text_hidden2">
+						{{item.title}}
 					</view>
 					<view class="uni-flex display_space margin_top2">
 						<view class="font_size22 font_color99">
-							屏幕尺寸：15.6英寸
+							{{item.ownSpec}}
 						</view>
 						<view class="font_size24 font_color99 margin_right3">
-							*1
+							*{{item.num}}
 						</view>
 					</view>
 					<view class="font_sise28 font_colorbe margin_top3">
-						<text class="font_size22">¥</text> 4799.00 <text class="font_size22 font_color99">/件</text>
+						<text class="font_size22">¥</text> {{item.price}} <text class="font_size22 font_color99">/件</text>
 					</view>
 				</view>
 			</view>
@@ -48,14 +48,30 @@
 	export default {
 		data() {
 			return {
-				falgSX:true
+				falgSX:true,
+				invalidList:''
 			}
 		},
 		onLoad(option) {
 			console.log(option.falg)
 			option.falg == 's' ? this.falgSX =true :this.falgSX =false;
 		},
+		mounted() {
+			this.falgSX ? this.getShopCardInval() : '';
+			
+		},
 		methods: {
+			// 查询失效
+			getShopCardInval: function() {
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+				}
+				this.$http.get('/api/cart/listInvalid', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.invalidList = res.data.data
+					}
+				})
+			},
 			goBack() {
 				uni.navigateBack()
 			}

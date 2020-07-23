@@ -6,7 +6,7 @@
 			<view class="login_moudel">
 				<!-- 搜索框 -->
 				<view class="uni-flex  padding_bottom2 padding_top2">
-					<view class="width10 text_center" style="padding-top: 1%;"  @click="goBack">
+					<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 						<image src="../../static/image/icon/leftF.png" class="balk_img" mode=""></image>
 					</view>
 					<!-- 搜索框 -->
@@ -15,8 +15,8 @@
 							<image src="../../static/image/icon/serchf.png" class="searce_width" mode=""></image>
 						</view>
 						<view class="searce_right_input">
-							<input style="color: #FFFFFF;font-size: 26upx;" class="findShop" maxlength="10" @input="getInputv" placeholder="请输入要搜索的内容"
-							 confirm-type='搜索' type="text" @confirm='Search' placeholder-style='color:#FFFFFF' />
+							<input style="color: #FFFFFF;font-size: 26upx;" class="findShop" maxlength="10" :value="inputValue" @input="getInputv"
+							 placeholder="请输入要搜索的内容" confirm-type='搜索' type="text" @confirm='Search' placeholder-style='color:#FFFFFF' />
 						</view>
 					</view>
 				</view>
@@ -24,18 +24,18 @@
 				<!-- 店铺 -->
 				<view class="uni-flex margin_top3">
 					<view class="margin_left3 width15 text_center">
-						<image src="../../static/image/beij/myy.png" class="shop_img_w" mode=""></image>
+						<image :src="shopDetail.shoreLogo" class="shop_img_w" mode=""></image>
 					</view>
 					<view class="uni-flex margin_top1 width60">
 						<view class="font_size28 font_colorff">
-							联想官方旗舰店
+							{{shopDetail.storeName}}
 						</view>
 						<view class="margin_left3">
 							<image src="../../static/image/icon/rightF.png" class="shop_img_two" mode=""></image>
 						</view>
 					</view>
 					<view class="">
-						<view class="shop_btn uni-flex display_center">
+						<view class="shop_btn uni-flex display_center" @click="goFollow" v-if="collection">
 							<view class="">
 								<image src="../../static/image/icon/trightf.png" class="rightf_img" mode=""></image>
 							</view>
@@ -43,6 +43,11 @@
 								关注
 							</view>
 						</view>
+
+						<view v-else class="top_btn" @click="closeGoFollow">
+							已关注
+						</view>
+
 					</view>
 				</view>
 
@@ -69,20 +74,30 @@
 		<!-- 列表 -->
 		<view class="page_width ">
 			<template v-if="tabIndexTwo == 'home'">
-				<view class="list_itemone" v-for="(item,index) in [1,2,3,]" :key="index">
+				<view class="list_itemone" v-for="(item,index) in queryGoodsList" :key="index" @click="goProductDetails(item.id)">
 					<view class="">
-						<image src="../../static/image/beij/logB.png" class="list_imgone" mode=""></image>
+						<image :src="item.goodsDetail.images" class="list_imgone" mode=""></image>
 					</view>
 					<view class="font_size30 text_hidden margin_left3">
-						联想拯救者R7000...
+						{{item.title}}
 					</view>
 					<view class="font_colorbe font_sise28 margin_left3 padding_bottom3">
 						<text class="font_size22">¥</text>
-						4799.00
+						{{item.goodsDetail.price}}
 						<text class="font_size22 font_color66">/件</text>
 					</view>
 				</view>
 
+				<view v-if="queryGoodsList.length == 0" class="text_center margin_top18">
+					<image src="../../static/image/default/noProduct.png" class="no_img_product" mode=""></image>
+					<view class="font_size28 font_color99 margin_top5">
+						暂无相关商品~
+					</view>
+				</view>
+
+				<view>
+					<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+				</view>
 			</template>
 
 		</view>
@@ -98,27 +113,35 @@
 				</view>
 
 				<view class="width75 background_colorff" style="min-height: 1040upx;">
-					<view @click="goProductDetails" class="uni-flex border_bottom _right_moudel" v-for="(item,index) in [1,2,3]" :key="index">
+					<view @click="goProductDetails(item.id)" class="uni-flex border_bottom _right_moudel" v-for="(item,index) in rightList" :key="index">
 						<view class="">
-							<image src="../../static/image/beij/myTopb.png" class="_right_img" mode=""></image>
+							<image :src="item.goodsDetail.images" class="_right_img" mode=""></image>
 						</view>
 						<view class="margin_left3">
 							<view class="font_size26 text_hidden ">
-								Asus/华硕 Y423300高性...
+								{{item.title}}
 							</view>
 							<view class="font_size22 font_color99 text_hidden">
-								这是副标题这个是有长度…
+								{{item.subTitle}}
 							</view>
 							<view class="font_sise28 font_colorbe">
 								<text class="font_size26">¥</text>
-								4799.00
+								{{item.goodsDetail.price}}
 								<text class="font_size22 font_color99">/件</text>
 							</view>
 						</view>
 					</view>
+				
+					<view v-if="rightList.length == 0" class="text_center margin_top18">
+						<image src="../../static/image/default/noProduct.png" class="no_img_product" mode=""></image>
+						<view class="font_size28 font_color99 margin_top5">
+							暂无相关商品~
+						</view>
+					</view>
+					
 				</view>
 			</view>
-	
+
 		</template>
 
 
@@ -130,6 +153,7 @@
 					<image :src="item.imgUrlF" class="bottom_img_tab" mode=""></image>
 				</view>
 				<view v-else>
+					<!-- <image src="../../static/image/icon/top_left.png" mode=""></image> -->
 					<image :src="item.imgUrl" class="bottom_img_tab" mode=""></image>
 				</view>
 				<view class="font_size22">
@@ -161,7 +185,7 @@
 						name: '首页',
 						imgF: 'home',
 						imgUrl: '../../static/image/icon/shopB.png',
-						imgUrlF: '../../static/image/icon/shopBZ.png'
+						imgUrlF: '../../static/image/icon/shopBz.png'
 					},
 					{
 						name: '分类',
@@ -170,75 +194,234 @@
 						imgUrlF: '../../static/image/icon/fenlBz.png'
 					}
 				],
-				tabIndexTwo: 'fenl',
-				leftList: [{
-						name: '笔记本电脑',
-						id: '0'
-					},
-					{
-						name: '台式机电脑',
-						id: '1'
-					},
-					{
-						name: '电脑配件',
-						id: '2'
-					},
-					{
-						name: '智能生活',
-						id: '3'
-					},
-				],
+				tabIndexTwo: 'home',
+				leftList:'' ,//分类左面数据
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
 
-				leftIndex: 0 //分类左面数据
+				leftIndex: '', //分类左面数据
+				inputValue: '', //输入框值
+				sellerId: '', //店铺id
+				orderBy: 'asc', //价格
+				sort: 1, //type
+				queryGoodsList: '', //商铺列表
+				shopDetail: '', //店铺详情
+				collection: true, //是否关注
 			}
 		},
 		onLoad(option) {
 			console.log(option.urlFalg);
+			console.log(option);
+			if (option.searchName) {
+				this.inputValue = option.searchName;
+			}
+			this.sellerId = option.shopId
+
 			// this.urlFalgD = option.urlFalg
+		},
+		mounted() {
+			this.getQueryGoods('home'); //获取产品列表
+			this.getShopDetail(); //获取商铺详情
+			this.getShopFollow(); //查询是否关注
+			this.getShopSeller();//获取分类
 		},
 		methods: {
 			// 输入了回车键
 			Search(e) {
 				console.log(e.detail.value);
 				this.inputValue = e.detail.value;
-				uni.navigateTo({
-					url: '../shopSearch/shopSearch？inputValue= ' + this.inputValue
-				})
+				this.getQueryGoods('home'); //获取产品列表
 			},
 			// 输入框输入事件
-			getInputv(e) {
+			getInputv: function(e) {
+				this.inputValue = e.detail.value;
 				console.log(e)
 			},
 			// 返回
-			goBack() {
+			goBack: function() {
 				uni.navigateBack()
 			},
 			// tab
 			tabSwichThree: function(index) {
 				console.log(index)
-				index = 2 ? this.sortUp = !this.sortUp : '';
+				this.sort = index + 1;
+				this.queryGoodsList = [];
+				index == 2 ? this.sortUp = !this.sortUp : ''; //价格
+				this.sortUp ? this.orderBy = 'asc' : this.orderBy = 'desc';
+				this.getQueryGoods('home'); //获取产品列表
 			},
 			// 底部导航
 			tabSwichTwo: function(index) {
 				console.log(index)
 				if (index == 1) {
-					this.tabIndexTwo = 'fenl'
+					this.tabIndexTwo = 'fenl';
 				} else {
-					this.tabIndexTwo = 'home'
+					this.tabIndexTwo = 'home';
 				}
 
 			},
 			// 分类在左面
 			leftTab: function(id) {
-				this.leftIndex = id
+				this.leftIndex = id;
+				this.rightList =[];
+				this.getQueryGoods();//查询分类商品
+			},
+
+			// 去产品详情
+			goProductDetails: function(id) {
+				console.log('99')
+				uni.navigateTo({
+					url: '../productDetails/productDetails?productId=' + id
+				})
+			},
+
+
+			// 获取产品列表
+			getQueryGoods: function(falg) {
+				
+				var data = {
+					cid1: '', //一级分类
+					cid2: '', //	二级分类
+					keyword: this.inputValue, //搜索关键字
+					limit: 10, //当前条目数
+					page: this.pageNum, //当前页数
+					sellerId: this.sellerId, //商户id
+					sort: this.sort, //排序 1-综合 2-销量 3-价格 （必填）
+					orderBy: this.orderBy //价格排序 asc 正序 desc 倒序
+				}
+				falg == 'home' ? '' : data.cid2 = this.leftIndex;
+				this.$http.get('/api/common/goods/queryGoods', data).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						if(falg == 'home'){
+							if (this.pageNum > 1) {
+								if (res.data.data.length > 0) {
+									this.queryGoodsList = this.queryGoodsList.concat(res.data.data);
+								}
+							} else {
+								this.queryGoodsList = res.data.data
+							}
+						}else{
+							if (this.pageNum > 1) {
+								if (res.data.data.length > 0) {
+									this.rightList = this.rightList.concat(res.data.data);
+								}
+							} else {
+								this.rightList = res.data.data
+							}
+						}
+						
+
+					}
+				})
+		
 			},
 			
-			// 去产品详情
-			goProductDetails:function(){
-				uni.navigateTo({
-					url:'../productDetails/productDetails'
+
+
+			//查询店铺详情
+			getShopDetail: function() {
+				var data = {
+					sellerId: this.sellerId, //商户id
+				}
+				this.$http.get('/api/common/store/detail', data).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						this.shopDetail = res.data.data
+
+					}
 				})
-			}
+			},
+			//查询店铺是否关注
+			getShopFollow: function() {
+				var data = {
+					storeId: this.sellerId, //商户id
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/store/ckeckUserFollow', data, true).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						this.collection = !res.data.data; //是否关注
+					}
+				})
+			},
+			//查询分类
+			getShopSeller: function() {
+				var data = {
+					sellerId: this.sellerId, //商户id
+				}
+				this.$http.get('/api/common/category/seller', data, true).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						this.leftList = res.data.data; //左面列表
+						console.log(res.data.data[0].id + '左面列表')
+						this.leftIndex = res.data.data[0].id;
+						this.getQueryGoods(this.leftIndex);//查询右面列表
+					}
+				})
+			},
+			//产品关注
+			goFollow: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					storeId: this.sellerId, //商户id
+				}
+				_this.$http.get('/api/store/follow', followData, true).then(res => {
+					if (res.data.code == 200) {
+						_this.getShopFollow();
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+			// 取消关注
+			closeGoFollow: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					storeId: this.sellerId, //商户id
+				}
+				_this.$http.get('/api/store/cancel', followData, true).then(res => {
+					if (res.data.code == 200) {
+						_this.getShopFollow();
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+
+
+
+
+
 		}
 	}
 </script>
@@ -408,5 +591,16 @@
 		width: 160upx;
 		height: 160upx;
 		border-radius: 20upx;
+	}
+
+	.top_btn {
+		width: 140upx;
+		height: 60upx;
+		border: 1px solid #edcb80;
+		border-radius: 10upx;
+		text-align: center;
+		line-height: 60upx;
+		color: #edcb80;
+		font-size: 26upx;
 	}
 </style>

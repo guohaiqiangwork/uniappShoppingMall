@@ -13,10 +13,10 @@
 						商品评价
 					</view>
 					<view class="width25 text_right margin_top2">
-
 						<image src="../../static/image/icon/tright.png" class="top_img_width margin_right3" mode=""></image>
-						<image src="../../static/image/icon/tright2.png" class="top_img_width margin_left5" mode=""></image>
-
+						<image src="../../static/image/icon/tright2.png" @click="goFollow" v-if="collection" class="top_img_width margin_left5"
+						 mode=""></image>
+						<image src="../../static/image/icon/tright3.png" v-else class="top_img_width margin_left5" mode=""></image>
 					</view>
 				</view>
 			</view>
@@ -35,42 +35,49 @@
 
 
 		<!-- 列表 -->
-		<view class="">
-			<view class="page_width" style="margin-top: 200upx;">
-				<view class="list_moudel_contern">
-					<view class="uni-flex display_space">
-						<view class="uni-flex width80">
-							<view class="width10">
-								<image src="../../static/image/beij/myTopb.png" class="list_heard" mode=""></image>
-							</view>
-							<view class="font_size24 margin_left3 margin_top3 width15">
-								王**
-							</view>
-							<view class="" style="margin-top:6%;">
-								<uni-rate size="18" disabled="true" color="#ffffff" active-color="#B99445" :value="rateNumber"></uni-rate>
-							</view>
+
+		<view class="page_width" style="margin-top: 140upx;padding-bottom: 100upx;">
+			<!-- <scroll-view style="margin-top: 200upx;padding-bottom: 100upx;"> -->
+			<view class="list_moudel_contern margin_top3" v-for="(item,index) in evaluateList" :key="index">
+				<view class="uni-flex display_space">
+					<view class="uni-flex width80">
+						<view class="width10">
+							<image :src="item.headImgurl" class="list_heard" mode=""></image>
 						</view>
-						<view class="font_size22 font_color99 width20">
-							2020-06-29
+						<view class="font_size24 margin_left3 margin_top3 width15">
+							{{item.nickName}}
+						</view>
+						<view class="" style="margin-top:6%;">
+							<uni-rate size="18" disabled="true" color="#ffffff" active-color="#B99445" :value="item.score"></uni-rate>
 						</view>
 					</view>
-
-					<view class="font_size24">
-						性能好，性价比高，外观也好看，屏幕效果很舒服。
-						性能好，性价比高，外观也好看，屏幕效果很舒服。
-						性能好，性价比高，外观也好看，屏幕效果很舒服。
-					</view>
-					<view class="margin_top2" style="margin-left: -20upx;">
-						<view class="display_inline" v-for="(item,index) in [1,2,3]" :key="index">
-							<image src="../../static/image/beij/myTopb.png" class="moudel_img2" mode=""></image>
-						</view>
-
+					<view class="font_size22 font_color99 width20">
+						{{item.createTime}}
 					</view>
 				</view>
+
+				<view class="font_size24">
+					{{item.content}}
+				</view>
+				<view class="margin_top2" style="margin-left: -20upx;">
+					<view class="display_inline" v-for="(item,index) in item.images" :key="index">
+						<image :src="item" class="moudel_img2" mode=""></image>
+					</view>
+
+				</view>
+			</view>
+			<view>
+				<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
 			</view>
 
-
+			<view v-if="evaluateList.length == 0" class="text_center margin_top18">
+				<image src="../../static/image/default/noComment.png" class="no_img_comment" mode=""></image>
+				<view class="font_size28 font_color99 margin_top5">
+					暂无评价~
+				</view>
+			</view>
 		</view>
+
 
 		<!-- 底导 -->
 		<view class="uni-flex bottom_view">
@@ -101,8 +108,6 @@
 			</view>
 		</view>
 
-
-
 	</view>
 </template>
 
@@ -126,20 +131,63 @@
 
 				],
 				tabIndex: 0,
+				evaluateList: '', //列表数据
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
+				collection: true, //是否关注
+
+
 				rateNumber: 3,
 				urlFalg: '',
-				collection: true
+				pruductId: '', //产品编码
+				type: 1, //类型
 			}
 		},
 		onLoad(option) {
-			console.log(option.urlFalg)
+			console.log(option.urlFalg);
+			console.log(option.pruductId);
+			this.productId = option.pruductId
+
 
 		},
+		mounted() {
+			this.getFindAll(); //查询全部
+			this.queryFollow(); //是否关注
+		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			// uni.showNavigationBarLoading()
+			this.pageNum = this.pageNum + 1;
+			this.getFindAll(); //调取列表
+			_self.status = 'more'
+			// uni.hideNavigationBarLoading()
+		},
+
 		methods: {
 			tabSwitch: function(index) {
 				console.log(index)
 				this.tabIndex = index;
-				// this.tabIndex == 0 ? this.funTeamDirectPush() : this.funPushTeam()
+				this.type = index + 1;
+				this.evaluateList = [];
+				this.pageNum = 1
+				this.getFindAll();
 			},
 			// 返回
 			goBack() {
@@ -150,7 +198,82 @@
 				uni.switchTab({
 					url: '../tabBar/shopCart/shopCart'
 				})
-			}
+			},
+
+			// 获取评价
+			getFindAll: function() {
+				// 查询评价
+				var dataP = {
+					spuId: this.productId,
+					limit: '10', //每页条目数
+					page: this.pageNum, //当前页
+					type: this.type //类型
+				}
+				this.$http.get('/api/common/evaluation/list', dataP).then(res => {
+					if (res.data.code == 200) {
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.evaluateList = this.evaluateList.concat(res.data.data);
+							}
+						} else {
+							this.evaluateList = res.data.data
+						}
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+			//产品关注
+			goFollow: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					spuId: _this.productId
+				}
+				_this.$http.get('/api/goods/follow', followData, true).then(res => {
+					if (res.data.code == 200) {
+						_this.queryFollow();
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+			// 查询是否关注
+			queryFollow: function() {
+				let _this = this;
+				var followData = {
+					mbId: uni.getStorageSync('userId'),
+					spuId: _this.productId
+				}
+				_this.$http.get('/api/goods/ckeckUserFollow', followData, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res) + 'sfgjlk s')
+						_this.collection = !res.data.data; //是否关注
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+
+			},
+
+
 
 		}
 	}
@@ -159,8 +282,9 @@
 <style lang="less">
 	.title_moudel {
 		position: fixed;
-		top: 40upx;
+		top: 0;
 		width: 100%;
+		z-index: 9999;
 	}
 
 	.title_img {

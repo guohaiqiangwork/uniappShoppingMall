@@ -27,7 +27,7 @@
 
 			<!-- 分类 -->
 			<view class="margin_top3">
-				<view class="width18 margin_left2 display_inline" v-for="(item,index) in tabList" :key="index">
+				<view @click="goTabCategory(item.id)" class="width18 margin_left2 display_inline" v-for="(item,index) in tabList" :key="index">
 					<view class="">
 						<image :src="item.imageUrl" mode="" style="width: 80upx;height: 80upx;"></image>
 					</view>
@@ -55,8 +55,9 @@
 
 
 			<!-- 广告图 -->
-			<image @click="goActivity(bannerData.id)" class="margin_top3" style="height:172upx;width: 100%;border-radius: 12upx;" :src="bannerData.banner" mode=""></image>
-			
+			<image @click="goActivity(bannerData.id)" class="margin_top3" style="height:172upx;width: 100%;border-radius: 12upx;"
+			 :src="bannerData.banner" mode=""></image>
+
 			<!-- 推荐购买 -->
 
 			<view class="hot_moudel" v-if="false">
@@ -192,7 +193,7 @@
 				</swiper>
 			 -->
 			<!-- <customSwiper :swiper-list="imgList" /> -->
-			<scroll-view scroll-x="true" class="wrapper">
+			<!-- <scroll-view scroll-x="true" class="wrapper">
 				<view class="uni-flex " v-for="(item,index) in newlist" :key="index">
 					<view class="width50">
 						<image :src="item.image" @click="goProductD(item.id)" :class="index== 0 ? 'dimgn'  : 'dimg' " mode="">
@@ -206,9 +207,30 @@
 							{{item.subTitle}}
 						</view>
 					</view>
-
-
 				</view>
+			</scroll-view> -->
+
+
+
+			<scroll-view scroll-x="true" class="wrapper">
+				<!-- <view class="uni-flex"> -->
+				<view class="dimg_moudel" v-for="(item,index) in newlist" :key="index">
+					<view class="uni-flex">
+						<view class="width50">
+							<image :src="item.image" @click="goProductD(item.spuId)" :class="index== 0 ? 'dimgn'  : 'dimg' " mode="">
+							</image>
+						</view>
+						<view class="width45  right_bj " style="white-space: normal;">
+							<view class=" text_hidden2">
+								{{item.title}}
+							</view>
+							<view class="margin_top2 text_hidden2">
+								{{item.subTitle}}
+							</view>
+						</view>
+					</view>
+				</view>
+				<!-- </view> -->
 			</scroll-view>
 		</view>
 
@@ -246,63 +268,78 @@
 			this.init();
 		},
 		methods: {
-			Search(e) {
+			Search:function(e) {
 				console.log(e);
-				uni.navigateTo({
-					url: '../../search/search?searchName=' + e.detail.value
-				})
+				if(e.detail.value){
+					uni.navigateTo({
+						url: '../../search/search?searchName=' + e.detail.value
+					})
+				}
+				
 			},
 			// 轮播滑动操作
-			handleChange(e) {
+			handleChange:function(e) {
 				this.currentIndex = e.detail.current;
 			},
 			// 点击轮播操做
-			swiperClick(e) {
+			swiperClick:function(e) {
 				console.log(e)
+			
 				let urlPath
-				if(e.type == 1){
-					 urlPath = e.url +  '?productid=' + e.linkId
-				}else{
-					 urlPath = e.url +  '?productid=' + e.id
+				if (e.type == 1) {
+					urlPath = e.url + '?productId=' + e.linkId
+				} else {
+					urlPath = e.url + '?shopId=' + e.linkId + '&urlFalg=searchList&searchName='
 				}
 				// 是否登录
-				this.$http.get('/api/common/mb/isLogin','',true).then(res => {
+				this.$http.get('/api/common/mb/isLogin', '', true).then(res => {
+					console.log('000')
 					if (res.data.code == 200) {
-						if(res.data.data){
+						if (res.data.data) {
 							uni.navigateTo({
 								url: urlPath
 							})
-						}else{
+						} else {
 							uni.navigateTo({
-								url:'../../login/login'
+								url: '../../login/login'
 							})
 						}
 					}
 				})
-				
-				
-				
+
+
+
 			},
+			
+			// 点击分类
+			goTabCategory:function(e){
+				uni.navigateTo({
+					url:'../../categoryOne/categoryOne?categoryId=' + e
+				})
+			},
+			
 			//点击信息
-			notice(e) {
+			notice:function(e) {
 				uni.navigateTo({
 					url: '../../headlines/headlines?id=' + e
 				})
 			},
 			// 去产品详情
-			goProductD(productId) {
+			goProductD:function(productId) {
 				
-				
-				// uni.navigateTo({
-				// 	url: '../../productDetails/productDetails?productId=' + productId
-				// })
+				uni.navigateTo({
+					url: '../../productDetails/productDetails?productId=' + productId
+				})
+			
 			},
 			// 去活动详细
-			goActivity(e){
+			goActivity:function(e) {
 				uni.navigateTo({
 					url: '../../activity/activity?id=' + e
 				})
 			},
+			
+			
 			init() {
 				// 获取首页轮播
 				this.$http.get('/api/common/index/queryIndexCarousel').then(res => {
@@ -332,8 +369,6 @@
 				})
 				// 获取人气推荐 
 				this.$http.get('/api/common/index/queryIndexPoplar').then(res => {
-					console.log('99')
-					console.log(JSON.stringify(res))
 					if (res.data.code == 200) {
 						this.hotList = res.data.data
 					}
@@ -450,6 +485,14 @@
 		margin-top: 2%;
 	}
 
+	.dimg_moudel {
+		width: 560upx;
+		text-align: center;
+		margin-left: 20upx;
+		height: 250upx;
+		display: inline-block;
+	}
+
 	.dimg {
 		width: 100%;
 		height: 250upx;
@@ -461,7 +504,6 @@
 	.dimgn {
 		width: 100%;
 		height: 250upx;
-
 		border-top-left-radius: 20upx;
 		border-bottom-left-radius: 20upx;
 		margin-left: 3%;

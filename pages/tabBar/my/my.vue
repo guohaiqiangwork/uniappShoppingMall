@@ -6,6 +6,7 @@
 				<!-- 头部操作 -->
 				<view class="uni-flex">
 					<view class="width80" @click="goMyPage('msg')">
+						<view class="msg_falg" v-if="msgFalg"></view>
 						<image src="../../../static/image/icon/msg.png" mode="" class="top_img1"></image>
 					</view>
 					<view class="" @click="goMyPage('myQRCode')">
@@ -20,23 +21,23 @@
 				<view class="image_width_top_moudel">
 					<view class="uni-flex" style="margin-top: 80upx;">
 						<view class="width75 font_size36 margin_top5">
-							Hi~ 王大锤
+							Hi~ {{infoData.nickName}}
 						</view>
 						<view class="">
-							<image src="../../../static/image/pathUrl/tab1.png" mode="" class="header_img"></image>
+							<image :src="infoData.headImgurl" mode="" class="header_img"></image>
 						</view>
 					</view>
 					<view class="font_size24 font_colorff" @click="goMyPage('moreThan')">
 						可用余额(元)>
 					</view>
 					<view class="font_size44" style="color: #FCD07D;">
-						800000
+						{{infoData.balance}}
 					</view>
 					<view class="uni-flex">
 						<view class="font_size24 width70">
-							累计余额：100,000,00
+							累计余额：{{infoData.totalIncomeAmount}}
 						</view>
-						<view class="left_btn" style="margin-top: -3%;" @click="goMyPage('withdrawal')">
+						<view class="left_btn" style="margin-top: -3%;" @click="goMyPage('withdrawal',infoData.balance)">
 							提现
 						</view>
 					</view>
@@ -45,7 +46,7 @@
 
 				<!-- 订单 -->
 				<view class="margin_left5" style="margin-top: 80upx;">
-					<view @click="goMyPage(item.urlFalg)" class="display_inline text_center width20" v-for="(item,index) in myOrderList"
+					<view @click="goOrder(item.falg)" class="display_inline text_center width20" v-for="(item,index) in myOrderList"
 					 :key="index">
 						<view class="">
 							<image :src="item.url" class="order_width" mode=""></image>
@@ -61,7 +62,7 @@
 					<view class="uni-flex">
 						<view @click="goMyPage('productFollow')" class="width33 text_center" style="border-right: 1px solid #999999;">
 							<view class="font_size34 font_colorfc">
-								3000
+								{{followData.goodsNum}}
 							</view>
 							<view class="font_size24 font_colorcc">
 								商品关注
@@ -69,7 +70,7 @@
 						</view>
 						<view @click="goMyPage('shopFollow')" class="width33 text_center" style="border-right: 1px solid #999999;">
 							<view class="font_size34 font_colorfc">
-								3000
+								{{followData.storeNum}}
 							</view>
 							<view class="font_size24 font_colorcc">
 								店铺关注
@@ -77,7 +78,7 @@
 						</view>
 						<view @click="goMyPage('couponCard')" class="width33 text_center">
 							<view class="font_size34 font_colorfc">
-								3000
+								{{followData.couponNum}}
 							</view>
 							<view class="font_size24 font_colorcc">
 								优惠券
@@ -89,7 +90,7 @@
 			</view>
 
 			<!-- 邀请 -->
-			<image  @click="goMyPage('myQRCode')" src="../../../static/image/beij/myy.png" mode="" style="height: 140upx;width: 94%;margin-left: 3%;margin-top: 30upx;"></image>
+			<image @click="goMyPage('myQRCode')" src="../../../static/image/beij/myy.png" mode="" style="height: 140upx;width: 94%;margin-left: 3%;margin-top: 30upx;"></image>
 
 			<!-- 我的团队 -->
 			<view class="my_team" @click="goMyPage('myTeam')">
@@ -105,7 +106,7 @@
 				<view class="uni-flex">
 					<view class="width33 text_center" style="border-right: 1px solid #999999;">
 						<view class="font_size34 font_colorfc">
-							3000
+							{{teamCount.teamNum}}
 						</view>
 						<view class="font_size24 font_colorcc">
 							总人数
@@ -113,7 +114,7 @@
 					</view>
 					<view class="width33 text_center" style="border-right: 1px solid #999999;">
 						<view class="font_size34 font_colorfc">
-							3000
+							{{teamCount.totalTrans}}
 						</view>
 						<view class="font_size24 font_colorcc">
 							总交易额
@@ -121,7 +122,7 @@
 					</view>
 					<view class="width33 text_center">
 						<view class="font_size34 font_colorfc">
-							3000
+							{{teamCount.splitRunAmount}}
 						</view>
 						<view class="font_size24 font_colorcc">
 							获得分润
@@ -138,19 +139,19 @@
 			</view>
 
 			<!-- 列表 -->
-			<view class="margin_top3 text_center">
-				<view v-for="(item,index) in [1,2,3,4]" :key="index" class="display_inline margin_left3 width45">
-					<view class="" @click="goProduct(item)">
-						<image src="../../../static/image/beij/logB.png" class="shop_list_img" mode=""></image>
+			<view class="margin_top3">
+				<view v-for="(item,index) in goodRecommendList" :key="index" class="display_inline margin_left3 width45">
+					<view class="" @click="goProduct(item.id)">
+						<image :src="item.goodsDetail.images" class="shop_list_img" mode=""></image>
 					</view>
-					<view class="font_size30">
-						戴森(Dyson)新一代...
+					<view class="font_size30 text_hidden">
+						{{item.goodsDetail.title}}
 					</view>
 					<view class="display_flex display_space">
 						<view class="font_colorfc font_size28 width66">
-							¥3290.00 <text class="font_size22 font_colorcc">/件</text>
+							¥{{item.goodsDetail.price}} <text class="font_size22 font_colorcc">/件</text>
 						</view>
-						<view class="margin_right3" @click="addShop">
+						<view class="margin_right3" @click="addShopCard(item)">
 							<image src="../../../static/image/icon/shop.png" class="shop_img" mode=""></image>
 						</view>
 					</view>
@@ -170,25 +171,25 @@
 				myOrderList: [{
 						name: '全部订单',
 						url: '../../../static/image/icon/ordeq.png',
-						falg: 'qb',
+						falg: '0',
 						urlFalg: 'myOrder'
 					},
 					{
 						name: '待支付',
 						url: '../../../static/image/icon/orderd.png',
-						falg: 'dzf',
+						falg: '1',
 						urlFalg: 'myOrder'
 					},
 					{
 						name: '待收货',
 						url: '../../../static/image/icon/orders.png',
-						falg: 'dsh',
+						falg: '3',
 						urlFalg: 'myOrder'
 					},
 					{
 						name: '评价',
 						url: '../../../static/image/icon/ordep.png',
-						falg: 'pj',
+						falg: '4',
 						urlFalg: 'myOrder'
 					},
 					{
@@ -198,8 +199,16 @@
 						urlFalg: 'returnProduct'
 					},
 
-				]
+				],
+				teamCount: '', //团队数据
+				infoData: '', //个人信息
+				followData: '', //关注数量
+				goodRecommendList:'',//毫无推荐
+				msgFalg:''//消息
 			}
+		},
+		mounted() {
+			this.init(); //获取初始化页面数据
 		},
 		methods: {
 			//去产品详情
@@ -209,15 +218,96 @@
 				})
 			},
 			// 加入购物车
-			addShop() {
-				console.log('加入购物车')
+			addShopCard: function(item) {
+				console.log(item)
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					sellerId: item.sellerId, //sellerId
+					skuId: item.goodsDetail.id, //skuId
+					oper:'add',
+					spuId: item.goodsDetail.spuId //商品Id
+				}
+				this.$http.post('/api/cart/save', data,true).then(res => {
+					console.log(JSON.stringify(res) + '我在这')
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '添加成功',
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+						this.getShopNumber()
+					}
+				})
+						
 			},
 			// 去消息
-			goMyPage(urlFalg) {
-				console.log()
-				uni.navigateTo({
-					url: '../../' + urlFalg + '/' + urlFalg
-				})
+			goMyPage: function(urlFalg,e) {
+				console.log(urlFalg)
+				if (urlFalg == 'withdrawal') {
+					if (this.infoData.balance <= 0) {
+						return
+					} else {
+						uni.navigateTo({
+							url: '../../withdrawal/withdrawal?money=' +e
+						})
+					}
+				}else {
+					uni.navigateTo({
+						url: '../../' + urlFalg + '/' + urlFalg
+					})
+				}
+			},
+			goOrder:function(e){
+				console.log(e)
+				if(e=='th'){
+					uni.navigateTo({
+						url: '../../returnProduct/returnProduct'
+					})
+				}else{
+					uni.navigateTo({
+						url: '../../myOrder/myOrder?orderType=' + e
+						
+					})
+				}
+				
+			},
+
+			init: function() {
+				let _this = this;
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+				}
+				// 获取团队数据
+				this.$http.get('/api/member/center/teamCount', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.teamCount = res.data.data
+					}
+				});
+				// 获取个人信息
+				this.$http.get('/api/member/center/info', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.infoData = res.data.data
+					}
+				});
+				// 获取关注
+				this.$http.get('/api/member/center/follow', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.followData = res.data.data
+					}
+				});
+				// 获取毫无推荐
+				this.$http.get('/api/common/goods/goodRecommend').then(res => {
+					if (res.data.code == 200) {
+						this.goodRecommendList = res.data.data
+					}
+				});
+				// 获取未读消息
+				// this.$http.get('/api/common/goods/goodRecommend').then(res => {
+				// 	if (res.data.code == 200) {
+				// 		this.msgFalg = res.data.data
+				// 	}
+				// });
 			}
 		}
 	}
@@ -334,5 +424,12 @@
 		margin-top: 35upx;
 		width: 94%;
 		padding-top: 30upx;
+	}
+	.msg_falg{
+		background-color: #FCD07D;
+		width: 10upx;
+		height: 10upx;
+		border-radius: 50%;
+		margin-left: 6%;
 	}
 </style>

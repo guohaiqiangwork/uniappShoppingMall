@@ -1,29 +1,17 @@
 <template>
 	<view>
 		<view class="login">
-			<image :src="myQRImg" mode="" class="image_width"></image>
+			<swiper class="imageContainer"  @change="handleChange">
+				<block v-for="(item,index) in myQRImg" :key="index" >
+					<swiper-item>
+						<image class="itemImg" :src="item" lazy-load mode="scaleToFill"></image>
+					</swiper-item>
+				</block>
+			</swiper>
 			<view class="bottom_btn_qr" @click="saveImg">
 				保存至相册
 			</view>
-			<!-- <view class="login_moudel">
-				<view class="img_moudel_qr">
-					<view class="width20">
-						<image src="../../static/image/good1.png" class="left_img" mode=""></image>
-					</view>
-					<view class="font_color33 margin_left2 width50">
-						<view class="font_size34 font_weight600 ">
-							{{myQRImg.name}}
-						</view>
-						<view class="font_size30 margin_top3">
-							邀请码：{{myQRImg.number}}
-						</view>
-					</view>
-					<view class="margin_left2">
-						<image :src="myQRImg.qrUrl" style="width: 140upx;height: 140upx;" mode=""></image>
-					</view>
-				</view>
-			</view>
-		 -->
+
 		</view>
 
 	</view>
@@ -33,7 +21,8 @@
 	export default {
 		data() {
 			return {
-				myQRImg: ''
+				myQRImg: '',
+				currentIndex:0
 			}
 		},
 		onLoad() {
@@ -42,11 +31,14 @@
 		methods: {
 			getMyQR() {
 				// 获取邀请二维码
-				this.$http.get('/mb/inviteFriends/' + uni.getStorageSync('userId')).then(res => {
+				var data = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/member/myQrcode', data, true).then(res => {
 					if (res.data.code == 200) {
-						this.myQRImg = res.data.data
+						this.myQRImg = res.data.data;
 					} else {
-						//有误
+						//有误,true
 						uni.showToast({
 							title: res.data.message,
 							icon: 'none',
@@ -57,11 +49,21 @@
 				}).catch(err => {})
 
 			},
-
-			saveImg() {
+			// 轮播滑动操作
+			handleChange:function(e) {
+				this.currentIndex = e.detail.current;
+			},
+			saveImg:function() {
+				uni.showLoading({
+					title: '保存中'
+				});
+				var _this = this
+				console.log('99')
 				uni.downloadFile({
-					url: this.myQRImg,
+					url: _this.myQRImg[_this.currentIndex] ,
 					success: (res) => {
+						uni.hideLoading();
+						console.log(JSON.stringify(res))
 						if (res.statusCode === 200) {
 							uni.saveImageToPhotosAlbum({
 								filePath: res.tempFilePath,
@@ -79,6 +81,11 @@
 								}
 							});
 
+						}else{
+							uni.showToast({
+								title: "保存失败，请稍后重试",
+								icon: "none"
+							});
 						}
 					}
 				})
@@ -98,17 +105,31 @@
 	}
 
 	.bottom_btn_qr {
-		width: 310upx;
-		height: 90upx;
-		border-radius: 50upx;
+		width: 94%;
+		height: 88upx;
+		border-radius: 20upx;
 		text-align: center;
 		line-height: 90upx;
 		color: #FFFFFF;
 		font-size: 30upx;
-		background-color: #000000;
-		opacity: .5;
-		margin-left: 30%;
+		background-color: #3C3D3E;
+		margin-left: 3%;
 		position: fixed;
 		bottom: 6%;
+	}
+
+	// 轮播
+	.imageContainer {
+		width: 94%;
+		margin-left: 3%;
+		height: 1000upx;
+		margin-top: 30upx;
+	}
+
+	.itemImg {
+		border-radius: 30upx;
+		width: 94%;
+		margin-left: 3%;
+		height: 1000upx;
 	}
 </style>

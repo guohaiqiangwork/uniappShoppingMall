@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import uParse from '../../components/gaoyia-parse/parse.vue' //富文本展示
+	import uParse from '../../components/feng-parse/parse.vue' //富文本展示
 	export default {
 		components: {
 			uParse

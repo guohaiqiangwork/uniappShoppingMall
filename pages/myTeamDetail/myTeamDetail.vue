@@ -3,21 +3,21 @@
 		<view class="mt_top_t">
 			<view class="uni-flex">
 				<view class="width15" style="margin-left: 60upx;">
-					<image src="../../static/image/bank/jsy.png" class="left_img1"  mode=""></image>
+					<image :src="mySuper.headImgurl" class="left_img1"  mode=""></image>
 				</view>
 				<view class="width80">
 					<view class="font_sise28 font_colorff">
-						唐筱筱
+						{{mySuper.nickName}}
 					</view>
 					<view class="font_size26 font_colorcc">
-						15839887847
+						{{mySuper.mobile}}
 					</view>
 				</view>
 			</view>
 			<view class="uni-flex margin_top3">
 				<view class="width33 text_center font_colorff">
 					<view class="font_size36" style="color: #FFE0A5;">
-						100
+						{{teamCount.teamNum}}
 					</view>
 					<view class="font_size28">
 						总人数
@@ -25,7 +25,7 @@
 				</view>
 				<view class="width33 text_center font_colorff">
 					<view class="font_size36" style="color: #FFE0A5;">
-						100
+						{{teamCount.totalTrans}}
 					</view>
 					<view class="font_size28">
 						总交易额
@@ -33,7 +33,7 @@
 				</view>
 				<view class="width33 text_center font_colorff" @click="goDetailsOfFenrun">
 					<view class="font_size36" style="color: #FFE0A5;">
-						100
+						{{teamCount.splitRunAmount}}
 					</view>
 					<view class="font_size28">
 						获得分润
@@ -51,21 +51,21 @@
 				团队人员
 			</view>
 			<scroll-view class="">
-				 <view class="uni-flex  padding_top3 padding_bottom3" >
+				 <view class="uni-flex  padding_top3 padding_bottom3" v-for="(item,index) in teamMembersList" :key="index">
 				 	<view class="width15">
-				 		<image src="../../static/image/beij/logB.png" class="left_img1" mode=""></image>
+				 		<image :src="item.headImgurl" class="left_img1" mode=""></image>
 				 	</view>
 					<view class="width40 ">
 						<view class="uni-flex ">
 							<view class="font_sise28">
-								唐筱筱
+								{{item.nickName}}
 							</view>
 							<view class="">
 								<!-- <image src="../../static/image/bank/gsy.png" mode="" style="width: 90upx;height: 30upx;"></image> -->
 							</view>
 						</view>
 						<view class="font_size26 font_color66">
-							15839887847
+							{{item.mobile}}
 						</view>
 					</view>
 					<view class="width40 text_right">
@@ -74,14 +74,24 @@
 								<image src="../../static/image/icon/people.png"  style="width: 26upx;height: 26upx;" mode=""></image>
 							</view>
 							<view class="font_size26 font_color99 margin_left3">
-								50人
+								{{item.num}}人
 							</view>
 						</view>
 						<view class="font_size24">
-							总交易额 <text class="font_sise28 font_colorbe">50,000.00</text>
+							总交易额 <text class="font_sise28 font_colorbe">{{item.totalTrans}}</text>
 						</view>
 					</view>
 				 </view>
+				 
+			
+				 <view v-if="teamMembersList.length == 0" class="text_center margin_top18">
+				 	<image src="../../static/image/default/noMsg.png" class="no_img_msg" mode=""></image>
+				 	<view class="font_size28 font_color99 margin_top5">
+				 		暂无消息~
+				 	</view>
+				 </view>
+				 <uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+				 
 			</scroll-view>
 		</view>
 	</view>
@@ -91,8 +101,46 @@
 	export default {
 		data() {
 			return {
-
+				teamCount:'',
+				mySuper:'',//我的上级
+				teamMembersList:'',//团队列表
+				teamId:'',
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
+				inputValue:''
 			}
+		},
+		onLoad(option) {
+				console.log(option)
+				this.teamId= option.temaId
+		},
+		mounted() {
+			this.init();
+		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			uni.showNavigationBarLoading()
+			this.pageNum = this.pageNum + 1;
+			this.getTeamMembers(); //调取列表
+			_self.status = 'more'
+			uni.hideNavigationBarLoading()
 		},
 		methods: {
 			Search(e){
@@ -102,7 +150,47 @@
 				uni.navigateTo({
 					url:'../detailsOfFenrun/detailsOfFenrun'
 				})
+			},
+			getTeamMembers:function(){
+				var data = {
+					keyword:this.inputValue,
+					limit:'10',
+					page:this.pageNum,
+					mbId: uni.getStorageSync('userId'),
+				}
+				// 获取团队数据
+				this.$http.get('/api/member/teamMembers', data, true).then(res => {
+					if (res.data.code == 200) {
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.teamMembersList = this.teamMembersList.concat(res.data.data);
+							}
+						} else {
+							this.teamMembersList = res.data.data
+						}
+					}
+				});
+			},
+			init:function(){
+				var data = {
+					mbId: this.teamId,
+				}
+				// 获取团队数据
+				this.$http.get('/api/member/center/teamCount', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.teamCount = res.data.data
+					}
+				});
+				// 获取我的上级
+				this.$http.get('/api/member/team/mySuper', data, true).then(res => {
+					if (res.data.code == 200) {
+						this.mySuper = res.data.data
+					}
+				});
+				this.getTeamMembers();//获取列表
 			}
+				
+				
 			
 		}
 	}

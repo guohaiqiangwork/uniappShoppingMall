@@ -12,12 +12,13 @@
 					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
 				</view>
 				<view class="searce_right">
-					<input class="findShop" maxlength="10" :value="inputValue" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text"
-					 placeholder-style='color:#cccccc' />
+					<input class="findShop" maxlength="10" :value="inputValue" @input="getInputv" placeholder="请输入要搜索的内容" confirm-type='搜索'
+					 type="text" placeholder-style='color:#cccccc' @confirm='Search'/>
 				</view>
 			</view>
 
 			<view class="font_size28 text_center width15 " style="padding-top: 1%;" @click="goShopCart">
+					<view class="number_moudel" v-if="shopCarNumber > 0">{{shopCarNumber}}</view>
 				<image src="../../static/image/icon/shopC.png" class="right_img" mode=""></image>
 			</view>
 		</view>
@@ -33,7 +34,7 @@
 					<view class="tab_select" v-if="tabIndex == index "></view>
 				</view>
 			</view>
-			<view class="padding_top3 padding_bottom3">
+			<view class="padding_top3 padding_bottom3" v-if="this.tabIndex == 0">
 				<view @click="tabSwichThree(index)" class="item_tab_three" v-for="(item,index) in tabListThree" :key="index" :style="index == 2 ?'border:none' :'' ">
 					<view class="">
 						{{item.name}}
@@ -53,22 +54,29 @@
 		<view class="page_width">
 			<!-- 商品 -->
 			<template v-if="tabIndex == 0">
-				<view class="uni-flex list_moudel_search" v-for="(item,index) in [1,2,3,4]" :key="index">
+				<view class="uni-flex list_moudel_search" v-for="(item,index) in queryGoodsList" :key="index">
 					<view class="width30" @click="goTodetails">
-						<image src="../../static/image/beij/mybj.png" class="list_img" mode=""></image>
+						<image :src="item.goodsDetail.images" class="list_img" mode=""></image>
 					</view>
 					<view class="width66">
-						<view class="margin_top5">
-							联想小新Air14 锐龙版
+						<view class="margin_top5 text_hidden">
+							{{item.title}}
 						</view>
 						<view class="uni-flex display_space margin_top8">
 							<view class="font_size22 font_color66 ">
-								<text class="font_colorbe">¥4799.0</text> /件
+								<text class="font_colorbe">¥{{item.goodsDetail.price}}</text> /件
 							</view>
-							<view class="margin_right3">
+							<view class="margin_right3" @click="addShopCard(item)">
 								<image src="../../static/image/icon/shopCard.png" class="image_list_s" mode=""></image>
 							</view>
 						</view>
+					</view>
+				</view>
+				
+				<view v-if="queryGoodsList.length == 0" class="text_center margin_top18">
+					<image src="../../static/image/default/noProduct.png" class="no_img_product" mode=""></image>
+					<view class="font_size28 font_color99 margin_top5">
+						暂无相关商品~
 					</view>
 				</view>
 
@@ -77,21 +85,27 @@
 			<!-- 店铺 -->
 			<template v-else>
 				<view class=" ">
-					<view class="shop_moudel uni-flex" v-for="(item,index) in [1,2,3]" :key='index'>
+					<view class="shop_moudel uni-flex" v-for="(item,index) in queryStoreList" :key='index'>
 						<view class="width15 text_center">
-							<image src="../../static/image/beij/mybj.png" class="shop_moudel_img" mode=""></image>
+							<image :src="item.shoreLogo" class="shop_moudel_img" mode=""></image>
 						</view>
 						<view class="font_size28 margin_top1 width65">
-							联想官方旗舰店
+							{{item.storeName}}
 						</view>
 						<view class="width20">
-							<view class="shop_moudel_btn" @click="goToShop">
+							<view class="shop_moudel_btn" @click="goToShop(item.sellerId)">
 								进店
 							</view>
 						</view>
 					</view>
 				</view>
 			</template>
+
+
+			<view>
+				<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+			</view>
+
 		</view>
 
 	</view>
@@ -101,6 +115,30 @@
 	export default {
 		data() {
 			return {
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
+
+				sort: 1, //状态
+				queryGoodsList: '', //产品列表
+				orderBy: 'asc', //价格
+				queryStoreList: '', //商铺列
+
+
 				inputValue: '',
 				tabList: [{
 						name: '商品'
@@ -123,51 +161,182 @@
 				],
 				tabIndexT: 0,
 				sortUp: true,
+				shopCarNumber:''//购物车数量
 			}
 		},
 		onLoad(option) {
-			this.inputValue = option.listF;
+			this.inputValue = option.searchName;
+		},
+		mounted() {
+			this.getQueryGoods(); //查询列表
+			this.getShopNumber();//查询购物车数量
+		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			// uni.showNavigationBarLoading()
+			this.pageNum = this.pageNum + 1;
+			if (this.tabIndex == 0) {
+				this.getQueryGoods(); //调取列表
+			} else {
+				this.getQueryStore(); //商铺列表
+			}
+
+			_self.status = 'more'
+			// uni.hideNavigationBarLoading()
 		},
 
 		methods: {
+			// 输入了回车键
+			Search:function(e) {
+				if (this.tabIndex == 0) {
+					this.getQueryGoods(); //调取列表
+				} else {
+					this.getQueryStore(); //商铺列表
+				}
+			},
+			// 输入框输入事件
+			getInputv:function(e) {
+				this.inputValue = e.detail.value;
+				console.log(e)
+			},
 			// tab one
 			tabSwitch: function(index) {
 				console.log(index)
 				this.tabIndex = index;
-				// this.tabIndex == 0 ? this.funTeamDirectPush() : this.funPushTeam()
+				this.tabIndex == 0 ? this.getQueryGoods() : this.getQueryStore()
 			},
 			// tab two
 			tabSwichThree: function(index) {
 				console.log(index)
-				index = 2 ? this.sortUp = !this.sortUp : '';
+				this.sort = index + 1;
+				this.queryGoodsList = [];
+				index == 2 ? this.sortUp = !this.sortUp : ''; //价格
+				this.sortUp ? this.orderBy = 'asc' : this.orderBy = 'desc';
+				this.getQueryGoods(); //查询商铺列表
 			},
 			// 去产品详情
-			goTodetails(e) {
+			goTodetails: function(e) {
 				var e = 1;
 				uni.navigateTo({
 					url: '../productDetails/productDetails?productId=' + e + '&urlFalg=searchList'
 				})
 			},
 			// 去店铺
-			goToShop(e) {
-				var e = 1;
-				// uni.navigateTo({
-				// 	url:'../shopIndex/shopIndex'
-				// })
+			goToShop: function(e) {
 				uni.navigateTo({
-					url: '../shopIndex/shopIndex?shopId=' + e + '&urlFalg=searchList'
+					url: '../shopIndex/shopIndex?shopId=' + e + '&urlFalg=searchList' + '&searchName=' + this.inputValue
 				})
 			},
 
 			// 返回
-			goBack() {
+			goBack: function() {
 				uni.navigateBack()
 			},
 			// 去购物车
-			goShopCart() {
-				uni.switchTab({
-					url: '../tabBar/shopCart/shopCart'
+			goShopCart: function() {
+				console.log('99')
+				uni.navigateTo({
+					url:'../shopCart/shopCart'
 				})
+				
+			},
+			// 添加购物车
+			addShopCard: function(item) {
+				console.log(item)
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					sellerId: item.sellerId, //sellerId
+					skuId: item.goodsDetail.id, //skuId
+					oper:'add',
+					spuId: item.goodsDetail.spuId //商品Id
+				}
+				this.$http.post('/api/cart/save', data,true).then(res => {
+					console.log(JSON.stringify(res) + '我在这')
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '添加成功',
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+					this.getShopNumber();
+				})
+						
+			},
+					
+
+			// 获取产品列表
+			getQueryGoods: function() {
+				var data = {
+					cid1: '', //一级分类
+					cid2: '', //	二级分类
+					keyword: this.inputValue, //搜索关键字
+					limit: 10, //当前条目数
+					page: this.pageNum, //当前页数
+					sellerId: '', //商户id
+					sort: this.sort, //排序 1-综合 2-销量 3-价格 （必填）
+					orderBy: this.orderBy //价格排序 asc 正序 desc 倒序
+				}
+				this.$http.get('/api/common/goods/queryGoods', data).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.queryGoodsList = this.queryGoodsList.concat(res.data.data);
+							}
+						} else {
+							this.queryGoodsList = res.data.data
+						}
+
+					}
+				})
+			},
+
+
+			// 获取商铺列表
+			getQueryStore: function() {
+				var data = {
+					keyword: this.inputValue, //搜索关键字
+					limit: 10, //当前条目数
+					page: this.pageNum, //当前页数
+				}
+				this.$http.get('/api/common/store/queryStore', data).then(res => {
+					console.log(JSON.stringify(res))
+					if (res.data.code == 200) {
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.queryStoreList = this.queryStoreList.concat(res.data.data);
+							}
+						} else {
+							this.queryStoreList = res.data.data
+						}
+
+					}
+				})
+			},
+			
+			
+			// 查询购物车数量
+			getShopNumber:function(){
+				var shopNumber = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/cart/countShopCartNum',shopNumber,true).then(res => {
+					if (res.data.code == 200) {
+						this.shopCarNumber = res.data.data
+					} else {
+						uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+							duration: 1500,
+							position: 'top',
+						});
+					}
+				})
+				
 			}
 		}
 	}
@@ -290,5 +459,20 @@
 		text-align: center;
 		line-height: 60upx;
 		font-size: 26upx;
+	}
+	
+	.number_moudel {
+		background-color: #BE8100;
+		color: #FFFFFF;
+		font-size: 15upx;
+		text-align: center;
+		border-radius: 20upx;
+		width: 36upx;
+		height: 15upx;
+		line-height: 1;
+		font-weight: 600;
+		position: absolute;
+		margin-left: 10%;
+		margin-top: -1%;
 	}
 </style>

@@ -16,12 +16,12 @@
 
 		<!-- 列表 -->
 		<view class="">
-			<view @click="goCateOne('999')" v-for="(item,index) in  [1,3,4,5]" :key="index" class="category_list  margin_top2" style="padding-left: 20upx;padding-top: 6upx;padding-bottom: 6upx;">
+			<view @click="goCateOne(item.id)" v-for="(item,index) in firstClassList" :key="index" class="category_list  margin_top2" style="padding-left: 20upx;padding-top: 6upx;padding-bottom: 6upx;">
 				<view class="">
-					<image src="../../../static/image/beij/logB.png" mode=""></image>
+					<image :src="item.imageUrl" mode=""></image>
 				</view>
 				<view class="margin_left2" style="margin-top: 60upx;margin-left: 26upx;">
-					潮流服饰
+					{{item.name}}
 				</view>
 			</view>
 		</view>
@@ -32,8 +32,11 @@
 	export default {
 		data() {
 			return {
-
+				firstClassList:'',//列表
 			}
+		},
+		mounted() {
+			this.getLeft()
 		},
 		methods: {
 			Search(e) {
@@ -43,9 +46,18 @@
 			goCateOne(e){
 				console.log(e)
 				uni.navigateTo({
-					url:'../../categoryOne/categoryOne?cateType=' + e
+					url:'../../categoryOne/categoryOne?categoryId=' + e
 				})
-			}
+			},
+			// 获取分类
+			getLeft: function() {
+				this.$http.get('/api/common/category/firstClass').then(res => {
+					if (res.data.code == 200) {
+						this.firstClassList = res.data.data
+					}
+				})
+			},
+			
 		}
 	}
 </script>

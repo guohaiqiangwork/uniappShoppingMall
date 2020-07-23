@@ -3,15 +3,15 @@
 		<view class="page_width">
 			<view class="margin_top5">
 				<view class="top_moudel_pt">
-					剩余时间 15:00
-					{{remainingd}}
+					剩余时间 {{timeDom}}
+
 				</view>
 				<view class="top_moudel_pay">
 					<view class="font_size30 padding_top3">
 						需支付
 					</view>
 					<view class="font_size50">
-						4,803.00
+						¥{{payData.payment}}
 					</view>
 				</view>
 			</view>
@@ -71,7 +71,7 @@
 						需支付
 					</view>
 					<view class="font_color33 font_size60 text_center" v-if="!setFalg">
-						￥{{money}}
+						￥{{payData.payment}}
 					</view>
 					<view class="margin_top5">
 						<validcode :maxlength="6" :isPwd="true" @finish="getPwd" ref="pwd"></validcode>
@@ -111,41 +111,176 @@
 				payFalg: 'wx',
 				payFalgY: false, //余额支付弹窗
 				setFalg: false, //设置密码
-				money: '99', //支付金额
 				remaining: '', //显示剩余时间
-				remainingd: '' //数据返回时间秒
+				payData: '', //支付数据
+				timeDom: '', //支付时间
+				orderId: ''
 
 			}
+		},
+		onLoad(option) {
+			console.log(JSON.parse(option.payData))
+			this.payData = JSON.parse(option.payData)
+			console.log(new Date())
+			console.log(new Date(option.payData.closeTime))
+			this.countTime(new Date(this.payData.closeTime.replace(/-/g, '/')).getTime());
+			// #ifdef APP-PLUS
+			uni.getProvider({
+				service: "payment",
+				success: (e) => {
+					console.log("payment success:" + JSON.stringify(e));
+					let providerList = [];
+					e.provider.map((value) => {
+						switch (value) {
+							case 'alipay':
+								providerList.push({
+									name: '支付宝',
+									id: value,
+									loading: false
+								});
+								break;
+							case 'wxpay':
+								providerList.push({
+									name: '微信',
+									id: value,
+									loading: false
+								});
+								break;
+							default:
+								break;
+						}
+					})
+					this.providerList = providerList;
+					console.log(this.providerList)
+					// 初始化
+					this.Payname = this.providerList[0].name;
+				},
+				fail: (e) => {
+					console.log("获取支付通道失败：", e);
+				}
+			});
+			// #endif
+
 		},
 		mounted() {
 
 
+
+
 		},
 		methods: {
+			// 倒计时
+			countTime: function(value) {
+				var _this = this
+				//获取当前时间
+				var date = new Date();
+				var now = date.getTime();
+				//alert("now=="+now);
+				//移动端必须这样写，因为ios不支持日期中间是-链接，会报错
+				var endDate = new Date(value);
+				var end = endDate.getTime();
+				//时间差
+				var differTime = end - now;
+				var h, m, s;
+				if (differTime >= 0) {
+					h = Math.floor(differTime / 1000 / 60 / 60);
+					m = Math.floor(differTime / 1000 / 60 % 60);
+					s = Math.floor(differTime / 1000 % 60);
+					h = h < 10 ? ("0" + h) : h;
+					m = m < 10 ? ("0" + m) : m;
+					s = s < 10 ? ("0" + s) : s;
+					if (h < 1) {
+						if (m > 15) {
+							_this.timeDom = "00:00";
+							// /console.log(_this.timeDom)
+						} else {
+							_this.timeDom = m + ":" + s;
+							// console.log("剩余时间 " + _this.timeDom)
+							//递归调用函数所以是延时器不是定时器
+							setTimeout(function() {
+								_this.countTime(value);
+							}, 1000);
+						}
+					}
+
+				} else {
+					_this.timeDom = "00:00";
+					// console.log("剩余时间 " + _this.timeDom)
+				}
+			},
+
 			switchPay(id) {
 				this.payFalg = id
 			},
 			// 确认付款
 			goPayResult() {
-				// uni.navigateTo({
-				// 	url: '../payResult/payResult'
-				// })
-				this.payFalg == 'ye' ? this.payFalgY = true : this.payFalg == 'wx' ? this.Wxpay() : this.zfbPay()
+				this.payFalg == 'ye' ? this.payFalgY = true : this.payFalg == 'wx' ? this.Wxpay() : this.zfbPay();
+				if (this.payFalg == 'ye') {
+					var data = {
+						mbId: uni.getStorageSync('userId')
+					}
+					this.$http.get('/api/account/isSetPassword', data, true).then(res => {
+						if (res.data.code == 200) {
+							if (res.data.data) {
+								this.setFalg = false;
+							} else {
+								// 设置支付密码
+								this.setFalg = true;
+							}
+
+						}
+					}).catch(err => {})
+				}
 			},
 			// 微信支付
 			Wxpay() {
-				console.log('wx')
+				console.log(this.payFalg)
+				var data = {
+					orderId: this.payData.orderId || '',
+					orderNo: this.payData.orderNo || ''
+				}
+				this.$http.post('/api/wx/unifiedOrder', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.pay("wxpay", res.data.data)
+					}
+				})
+
 			},
 			// 支付宝
 			zfbPay() {
-				console.log('zfb')
-			},
-			// 设置支付密码
-			getSetPassword() {
+
 				var data = {
-					password: this.passwordSix
+					orderId: this.payData.orderId || '',
+					orderNo: this.payData.orderNo || ''
 				}
-				this.$http.get('/account/setPassword/' + uni.getStorageSync('userId'), data).then(res => {
+				this.$http.post('/api/ali/orderinfo', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.pay("alipay", res.data.data)
+					}
+				})
+			},
+			pay: function(type, pay) {
+				uni.requestPayment({
+					provider: type,
+					orderInfo: pay, //微信、支付宝订单数据
+					success: function(res) {
+						console.log('success:' + JSON.stringify(res));
+					},
+					fail: function(err) {
+						console.log('fail:' + JSON.stringify(err));
+					}
+				});
+			},
+
+			// 设置支付密码
+			getSetPassword: function() {
+				var data = {
+					password: this.passwordSix,
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.post('/api/account/setPassword', data, true).then(res => {
 					if (res.data.code == 200) {
 						this.setFalg = false;
 						this.$refs.pwd.clear(); //清空密码
@@ -162,18 +297,23 @@
 
 			},
 			// 获取密码
-			getPwd(val) {
+			getPwd: function(val) {
 				if (this.setFalg) {
 					this.passwordSix = val
 				} else {
 					var data = {
-						memberId: uni.getStorageSync('userId'),
-						password: val
+						mbId: uni.getStorageSync('userId'),
+						password: val,
+						orderId: this.orderId,
+						orderNo: this.payData.orderNo
 					};
-					this.$http.post('/account/passwordCheck', data).then(res => {
+					this.$http.post('/api/balance/pay', data, true).then(res => {
+						console.log('89')
 						if (res.data.code == 200) {
-							this.payFalg = false;
-							this.getNewOrder()
+							this.payFalgY = false;
+							uni.navigateTo({
+								url:'../payResult/payResult?payFalg=true' 
+							})
 						} else {
 							this.$refs.pwd.clear(); //清空密码
 							uni.showToast({
@@ -192,31 +332,6 @@
 			closeMoudel() {
 				console.log('0')
 				this.payFalgY = false
-			},
-			
-			//倒计时计时器
-			jishiqi: function() {
-				// this.clear = setInterval(that.jishiqi, 1000);
-				// clearInterval(that.clear);
-				var dj = '900000';
-				if (dj <= 0) {
-					clearInterval(interval);
-					this.remaining = "已过期";
-				} else {
-					var ddf = this.djs(dj); //格式化过后的时间
-					this.remaining = ddf;
-					//当前时间减去时间
-					dj = dj - 1;
-					this.remainingd = dj;
-				}
-
-			},
-			//得到的秒换算成时分秒
-			djs: function(ms) {
-				var h = parseInt(ms / (60 * 60));
-				var m = parseInt((ms % (60 * 60)) / 60);
-				var s = (ms % (60 * 60)) % 60;
-				return h + ":" + m + ":" + s;
 			},
 		}
 	}

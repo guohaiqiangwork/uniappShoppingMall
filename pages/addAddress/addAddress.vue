@@ -11,12 +11,12 @@
 								<view class="margin_left2">
 									{{item.mobile}}
 								</view>
-								<view class="add_btn" v-if="item.isDefault == 1">
+								<view class="add_btn" v-if="item.isDefault">
 									默认
 								</view>
 							</view>
 							<view class="font_color66 font_size26">
-								{{item.province}}{{item.city}}{{item.area}}{{item.address}}
+								{{item.address}}
 							</view>
 						</view>
 						<view class="width20 text_center margin_left3" @click="goAddressEdit(item.id)">
@@ -63,16 +63,29 @@
 						所在地区
 					</view>
 					<view class="list_right uni-flex">
-						<view class="">
-						<!-- 	<picker mode="selector" @change="bindPickerChange"  :value="index" :range="provinceList">
-								<view class="uni-input">{{provinceList[index].label}}</view>
-							</picker> -->
-							
-							 <picker @change="bindPickerChange" :value="index" :range="provinceList">
-							                        <view class="uni-input">{{provinceList[index]}}</view>
-							                    </picker>
+						<!-- <view class="list_right uni-flex">
+							<input class="list_input width90" placeholder="省,市,区" disabled="disabled" @click="keyArea" :value="area" />
+							<image src="../../static/image/icon/down.png" class="right_img" mode=""></image>
+						</view> -->
+						<view class="list_input margin_left3" @tap="handleTap('picker1')">
+							<view>{{ province }}</view>
+							<lb-picker ref="picker1" mode="selector" :list="provinceList" @confirm="handleConfirm">
+
+							</lb-picker>
 						</view>
-		
+						<view class="list_input margin_left3" @tap="handleTap('picker2')">
+							<view>{{ city }}</view>
+							<lb-picker ref="picker2" mode="selector" :list="cityList" @confirm="handleConfirmCity">
+
+							</lb-picker>
+						</view>
+						<view class="list_input margin_left3" @tap="handleTap('picker3')">
+							<view>{{ area }}</view>
+							<lb-picker ref="picker3" mode="selector" :list="areaList" @confirm="handleConfirmArea">
+
+							</lb-picker>
+						</view>
+
 						<image src="../../static/image/icon/down.png" class="right_img" mode=""></image>
 					</view>
 				</view>
@@ -117,39 +130,53 @@
 <script>
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+	import LbPicker from '@/components/lb-picker'
+
 	// import wPicker from "@/components/w-picker/w-picker.vue";
 	export default {
 		components: {
 			uniList,
-			uniListItem
+			uniListItem,
+			LbPicker
 			// wPicker
 		},
 		data() {
 			return {
 				name: '',
 				phone: '',
-				area: '',
+
 				addr: '',
 				defAddrstaus: false,
 				sign: '', //其他页面传来的标识
 				addressData: '', //地址列表数据
 				newAddress: false, //展示列表还是新增
-				isDefault: 2,
+				isDefault: false,
+				productId: '', //产品ID
 
-				provinceList:  ['中国', '美国', '巴西', '日本'], //省
+
+				provinceList: [], //省
+				province: '请选择省',
+				provinceNumber: '',
 				cityList: [], //市
+				city: '',
+				cityNumber: '',
 				areaList: [], //区
-				index: 0,
+				area: '',
+				areaNumber: ''
+
 			}
 		},
 		onLoad(option) {
 			console.log(option)
 			this.sign = option.falg;
 			this.goodsId = option.goodsId;
-			this.falgUrl = option.falgUrl;
+
+			this.falgUrl = option.falgUrl; //路径
+			this.productId = option.productId //产品ID
+			this.ids  = option.ids//确认下单
 		},
 		onShow() {
-			this.getProvince(); //获取省数据
+			this.getProvince('', 'province'); //获取省数据
 			this.getAddressList(); //获取地址列表
 		},
 		methods: {
@@ -182,6 +209,7 @@
 				})
 				this.newAddress = false;
 			},
+
 			// 添加地址
 			addAddr: function() {
 				var that = this;
@@ -214,23 +242,23 @@
 					title: '加载中'
 				});
 				if (this.defAddrstaus) {
-					this.isDefault = 1
+					this.isDefault = 'true'
 				} else {
-					this.isDefault = 2
+					this.isDefault = 'false'
 				}
 				var keyword = {
 					address: this.addr, //具体地址
-					area: this.area[2] || '', //区域
-					city: this.area[1], //城市
-					id: this.addressId, //地址id
+					area: this.areaNumber || '', //区域
+					city: this.cityNumber, //城市
+					id: this.addressId || '', //地址id
 					isDefault: this.isDefault, //是否默认
-					memberId: uni.getStorageSync('userId'),
+					mbId: uni.getStorageSync('userId'),
 					mobile: this.phone, //电话
-					province: this.area[0], //省
+					province: this.provinceNumber, //省
 					receiver: this.name
 				}
 				console.log(JSON.stringify(keyword))
-				this.$http.post('/address/save', keyword, true).then(res => {
+				this.$http.post('/api/address/add', keyword, true).then(res => {
 					uni.hideLoading()
 					if (res.data.code == 200) {
 						uni.showToast({
@@ -283,28 +311,73 @@
 			},
 			// 回商城
 			goShop: function(e) {
-				if (this.sign == 'new') {
+				if (this.falgUrl == 'productDetails') {
 					uni.redirectTo({
-						url: '../fillInOrder/fillInOrder?addressId=' + e.id + '&goodsId=' + this.goodsId + '&falgD=addList' +
-							'&falgUrl=' + this.falgUrl,
+						url: '../productDetails/productDetails?addressId=' + e.id + '&productId=' + this.productId
+					});
+				}else{
+					var urlData = '../' + this.falgUrl + '/' +this.falgUrl  + '?addressId='  + e.id+ '&ids=' + this.ids
+					uni.redirectTo({
+						url: urlData
 					});
 				}
 			},
 
 			// 获取省数据
-			getProvince: function() {
+			getProvince: function(parentId, type) {
+				let _this = this
 				var data = {
-					parentId: ''
+					parentId: parentId
 				}
 				this.$http.get('/api/common/area/list', data).then(res => {
 					if (res.data.code == 200) {
-						console.log(JSON.stringify(res))
-						this.provinceList = res.data.data
+						// console.log(JSON.stringify(res))
+						// console.log(type)
+						if (type == 'city') {
+							_this.cityList = res.data.data
+						} else if (type == 'area') {
+							_this.areaList = res.data.data
+						} else {
+							_this.provinceList = res.data.data
+						}
 					}
 				})
 
 
-			}
+			},
+
+
+			// 下拉框
+			// handleChange (item) {
+			// 	console.log('change::', item)
+			// },滑动
+			// 确认
+			handleConfirm: function(item) {
+				console.log('confirm::', item)
+				this.province = item.item.label
+				this.provinceNumber = item.value
+				this.city = '请选择城市'
+				this.getProvince(item.value, 'city')
+			},
+			handleConfirmCity: function(item) {
+				console.log('confirm::', item.item)
+				this.city = item.item.label
+				this.cityNumber = item.value
+				this.area = '请选择'
+				this.getProvince(item.value, 'area')
+			},
+			handleConfirmArea: function(item) {
+				console.log('confirm::', item.item)
+				this.area = item.item.label
+				this.areaNumber = item.value
+
+			},
+			// handleCancel (item) {
+			// 	console.log('cancel::', item)
+			// },取消
+			handleTap(name) {
+				this.$refs[name].show()
+			},
 		}
 	}
 </script>
@@ -374,9 +447,11 @@
 	}
 
 	.right_img {
-		width: 23upx;
-		height: 14upx;
-		margin-top: 10%;
+		width: 11px;
+		height: 7px;
+		margin-top: 6%;
+		position: absolute;
+		right: 5%;
 	}
 
 	/* 地址列表 */
@@ -398,7 +473,7 @@
 		text-align: center;
 		border-radius: 20upx;
 		color: #FFFFFF;
-		background-color: #00A398;
+		background-color: #3C3D3E;
 		font-size: 20upx;
 		margin-top: 2%;
 		margin-left: 4%;

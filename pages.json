@@ -390,6 +390,22 @@
 				"enablePullDownRefresh": false
 			}
 		}
+        ,{
+            "path" : "pages/bindPhone/bindPhone",
+            "style": {
+            	"app-plus": {
+            		"titleNView": false,
+            		"backgroundTextStyle": "dark"
+            	},
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/afterSaleDetails/afterSaleDetails",
+            "style" : {
+				"navigationBarTitleText": "售后详情"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

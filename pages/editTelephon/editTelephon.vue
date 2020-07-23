@@ -9,13 +9,13 @@
 			
 			<view class="content_item">
 				<text class="font_weight600 font_size30">更换手机</text>
-				<input v-model="newTele" placeholder="请输入手机号"  style="width: 520upx;float: right;margin-top: 32upx;font-size: 30upx;" type="text" value="" />
+				<input @input="getPhone" placeholder="请输入手机号"  style="width: 520upx;float: right;margin-top: 32upx;font-size: 30upx;" type="text" value="" />
 			</view>
 			
 			<view class="content_item">
 				<text class="font_weight600 font_size30">验证码</text>
 				<view style="display: flex;align-items: center; width: 520upx;height: 110upx;float: right;">
-					<input v-model="yzmCode" type="text" placeholder="请输入验证码" style="font-size: 30upx;" />
+					<input @input="getCode" type="text" placeholder="请输入验证码" style="font-size: 30upx;" />
 					<view style="border-left: #CCCCCC solid 1px;width: 60%;;text-align: center;">
 						<text @click="getYzm">{{yzm}}</text>
 					</view>
@@ -39,15 +39,24 @@
 				timed: 59,
 				newTele:'',
 				yzmCode:'',
+				onePhone:''//修改的手机好吗
 			};
 		},
 		onLoad(e) {
 			this.tele = e.telePhone;
 		},
+		
 		methods:{
+			// 获取修改手机号
+			getPhone:function(e){
+				this.onePhone = e.detail.value
+			},
+			getCode:function(e){
+				this.yzmCode = e.detail.value
+			},
 			/* 确认 */
-			submitButtFun(){
-				if(!(/^1[3456789]\d{9}$/.test(this.newTele))){
+			submitButtFun:function(){
+				if(!(/^1[3456789]\d{9}$/.test(this.onePhone))){
 					uni.showToast({
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
@@ -65,34 +74,40 @@
 					return false;
 				}
 				
-				let memberId = uni.getStorageSync('userId');
-				var data = this.$requestJs.requestFunc({
-					url:'/mb/updateMobile/'+memberId+'?code='+this.yzmCode+'&mobile='+this.newTele+'',
-					method:'post',
+				console.log('99')
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+					code:this.yzmCode,
+					mobile:this.onePhone
+				}
+				// 获取个人信息
+				this.$http.post('/api/member/updateMobile', data, true).then(res => {
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '设置成功',
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
+						uni.navigateBack()
+					}
 				});
-				uni.showToast({
-					title: '成功',
-					icon: 'none',
-					duration: 1500,
-					position: 'top',
-				});
-				this.newTele = '';
-				this.yzmCode = '';
-				if(this.orderListType == '2'){
-				 const that = this;
-				 var pages = getCurrentPages();
-				 if (pages.length > 1) {  
-					var beforePage = pages[pages.length - 2];   
-					beforePage.$vm.editDataPageFun(this.newTele); 
-				 }
-				};
-				uni.navigateBack();
+							
 			},
 			/* 获取验证码 */
 			getYzm(){
 				var that = this;
+				if(!this.onePhone){
+					uni.showToast({
+						title: '请填写修改的手机号',
+						icon: 'none',
+						duration: 1500,
+						position: 'top',
+					});
+					return
+				}
 				var phoneData = {
-					phone: this.tele
+					phone: this.onePhone
 				}
 				// this.yzm ='重新获取(60s)'
 				if (that.yzm_stuas == 1) {
@@ -104,20 +119,13 @@
 					});
 				
 				} else {
-					this.$http.post('/wx/send/messages', phoneData).then(res => {
-						uni.showToast({
-							title: res.data.message,
-							icon: 'none',
-							duration: 1500,
-							position: 'top',
-						});
+					this.$http.get('/api/common/mb/sendCode', phoneData).then(res => {
 						if (res.data.code == 200) {
 							that.yzm_stuas = 1;
 							var clear = setInterval(function() {
 								that.yzm = "(" + that.timed + ")";
 								console.log(that.yzm);
 								that.timed = that.timed - 1;
-								// console.log(that.timed);
 								if (that.timed == 0) {
 									that.yzm = "重新获取";
 									clearInterval(clear);

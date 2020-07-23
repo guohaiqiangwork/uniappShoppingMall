@@ -21,8 +21,8 @@
 					申请服务：
 				</view>
 				<view class="width65">
-					<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
-						<view>{{array[index].name}}</view>
+					<picker @change="bindPickerChange" :value="arrayIndex" :range="array" range-key="label">
+						<view>{{array[arrayIndex].label}}</view>
 					</picker>
 				</view>
 				<view class="width10">
@@ -36,8 +36,8 @@
 					申请原因：
 				</view>
 				<view class="width65">
-					<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
-						<view>{{arrayTwo[indexT].name}}</view>
+					<picker @change="AllbindPickerChange" :value="indexT" :range="arrayTwo" range-key="label">
+						<view>{{arrayTwo[indexT].label}}</view>
 					</picker>
 				</view>
 				<view class="width10">
@@ -51,14 +51,14 @@
 					具体说明：
 				</view>
 				<view class="width75">
-					<input type="text" @input="keyPhone" placeholder="请具体说明" placeholder-style='color:#484848' />
+					<input type="text" @input="keyUserRemark" placeholder="请具体说明" placeholder-style='color:#484848' />
 				</view>
 			</view>
 			<view class="margin_top8">
 				<view class="uni-flex ">
-					<view class="text_center" :class="index !=0 ? 'margin_left3' : ''" v-for="(item,index) in [1,2,3]" :key="index">
-						<image src="../../static/image/beij/jian.png" class="jian_img" mode=""></image>
-						<image src="../../static/image/beij/uplodel.png" class="img_width" mode=""></image>
+					<view class="text_center" :class="index !=0 ? 'margin_left3' : ''" v-for="(item,index) in imgList" :key="index">
+						<image @click="delectUpload(index)" src="../../static/image/beij/jian.png" class="jian_img" mode=""></image>
+						<image @click="upload(index)" :src="item.url" class="img_width" mode=""></image>
 					</view>
 				</view>
 				<view class="font_size22 font_colorbe">
@@ -68,13 +68,13 @@
 
 			<!-- 商品列表 -->
 			<view class="">
-				<view class="product_moudel" v-for="(item,index) in productList" :key="index">
+				<view class="product_moudel">
 					<!-- 标题 -->
 					<view class="uni-flex">
 						<view class="margin_left3">
-							<checkbox-group @change="allChoose('all',index)">
+							<checkbox-group @change="allChoose('all')">
 								<label>
-									<checkbox value="all" :class="{'checked':item.allChecked}" :checked="item.allChecked?true:false"></checkbox>
+									<checkbox value="all" :class="{'checked':allChecked}" :checked="allChecked?true:false"></checkbox>
 								</label>
 							</checkbox-group>
 						</view>
@@ -84,47 +84,47 @@
 						</view>
 					</view>
 					<!-- 内容 -->
-					<view class="padding_bottom2 border_bottom" v-for="(items,index) in item.list1" :key="index">
+					<view class="padding_bottom2 border_bottom" v-for="(item,index) in productList" :key="index">
 						<view class="uni-flex margin_top3 padding_bottom2">
 							<view class="margin_top8 margin_left3">
-								<template v-if="false">
-									<checkbox-group @change="changeCheckbox(item.id,index)">
+								<template>
+									<checkbox-group @change="changeCheckbox(index)">
 										<label>
-											<checkbox value="String(item)" :class="{'checked':items.oneChecked}" :checked="item.oneChecked?true:false"></checkbox>
+											<checkbox :class="{'checked':item.oneChecked}" :checked="item.oneChecked?true:false"></checkbox>
 										</label>
 									</checkbox-group>
 								</template>
-								<template v-else>
+								<!-- <template v-else>
 									<view class="" style="margin-left: -20%;">
 										<image src="../../static/image/beij/wuxiao.png" class="listm" mode=""></image>
 									</view>
-								</template>
+								</template> -->
 
 							</view>
 							<view class="">
-								<image src="../../static/image/beij/myTopb.png" class="product_moudel_img" mode=""></image>
+
+								<image :src="item.image" class="product_moudel_img" mode=""></image>
 							</view>
 							<view class="width60 margin_left2">
-								<view class="font_size28 ">
-									Asus/华硕 Y4200高性能手提笔记
-									本电脑
+								<view class="font_size28 text_hidden">
+									{{item.oneChecked}}{{item.title}}
 								</view>
 
 								<view class="uni-flex display_space">
 									<view class="font_size28 " style="color: #BE8100;">
-										¥4799.00 <text class="font_size22 font_color99">/件</text>
+										¥{{item.price}} <text class="font_size22 font_color99">/件</text>
 									</view>
-									<view class="uni-flex num_moudel">
-										<view class="num_moudel_left font_color99" @click="numStatistics(item.id,items.id,items.num,'')">
+									<!-- <view class="uni-flex num_moudel">
+										<view class="num_moudel_left font_color99" @click="numStatistics(item.id,item.id,item.num,'')">
 											-
 										</view>
 										<view class="num_moudel_center">
-											{{items.num > items.stock ? items.stock :items.num}}
+											{{item.num > item.stock ? item.stock :item.num}}
 										</view>
-										<view class="num_moudel_right" @click="numStatistics(item.id,items.id,items.num,'add')">
+										<view class="num_moudel_right" @click="numStatistics(item.id,items.id,item.num,'add')">
 											+
 										</view>
-									</view>
+									</view> -->
 								</view>
 
 							</view>
@@ -133,10 +133,10 @@
 
 						<view class="uni-flex display_space width80 " style="margin-left: 15%;">
 							<view class="font_size26">
-								预计退款：<text class="font_size22 font_colorbe">¥</text> <text class="font_sise28 font_colorbe">6199.00</text>
+								预计退款：<text class="font_size22 font_colorbe">¥</text> <text class="font_sise28 font_colorbe">{{item.price}}</text>
 							</view>
 							<view class="font_size22">
-								最多申请<text class="font_colorbe">1</text>件
+								最多申请<text class="font_colorbe">{{item.num}}</text>件
 							</view>
 						</view>
 
@@ -159,13 +159,13 @@
 				</view>
 
 				<view class="font_size30 font_colorbe">
-					<text class="font_size22">¥</text>4799.00
+					<text class="font_size22">¥</text>{{totalPrice}}
 				</view>
 			</view>
-		
-			
+
+
 			<!-- 按钮 -->
-			<view class="returnBtn">
+			<view class="returnBtn" @click="saveComment">
 				提交申请
 			</view>
 		</view>
@@ -177,142 +177,252 @@
 		data() {
 			return {
 				array: [{
-					name: '退货'
-				}, {
-					name: '换货'
-				}, {
-					name: '维修'
-				}, {
-					name: '仅退款'
-				}, {
-					name: '补发货'
+					label: '',
+					value: ''
 				}],
-				index: 0,
+				arrayIndex: 0,
 				arrayTwo: [{
-					name: '未收到货'
-				}, {
-					name: '商品包装破损'
-				}, {
-					name: '商品质量问题'
-				}, {
-					name: '商品数量缺失'
+					label: '',
+					value: ''
 				}],
 				indexT: 0,
-
-				productList: [{
-						name: '店铺名称',
-						id: '122',
-						allChecked: false,
-						list1: [{
-								name: '子商品',
-								id: '121',
-								num: 1,
-								Price: 10,
-								stock: 3,
-								oneChecked: false
-							},
-							{
-								name: '子商品',
-								num: 2,
-								id: '111',
-								Price: 10,
-								stock: 20,
-								oneChecked: false
-							}
-						]
-					},
-					{
-						name: '店铺名称1',
-						id: '12',
-						allChecked: false,
-						list1: [{
-							id: '1141',
-							name: '子商品',
-							num: 3,
-							Price: 10,
-							stock: 11,
-							oneChecked: false
-						}]
-					},
-				],
-
+				productList: [],
 				totalPrice: 0, //总价
-
-
+				orderId: '', //订单号码
+				allChecked: false,
+				imgList: [{
+					'url': '../../static/image/beij/uplodel.png'
+				}],
+				imgListData: [{
+					path: ''
+				}],
+				userRemark: ''
 			}
 		},
+		onLoad(option) {
+			this.orderId = option.orderId
+			console.log(option)
+		},
+		mounted() {
+			this.getReason();
+			this.getService();
+			this.getSelectGoods();
+		},
 		methods: {
-			bindPickerChange: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.detail.value)
-				this.index = e.detail.value
+
+			// 获取申请原因
+			getReason: function() {
+				var _this = this
+				this.$http.get('/api/apply/reason', '', true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						_this.arrayTwo = res.data.data
+					}
+				});
 			},
-			keyPhone() {
+			// 获取申请服务
+			getService: function() {
+				var _this = this
+				this.$http.get('/api/apply/service', '', true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						_this.array = res.data.data
+					}
+				});
+			},
+
+			// 获取可退商品列表
+			getSelectGoods: function() {
+				var data = {
+					orderId: this.orderId
+				}
+				this.$http.get('/api/retOrder/selectGoods', data, true).then(res => {
+					if (res.data.code == 200) {
+						for (let item of res.data.data) {
+							item.oneChecked = false;
+						}
+						this.productList = res.data.data
+						console.log(this.productList)
+					}
+				});
+			},
+
+
+			delectUpload: function(index) {
+				this.imgList.splice(index, 1);
+				this.imgListData.splice(index, 1);
+			},
+			upload: function(index) {
+				var _self = this;
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: function(res) {
+						const tempFilePaths = res.tempFilePaths;
+						let id = uni.getStorageSync('userId');
+						const token = uni.getStorageSync('token');
+						uni.uploadFile({
+							url: 'http://101.201.180.222:8080/api/upload/file',
+							filePath: tempFilePaths[0],
+							name: 'file',
+							method: 'post',
+							formData: {
+								'file': tempFilePaths[0],
+								'mbId': id
+							},
+							header: {
+								'Authorization': "Bearer" + " " + token,
+								'client': 'APP',
+							},
+							success: (uploadFileRes) => {
+								console.log("11==" + JSON.stringify(uploadFileRes));
+								if (JSON.parse(uploadFileRes.data).code == 200) {
+									var a = JSON.parse(uploadFileRes.data)
+									console.log(a)
+									_self.imgList[index].url = a.data.url
+									_self.imgListData[index] = a.data.path
+									console.log(JSON.stringify(_self.imgList))
+									if (_self.imgList.length < 5) {
+										_self.imgList.push({
+											url: '../../static/image/beij/uplodel.png'
+										})
+									}
+									uni.showToast({
+										title: '上传成功',
+										icon: 'none',
+										duration: 2000,
+										position: 'top',
+									});
+								} else {
+									uni.showToast({
+										title: JSON.parse(uploadFileRes.data).message,
+										icon: 'none',
+										duration: 2000,
+										position: 'top',
+									});
+									return
+								}
+							},
+							fail: (err) => {
+								return uni.showToast({
+									title: '上传失败'
+								});
+							},
+						});
+
+					},
+					error: function(e) {
+						console.log(e);
+					}
+				});
+			},
+
+			// 提交订单
+			saveComment: function() {
+				console.log(this.productList)
+				// if(!this.imgListData[0]){
+				// 	uni.showToast({
+				// 		title:'请选择图片',
+				// 		icon:'none',
+				// 		duration:2000,
+				// 		position:'top'
+				// 	})
+				// 	return
+				// }
+				var returnItemsList = []
+				for (let item of this.productList) {
+					if (item.oneChecked) {
+						var a = {
+							orderDetailId: item.id,
+
+						}
+						returnItemsList.push(a)
+					}
+
+				}
+				var data = {
+					applyServer: this.array[this.arrayIndex].value, //	申请服务
+					mbId: uni.getStorageSync('userId'),
+					orderId: this.productList[0].orderId,
+					pictrue: this.imgListData.join(','),
+					retReason: this.arrayTwo[this.indexT].value, //申请原因
+					returnItems: returnItemsList,
+					sellerId: this.productList[0].sellerId, //商户id
+					userRemark: this.userRemark //具体原因
+				}
+				this.$http.post('/api/retOrder/save', data, true, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						uni.navigateBack()
+					}
+				});
 
 			},
+
+
+			bindPickerChange: function(e) {
+				console.log('picker发送选择改变，携带值为：' + e.detail.value)
+				this.arrayIndex = e.detail.value;
+				// this.indexT = e.detail.value;
+			},
+			AllbindPickerChange: function(e) {
+				console.log('picker发送选择改变，携带值为：' + e.detail.value)
+				
+				this.indexT = e.detail.value;
+			},
+			keyUserRemark: function(e) {
+				console.log(e)
+				this.userRemark = e.detail.value
+			},
 			//商户全选事件
-			allChoose(e, index) {
-				this.productList[index].allChecked = !this.productList[index].allChecked;
-				this.shopId = this.productList[index].id
-				if (this.productList[index].allChecked) {
-					for (let item of this.productList[index].list1) {
+			allChoose(e) {
+				this.allChecked = !this.allChecked;
+				console.log('99')
+				if (this.allChecked) {
+					for (let item of this.productList) {
 						item.oneChecked = true;
 					}
 				} else {
-					for (let item of this.productList[index].list1) {
+					for (let item of this.productList) {
 						item.oneChecked = false;
 					}
 				}
 				this.getCalculation(); //计算总价
 			},
 			// 多选复选框改变事件
-			changeCheckbox(shopCartId, index) {
-				console.log(shopCartId + '//店铺id');
-				console.log(index + '下标');
-				var _this = this;
-				let listIndex = index; //当前选中下标赋值
+			changeCheckbox(index) {
+				this.productList[index].oneChecked = !this.productList[index].oneChecked;
+				let dataList = [];
 				for (let item of this.productList) {
-					if (shopCartId == item.id) {
-						var productDataList = item //获取当前单选框选中数据
-						item.list1[listIndex].oneChecked = !item.list1[listIndex].oneChecked; //处理复选框值
-						// 是否选中全选处理 start
-						_this.dataList = [];
-						for (let items of productDataList.list1) {
-							if (shopCartId == productDataList.id) {
-								if (items.oneChecked) {
-									_this.dataList.push(items.oneChecked)
-								}
-							}
-						};
-						if (_this.dataList.length == productDataList.list1.length) {
-							for (let item of this.productList) {
-								if (item.id == productDataList.id) {
-									item.allChecked = true;
-								}
-							}
-						} else {
-							productDataList.allChecked = false;
-						}
-						this.getCalculation(); //计算总价
+					if (item.oneChecked) {
+						dataList.push(item.oneChecked)
 					}
-				};
+				}
+				if (dataList.length == this.productList.length) {
+					this.allChecked = true;
+				} else {
+					this.allChecked = false;
+				}
 
-
+				this.getCalculation()
 			},
 			// 计算价格 总价及数据的一个处理
-			getCalculation() {
-				var priceList = []; //总价
-				var numberList = []; //购买数量
-				for (let index in this.productList) {
-					for (let item of this.productList[index].list1) {
-						if (item.oneChecked) {
-							let princeNum = Number(item.num) * Number(item.Price)
-							priceList.push(princeNum); //计算总计a
-							numberList.push(item.num); //计算总数
-							console.log(priceList)
-							console.log(eval(priceList.join("+")))
-							this.totalPrice = eval(priceList.join("+")); //总计
-							this.totalPriceNum = eval(numberList.join("+")) //总数
-						}
+			getCalculation: function() {
+				var priceList = [0]; //总价
+				var numberList = [0]; //购买数量
+				for (let item of this.productList) {
+					if (item.oneChecked) {
+						let princeNum = Number(item.num) * Number(item.price)
+						priceList.push(princeNum); //计算总计a
+						numberList.push(item.num); //计算总数
+						console.log(priceList)
+						console.log(eval(priceList.join("+")))
+						this.totalPrice = eval(priceList.join("+")); //总计
+						this.totalPriceNum = eval(numberList.join("+")) //总数
+					} else {
+						this.totalPrice = eval(priceList.join("+")); //总计
+						this.totalPriceNum = eval(numberList.join("+")) //总数
 					}
 				}
 			},
@@ -383,7 +493,8 @@
 		width: 38upx;
 		height: 29upx;
 	}
-	.returnBtn{
+
+	.returnBtn {
 		// width: 690px;
 		height: 88upx;
 		background: #3c3d3e;

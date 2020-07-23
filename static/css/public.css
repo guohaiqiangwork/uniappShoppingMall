@@ -463,7 +463,22 @@
 	width: 380upx;
 	height: 275upx;
 }
-
+.no_img_comment {
+	width: 436upx;
+	height: 376upx;
+}
+.no_img_product {
+	width: 370upx;
+	height: 304upx;
+}
+.no_img_shop {
+	width: 370upx;
+	height: 348upx;
+}
+.no_img_order {
+	width: 446upx;
+	height: 376upx;
+}
 
 .moudel_content {
 	height: 100%;

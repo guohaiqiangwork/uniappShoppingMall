@@ -12,11 +12,11 @@
 			<view class="body_view">
 				<view class="body_view_1">
 					<text class="font_weight600">姓名</text>
-					<text class="font_color66 margin_left100">{{name}}2342</text>
+					<text class="font_color66 margin_left100">{{infoData.nickName}}</text>
 				</view>
 				<view class="body_view_1" @click="editTelephon">
 					<text class="font_weight600">我的手机</text>
-					<text class="font_color66 margin_left40">{{telePhone}}看看书</text>
+					<text class="font_color66 margin_left40">{{infoData.mobile}}</text>
 					<image src="../../static/image/my/return1.png" mode=""></image>
 				</view>
 			</view>
@@ -32,28 +32,33 @@
 		},
 		data() {
 			return {
-				url: "../../static/image/beij/logB.png",
-				name: '',
-				telePhone: '15010825114',
+				url: "",
+				infoData: '',
 			}
 		},
 		onLoad() {
 			// this.getUserFun();
 		},
+		mounted() {
+			
+		},
+		onShow() {
+			this.getMyData();
+		},
 		methods: {
 			/* 获取个人信息 */
-			async getUserFun() {
-				let memberId = uni.getStorageSync('userId');
-				let userData = await this.$requestJs.requestFunc({
-					url: '/mb/myBasic/' + memberId + '',
-					method: 'get',
+			getMyData: function() {
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+				}
+				// 获取个人信息
+				this.$http.get('/api/member/center/info', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.infoData = res.data.data
+						this.url = res.data.data.headImgurl;
+					}
 				});
-
-				let userDataT = userData.data.data;
-				console.log("222userData: " + JSON.stringify(userData));
-				this.name = userDataT.nickname;
-				this.telePhone = userDataT.mobile;
-				this.url = userDataT.avatar;
 			},
 			/* 点击上传图片 */
 			myUpload(rsp) {
@@ -62,27 +67,35 @@
 				let id = uni.getStorageSync('userId');
 				const token = uni.getStorageSync('token');
 				uni.uploadFile({
-					url: ' http://xypay.expresslines.cn/mb/uploadAvatar/' + id + '',
+					url: 'http://101.201.180.222:8080/api/member/updateAvatar',
 					filePath: rsp.path,
 					name: 'file',
 					method: 'post',
 					formData: {
-						'file': rsp.path
+						'file': rsp.path,
+						'mbId': id
 					},
 					header: {
 						'Authorization': "Bearer" + " " + token,
 						'client': 'APP',
 					},
 					success: (uploadFileRes) => {
-						//console.log("11=="+ JSON.stringify(uploadFileRes));
+						console.log("11==" + JSON.stringify(uploadFileRes));
 						if (JSON.parse(uploadFileRes.data).code == 200) {
 							uni.showToast({
-								title: '上传成功！'
+								title: '上传成功',
+								icon: 'none',
+								duration: 2000,
+								position: 'top',
 							});
 						} else {
-							return uni.showToast({
-								title: '上传失败'
+							uni.showToast({
+								title: JSON.parse(uploadFileRes.data).message,
+								icon: 'none',
+								duration: 2000,
+								position: 'top',
 							});
+							return
 						}
 					},
 					fail: (err) => {
@@ -96,9 +109,9 @@
 
 			/* 编辑手机号 */
 			editTelephon() {
-				console.log('99' +  this.telePhone)
+				console.log('99' + this.telePhone)
 				uni.navigateTo({
-					url:'../editTelephon/editTelephon?telePhone=' + this.telePhone
+					url: '../editTelephon/editTelephon?telePhone=' + this.infoData.mobile
 				});
 			},
 			editDataPageFun(tele) {

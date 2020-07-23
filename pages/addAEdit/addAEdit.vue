@@ -22,7 +22,25 @@
 					所在地区
 				</view>
 				<view class="list_right uni-flex">
-					<input class="list_input width90" placeholder="省,市,区" disabled="disabled" @click="keyArea" :value="area" />
+					<view class="list_input margin_left3" @tap="handleTap('picker1')">
+						<view>{{ province }}</view>
+						<lb-picker ref="picker1" mode="selector" :list="provinceList" @confirm="handleConfirm">
+
+						</lb-picker>
+					</view>
+					<view class="list_input margin_left3" @tap="handleTap('picker2')">
+						<view>{{ city }}</view>
+						<lb-picker ref="picker2" mode="selector" :list="cityList" @confirm="handleConfirmCity">
+
+						</lb-picker>
+					</view>
+					<view class="list_input margin_left3" @tap="handleTap('picker3')">
+						<view>{{ area }}</view>
+						<lb-picker ref="picker3" mode="selector" :list="areaList" @confirm="handleConfirmArea">
+
+						</lb-picker>
+					</view>
+
 					<image src="../../static/image/icon/down.png" class="right_img" mode=""></image>
 				</view>
 			</view>
@@ -68,29 +86,42 @@
 <script>
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
-	import wPicker from "@/components/w-picker/w-picker.vue";
+	// import wPicker from "@/components/w-picker/w-picker.vue";
+	import LbPicker from '@/components/lb-picker'
 	export default {
 		components: {
 			uniList,
 			uniListItem,
-			wPicker
+			LbPicker
 		},
 		data() {
 			return {
 				addr: '', //地址详情
 				addressId: '', //地址id
-				area: [], //省市去
 				defAddrstaus: false, //是否默认
 				name: '', //收货人姓名
 				phone: '', //电话
-				urlFalg: '' //从那来
+				urlFalg: '', //从那来
+
+
+
+				provinceList: [], //省
+				province: '请选择省',
+				provinceNumber: '',
+				cityList: [], //市
+				city: '',
+				cityNumber: '',
+				areaList: [], //区
+				area: '',
+				areaNumber: ''
 			}
 		},
 		onLoad(option) {
 			console.log(option)
 			this.addressId = option.addressId;
 			this.urlFalg = option.falg
-			this.getMyFindById(); //
+			this.getMyFindById(); //获取地址在详情
+			this.getProvince();//获取省数据
 		},
 		methods: {
 			keyName: function(event) {
@@ -121,14 +152,20 @@
 
 			// 通过地址id 获取地址详情  /address/findById/{addressId}
 			getMyFindById() {
-				this.$http.get('/address/findById/' + this.addressId).then(res => {
+				var data = {
+					addressId: this.addressId
+				}
+				this.$http.get('/api/address/detail', data, true, ).then(res => {
 					console.log(res)
 					if (res.data.code == 200) {
-						this.area = res.data.data.province + res.data.data.city + res.data.data.area; //省市区
+						// this.area = res.data.data.province + res.data.data.city + res.data.data.area; //省市区
+						this.province = res.data.data.province;
+						this.city = res.data.data.city;
+						this.area = res.data.data.area;
 						this.name = res.data.data.receiver;
 						this.phone = res.data.data.mobile;
 						this.addr = res.data.data.address;
-						if (res.data.data.isDefault == 1) {
+						if (res.data.data.isDefault == true) {
 							this.defAddrstaus = true;
 						}
 					} else {
@@ -143,13 +180,16 @@
 				}).catch(err => {})
 
 			},
-			
+
 			// 删除地址 
 			deleteAddr() {
 				uni.showLoading({
 					title: '删除中'
 				});
-				this.$http.get('/address/deleteAddress/' + this.addressId).then(res => {
+				let data ={
+					addressId:this.addressId
+				}
+				this.$http.post('/api/address/delete',data,true).then(res => {
 					uni.hideLoading()
 					uni.showToast({
 						title: '删除成功',
@@ -203,23 +243,23 @@
 					title: '加载中'
 				});
 				if (this.defAddrstaus == true) {
-					this.isDefault = 1
+					this.isDefault = true
 				} else {
-					this.isDefault = 2
+					this.isDefault = false
 				}
 				var keyword = {
 					address: this.addr, //具体地址
-					area: this.area[2] || '', //区域
-					city: this.area[1], //城市
-					id: this.addressId, //地址id
-					isDefault: this.isDefault || this.address.isDefault, //是否默认
-					memberId: uni.getStorageSync('userId'),
+					area: this.areaNumber || '', //区域
+					city: this.cityNumber, //城市
+					id: this.addressId || '', //地址id
+					isDefault: this.isDefault, //是否默认
+					mbId: uni.getStorageSync('userId'),
 					mobile: this.phone, //电话
-					province: this.area[0], //省
+					province: this.provinceNumber, //省
 					receiver: this.name
 				}
 				console.log(JSON.stringify(keyword))
-				this.$http.post('/address/updateAddress', keyword, true).then(res => {
+				this.$http.post('/api/address/update', keyword, true).then(res => {
 					uni.hideLoading()
 					uni.showToast({
 						title: '修改成功',
@@ -242,6 +282,64 @@
 					this.submitSate = false;
 				})
 
+			},
+
+
+
+			// 获取省数据
+			getProvince: function(parentId, type) {
+				let _this = this
+				var data = {
+					parentId: parentId
+				}
+				this.$http.get('/api/common/area/list', data).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						console.log(type)
+						if (type == 'city') {
+							_this.cityList = res.data.data
+						} else if (type == 'area') {
+							_this.areaList = res.data.data
+						} else {
+							_this.provinceList = res.data.data
+						}
+					}
+				})
+
+
+			},
+
+
+			// 下拉框
+			// handleChange (item) {
+			// 	console.log('change::', item)
+			// },滑动
+			// 确认
+			handleConfirm: function(item) {
+				console.log('confirm::', item)
+				this.province = item.item.label
+				this.provinceNumber = item.value
+				this.city = '请选择城市'
+				this.getProvince(item.value, 'city')
+			},
+			handleConfirmCity: function(item) {
+				console.log('confirm::', item.item)
+				this.city = item.item.label
+				this.cityNumber = item.value
+				this.area = '请选择'
+				this.getProvince(item.value, 'area')
+			},
+			handleConfirmArea: function(item) {
+				console.log('confirm::', item.item)
+				this.area = item.item.label
+				this.areaNumber = item.value
+
+			},
+			// handleCancel (item) {
+			// 	console.log('cancel::', item)
+			// },取消
+			handleTap(name) {
+				this.$refs[name].show()
 			},
 		}
 	}
@@ -312,9 +410,11 @@
 	}
 
 	.right_img {
-		width: 23upx;
-		height: 14upx;
-		margin-top: 10%;
+		width: 11px;
+		height: 7px;
+		margin-top: 6%;
+		position: absolute;
+		right: 5%;
 	}
 
 	.bottom_list_s {

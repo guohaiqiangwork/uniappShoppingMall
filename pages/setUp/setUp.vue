@@ -5,9 +5,9 @@
 			<view class="list_item" @click="gotoNextPageFun('editData')">
 				<view class="list_item_left" style="margin-top: 30upx;">
 					<!-- <image :src="hearImage" mode=""></image> -->
-					<image src="../../static/image/beij/myTopb.png" mode=""></image>
-					<text style="position: relative;bottom:50rpx;left: 10upx;">{{name}}距离近</text>
-					<text style="position: relative;bottom:10rpx;right:80upx;">{{telePhone}}偶偶</text>
+					<image :src="infoData.headImgurl" mode=""></image>
+					<text style="position: relative;bottom:50rpx;left: 28upx;">{{infoData.nickName}}</text>
+					<text style="position: relative;bottom:10rpx;right:80upx;">{{infoData.mobile}}</text>
 				</view>
 				<view class="list_item_right">
 					<image src="../../static/image/my/return1.png"></image>
@@ -55,14 +55,14 @@
 					<image src="../../static/image/my/return1.png"></image>
 				</view>
 			</view>
-			<view class="list_item" @click="gotoNextPageFun('realName')">
+			<!-- <view class="list_item" @click="gotoNextPageFun('realName')">
 				<view class="list_item_left">
 					<text>实名认证</text>
 				</view>
 				<view class="list_item_right">
 					<image src="../../static/image/my/return1.png"></image>
 				</view>
-			</view>
+			</view> -->
 			<view class="list_item" @click="gotoNextPageFun('aboutUs')">
 				<view class="list_item_left">
 					<text>关于我们</text>
@@ -87,20 +87,20 @@
 							设置支付密码
 						</view>
 						<view class="font_color33 font_size34 font_weight600" v-if="!setFalg">
-							请输入支付密码
+							修改支付提现密码
 						</view>
 					</view>
-					<view class="font_color33 font_size30 text_center" v-if="setFalg">
+					<view class="font_color33 font_size30 text_center">
 						支付密码为6位数字
 					</view>
-					<view class="font_color33 font_size30 text_center" v-if="setFalg">
+					<view class="font_color33 font_size30 text_center">
 						支付密码与提现密码一致
 					</view>
 					<view class="margin_top5">
 						<validcode :maxlength="6" :isPwd="true" @finish="getPwd" ref="pwd"></validcode>
 					</view>
 
-					<view class="moudel_btn" v-if="setFalg" @click="getSetPassword">
+					<view class="moudel_btn" @click="getSetPassword">
 						确认
 					</view>
 				</view>
@@ -121,15 +121,32 @@
 				hearImage: '../../static/image/my/headImge.png',
 				setFalg: true, //密码设置框
 				payFalg: false, //密码支付框
+				infoData: ''
 
 			}
 		},
 		onLoad() {
-			this.getUserFun();
+
+		},
+		mounted() {
+			this.getMyData() //获取个人信息
 		},
 		methods: {
+
+			getMyData: function() {
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+				}
+				// 获取个人信息
+				this.$http.get('/api/member/center/info', data, true).then(res => {
+					if (res.data.code == 200) {
+						console.log(JSON.stringify(res))
+						this.infoData = res.data.data
+					}
+				});
+			},
 			/* 退出登录 */
-			returnFun() {
+			returnFun: function() {
 				uni.removeStorageSync("userId");
 				uni.removeStorageSync("token");
 				uni.navigateTo({
@@ -137,7 +154,7 @@
 				})
 			},
 			/* 联系客服 */
-			gotoTele() {
+			gotoTele: function() {
 				uni.makePhoneCall({
 					// 手机号
 					phoneNumber: '400-110-120',
@@ -151,26 +168,28 @@
 					}
 				});
 			},
-			/* 获取个人信息 */
-			async getUserFun() {
-				let memberId = uni.getStorageSync('userId');
-				let userData = await this.$requestJs.requestFunc({
-					url: '/mb/myBasic/' + memberId + '',
-					method: 'get',
-				});
 
-				let userDataT = userData.data.data;
-				console.log("222userData: " + JSON.stringify(userData));
-				this.name = userDataT.nickname;
-				this.telePhone = userDataT.mobile;
-				this.hearImage = userDataT.avatar;
-			},
 			/* 跳转到下一页 */
 			gotoNextPageFun(page) {
 				if (page == 'myBankCard') {
-					uni.navigateTo({
-						url: '../' + page + '/' + page + ''
-					})
+					var data = {
+						mbId: uni.getStorageSync('userId'),
+					}
+					// 获取个人信息
+					this.$http.get('/api/member/isVerified', data, true).then(res => {
+						if (res.data.code == 200) {
+							if (!res.data.data) {
+								uni.navigateTo({
+									url: '../realName/realName'
+								})
+							} else {
+								uni.navigateTo({
+									url: '../' + page + '/' + page + ''
+								})
+							}
+						}
+					});
+
 				} else {
 					uni.navigateTo({
 						url: '../' + page + '/' + page + ''
@@ -179,40 +198,27 @@
 
 			},
 			// 获取密码
-			getPwd(val) {
-				if (this.setFalg) {
-					this.passwordSix = val
-				} else {
-					var data = {
-						memberId: uni.getStorageSync('userId'),
-						password: val
-					};
-					this.$http.post('/account/passwordCheck', data).then(res => {
-						if (res.data.code == 200) {
-							this.payFalg = false;
-							this.getNewOrder()
-						} else {
-							this.$refs.pwd.clear(); //清空密码
-							uni.showToast({
-								title: res.data.message,
-								icon: 'none',
-								duration: 1500,
-								position: 'top',
-							});
-						}
-					}).catch(err => {})
+			getPwd: function(val) {
 
-				}
+				this.passwordSix = val
+
 
 			},
-		
+
 			// 设置支付密码
-			getSetPassword() {
+			getSetPassword: function() {
 				var data = {
-					password: this.passwordSix
+					password: this.passwordSix,
+					mbId: uni.getStorageSync('userId')
 				}
-				this.$http.get('/account/setPassword/' + uni.getStorageSync('userId'), data).then(res => {
+				this.$http.post('/api/account/setPassword', data, true).then(res => {
 					if (res.data.code == 200) {
+						uni.showToast({
+							title: '操作成功',
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
 						this.payFalg = false;
 						this.$refs.pwd.clear(); //清空密码
 					} else {
@@ -225,24 +231,27 @@
 						});
 					}
 				}).catch(err => {})
+
+
 			},
 
+
+
 			// 关闭设置密码输入框
-			closeMoudel() {
+			closeMoudel: function() {
 				this.payFalg = false
 			},
 			/* 打开密码框 */
-			togglePopup() {
-				this.$http.get('/account/isSetPassword/' + uni.getStorageSync('userId')).then(res => {
+			togglePopup: function() {
+				var data = {
+					mbId: uni.getStorageSync('userId')
+				}
+				this.$http.get('/api/account/isSetPassword', data, true).then(res => {
 					if (res.data.code == 200) {
 						if (res.data.success) { //设定了
 							//有密码了 跳修改密码页
-							uni.navigateTo({
-								url: '../../pages/updatePassword/updatePassword?telt=' + this.telePhone + '',
-								success: res => {},
-								fail: () => {},
-								complete: () => {}
-							});
+							this.payFalg = true;
+							this.setFalg = false;
 						} else { //没设定
 							this.payFalg = true;
 							this.setFalg = true;
@@ -257,11 +266,13 @@
 						});
 					}
 				}).catch(err => {})
+			
+			
 			},
-			setPageFun() {
-				this.getUserFun();
+			setPageFun: function() {
+				// this.getUserFun();
 			},
-			onBackPress() {
+			onBackPress: function() {
 				if (this.orderListType == '2') {
 					const that = this;
 					var pages = getCurrentPages();
@@ -410,7 +421,7 @@
 		margin-left: 5%;
 		border-radius: 16px;
 		position: fixed;
-		bottom: 3%;
+		top: 15%;
 		height: 438upx;
 	}
 
