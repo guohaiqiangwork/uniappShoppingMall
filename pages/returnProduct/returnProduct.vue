@@ -47,7 +47,7 @@
 						</view>
 						<!-- 单个商品 -->
 						<view class="" v-if="item.details.length == 1">
-							<view class="uni-flex" v-for="(items,index) in item.details" :key="index">
+							<view class="uni-flex" v-for="(items,index) in item.details" :key="index" @click="goOrder(item.orderId)">
 								<view class="width30">
 									<image :src="items.image" class="order_productimg" mode=""></image>
 								</view>
@@ -69,7 +69,7 @@
 						</view>
 						<!-- 多个商品 -->
 						<view class="" v-if="item.details.length > 1">
-							<view class="uni-flex">
+							<view class="uni-flex" @click="goOrder(item.orderId)">
 								<scroll-view scroll-x="true" class="wrapper">
 
 									<image :src="items.image" class="dimg" mode="" v-for="(items,index) in  item.details" :key="index"></image>
@@ -129,7 +129,8 @@
 							<view class="width20">
 								<image :src="item.storeLogo" class="order_listimg" mode=""></image>
 							</view>
-							<view class="width80 text_hidden font_sise28 margin_top2 margin_left5">
+	
+							<view class="width80  font_sise28 margin_top2 margin_left5 uni_flex_hidden font_weight600" >
 								{{item.storeName}}
 							</view>
 						</view>
@@ -146,7 +147,8 @@
 					</view>
 					<!-- 单个商品 -->
 					<view class="" v-if="item.returnDetails.length == 1">
-						<view class="uni-flex" v-for="(items,index) in item.returnDetails" :key="index">
+			
+						<view class="uni-flex" v-for="(items,index) in item.returnDetails" :key="index" >
 							<view class="width30">
 								<image :src="items.image" class="order_productimg" mode=""></image>
 							</view>
@@ -168,7 +170,7 @@
 					</view>
 					<!-- 多个商品 -->
 					<view class="" v-if="item.returnDetails.length > 1">
-						<view class="uni-flex">
+						<view class="uni-flex" >
 							<scroll-view scroll-x="true" class="wrapper">
 				
 								<image :src="items.image" class="dimg" mode="" v-for="(items,index) in  item.returnDetails" :key="index"></image>
@@ -321,6 +323,13 @@
 			this.getApplyOrder() //获取列表
 		},
 		methods: {
+			goOrder:function(orderId){
+				console.log(orderId)
+				uni.navigateTo({
+					url: '../orderDetail/orderDetail?orderId=' + orderId
+				
+				})
+			},
 			// tab two
 			tabSwichThree: function(index) {
 				this.tabIndexT = index;

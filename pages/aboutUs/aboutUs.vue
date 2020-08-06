@@ -3,7 +3,7 @@
 		<view class=" top_moudel">
 			<image src="../../static/image/my/log.png" mode="" style="width: 170upx;height: 170upx;"></image>
 			<view class="font_size32 font_color33">
-				新商城
+				华行优选
 			</view>
 			<view class="font_color99 font_size30">
 				版本：V{{VCode}}
@@ -14,7 +14,7 @@
 				<view class="font_color33 font_size30 font_weight500">
 					用户协议
 				</view>
-				<view class="margin_right3">
+				<view class="">
 					<image src="../../static/image/icon/right.png" style="width: 14upx;height: 24upx;" mode=""></image>
 				</view>
 			</view>
@@ -22,7 +22,7 @@
 				<view class="font_color33 font_size30 font_weight500">
 					隐私政策
 				</view>
-				<view class="margin_right3">
+				<view class="">
 					<image src="../../static/image/icon/right.png" style="width: 14upx;height: 24upx;" mode=""></image>
 				</view>
 			</view>
@@ -89,8 +89,8 @@
 	}
 
 	.list_one {
-		width: 94%;
-		margin-left: 3%;
+		width: 92%;
+		margin-left: 4%;
 		border-bottom: 1px solid #EEEEEE;
 		padding-top: 3%;
 		padding-bottom: 3%;

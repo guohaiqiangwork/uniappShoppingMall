@@ -41,7 +41,7 @@
 						</lb-picker>
 					</view>
 
-					<image src="../../static/image/icon/down.png" class="right_img" mode=""></image>
+					<!-- <image src="../../static/image/icon/down.png" class="right_img" mode=""></image> -->
 				</view>
 			</view>
 			<view class="form_list">
@@ -54,7 +54,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="mar_bt"></view>
+		<!-- <view class="mar_bt"></view>
 		<view class=" background_colorff">
 			<view class="uni-flex bottom_list_s">
 				<view class="bottom_list_left">
@@ -65,7 +65,7 @@
 				</view>
 			</view>
 		</view>
-
+ -->
 		<view class=" background_colorff">
 			<view class="uni-flex bottom_list_s" @click="deleteAddr">
 				<view class="bottom_list_left">
@@ -123,6 +123,7 @@
 			this.getMyFindById(); //获取地址在详情
 			this.getProvince();//获取省数据
 		},
+		
 		methods: {
 			keyName: function(event) {
 				this.name = event.target.value
@@ -158,10 +159,14 @@
 				this.$http.get('/api/address/detail', data, true, ).then(res => {
 					console.log(res)
 					if (res.data.code == 200) {
+
 						// this.area = res.data.data.province + res.data.data.city + res.data.data.area; //省市区
-						this.province = res.data.data.province;
-						this.city = res.data.data.city;
-						this.area = res.data.data.area;
+						this.province = res.data.data.provinceName;
+						this.provinceNumber = res.data.data.province;
+						this.city = res.data.data.cityName;
+						this.cityNumber =res.data.data.city
+						this.area = res.data.data.areaName;
+						this.areaNumber =res.data.data.area
 						this.name = res.data.data.receiver;
 						this.phone = res.data.data.mobile;
 						this.addr = res.data.data.address;
@@ -214,6 +219,7 @@
 			},
 			// 添加地址
 			addAddr() {
+				var _this = this;
 				if (this.name == '' || this.phone == '' || this.area == '' || this.addr == '') {
 					uni.showToast({
 						title: '请填写完整信息',
@@ -261,14 +267,15 @@
 				console.log(JSON.stringify(keyword))
 				this.$http.post('/api/address/update', keyword, true).then(res => {
 					uni.hideLoading()
-					uni.showToast({
-						title: '修改成功',
-						icon: 'none',
-						duration: 2000,
-						position: 'top',
-					});
+					
 					console.log(res.data.code)
 					if (res.data.code == 200) {
+						uni.showToast({
+							title: '修改成功',
+							icon: 'none',
+							duration: 2000,
+							position: 'top',
+						});
 						if (this.urlFalg == 'list') {
 							uni.navigateTo({
 								url: '../addAddress/addAddress',
@@ -339,7 +346,12 @@
 			// 	console.log('cancel::', item)
 			// },取消
 			handleTap(name) {
-				this.$refs[name].show()
+				console.log(name)
+				this.$refs[name].show();
+				if(name == 'picker1'){
+					this.city = '请选择城市'
+				}
+				this.area = ''
 			},
 		}
 	}
@@ -347,7 +359,7 @@
 
 <style>
 	page {
-		background-color: #F4F4F4;
+		background-color: #FAFAFA;
 	}
 
 	.form_body {
@@ -356,9 +368,9 @@
 	}
 
 	.form_list {
-		width: 94%;
+		width: 92%;
 		display: flex;
-		margin-left: 3%;
+		margin-left: 4%;
 		border-bottom: 1px solid #eee;
 	}
 
@@ -396,6 +408,7 @@
 		line-height: 100upx;
 		color: #fff;
 		width: 90%;
+		font-size: 32upx;
 	}
 
 	.bottom_add {
@@ -420,8 +433,8 @@
 	.bottom_list_s {
 		padding-left: 5upx;
 		margin-top: 5%;
-		width: 94%;
-		margin-left: 3%;
+		width: 92%;
+		margin-left: 4%;
 	}
 
 	.bottom_list_left {

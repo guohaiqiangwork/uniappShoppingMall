@@ -8,7 +8,7 @@
 			</view>
 			<!-- 搜索框 -->
 			<view class="uni-flex top_content">
-				<view class="searce_left">
+				<view class="searce_left" style="width: 7%;">
 					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
 				</view>
 				<view class="searce_right">
@@ -36,10 +36,10 @@
 			</view>
 			<view class="padding_top3 padding_bottom3" v-if="this.tabIndex == 0">
 				<view @click="tabSwichThree(index)" class="item_tab_three" v-for="(item,index) in tabListThree" :key="index" :style="index == 2 ?'border:none' :'' ">
-					<view class="">
+					<view  :class="twoTab == index? 'font_weight700' : ''" >
 						{{item.name}}
 					</view>
-					<view class="jian_moudel" v-if="index == 2">
+					<view class="jian_moudel " v-if="index == 2">
 						<view class="kailong" :style="sortUp ? 'border-bottom: 8upx solid #B98615' :''"></view>
 						<view class="kailong1" :style="!sortUp ? 'border-top: 8upx solid #B98615' :''"></view>
 					</view>
@@ -55,16 +55,16 @@
 			<!-- 商品 -->
 			<template v-if="tabIndex == 0">
 				<view class="uni-flex list_moudel_search" v-for="(item,index) in queryGoodsList" :key="index">
-					<view class="width30" @click="goTodetails">
+					<view class="width30" @click="goTodetails(item)">
 						<image :src="item.goodsDetail.images" class="list_img" mode=""></image>
 					</view>
 					<view class="width66">
-						<view class="margin_top5 text_hidden">
+						<view class="margin_top5 text_hidden font_weight600">
 							{{item.title}}
 						</view>
 						<view class="uni-flex display_space margin_top8">
 							<view class="font_size22 font_color66 ">
-								<text class="font_colorbe">¥{{item.goodsDetail.price}}</text> /件
+								<text class="font_colorbe" style="font-size: 28upx;">¥{{item.goodsDetail.price}}</text> /件
 							</view>
 							<view class="margin_right3" @click="addShopCard(item)">
 								<image src="../../static/image/icon/shopCard.png" class="image_list_s" mode=""></image>
@@ -93,7 +93,7 @@
 							{{item.storeName}}
 						</view>
 						<view class="width20">
-							<view class="shop_moudel_btn" @click="goToShop(item.sellerId)">
+							<view class="shop_moudel_btn" @click="goToShop(item.id)">
 								进店
 							</view>
 						</view>
@@ -102,8 +102,8 @@
 			</template>
 
 
-			<view>
-				<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+			<view v-if="queryStoreList.length > 9">
+				<uni-load-more :status="status" :content-text="contentText" color="#999999" />
 			</view>
 
 		</view>
@@ -161,7 +161,8 @@
 				],
 				tabIndexT: 0,
 				sortUp: true,
-				shopCarNumber:''//购物车数量
+				shopCarNumber:'',//购物车数量
+				twoTab:0
 			}
 		},
 		onLoad(option) {
@@ -210,6 +211,8 @@
 			// tab two
 			tabSwichThree: function(index) {
 				console.log(index)
+				this.twoTab =index;
+				
 				this.sort = index + 1;
 				this.queryGoodsList = [];
 				index == 2 ? this.sortUp = !this.sortUp : ''; //价格
@@ -218,9 +221,11 @@
 			},
 			// 去产品详情
 			goTodetails: function(e) {
-				var e = 1;
+				console.log(JSON.stringify(e));
+		
+				// var e = 1;
 				uni.navigateTo({
-					url: '../productDetails/productDetails?productId=' + e + '&urlFalg=searchList'
+					url: '../productDetails/productDetails?productId=' + e.id + '&urlFalg=searchList'
 				})
 			},
 			// 去店铺
@@ -380,6 +385,7 @@
 		border-radius: 2upx;
 		margin-left: 42%;
 		border: 1px solid #BE8100;
+		margin-top: -2%;
 	}
 
 	.item_tab_three {
@@ -428,6 +434,8 @@
 	.list_img {
 		width: 180upx;
 		height: 180upx;
+		border-top-left-radius: 10upx;
+		border-bottom-left-radius: 10upx;
 	}
 
 	.image_list_s {
@@ -472,7 +480,7 @@
 		line-height: 1;
 		font-weight: 600;
 		position: absolute;
-		margin-left: 10%;
+		margin-left: 8%;
 		margin-top: -1%;
 	}
 </style>

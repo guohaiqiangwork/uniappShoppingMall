@@ -10,19 +10,19 @@
 					<view class="font_size30 padding_top3">
 						需支付
 					</view>
-					<view class="font_size50">
+					<view class="font_size50 font_weight600">
 						¥{{payData.payment}}
 					</view>
 				</view>
 			</view>
 
 			<view class="pay_list">
-				<view class="font_size30 font_colorff padding_bottom2" style="border-bottom: 1px  dashed #FFFFFF;">
+				<view class="font_size30 font_colorff padding_bottom2 " style="border-bottom: 1px  dashed #CCCCCC;">
 					选择支付方式
 				</view>
-				<view @click="switchPay(item.id)" class="uni-flex display_space margin_top3 padding_bottom3" v-for="(item,index) in payList"
+				<view @click="switchPay(item.id)" style="margin-top: 30upx;"  class="uni-flex display_space  padding_bottom3" v-for="(item,index) in payList"
 				 :key="index">
-					<view class="uni-flex width50">
+					<view class="uni-flex  width50">
 						<view class="">
 							<image :src="item.url" class="left_img" mode=""></image>
 						</view>
@@ -70,7 +70,7 @@
 					<view class="font_color33 font_size30 text_center" v-if="!setFalg">
 						需支付
 					</view>
-					<view class="font_color33 font_size60 text_center" v-if="!setFalg">
+					<view class="font_color33 font_size60 font_weight600 text_center" v-if="!setFalg">
 						￥{{payData.payment}}
 					</view>
 					<view class="margin_top5">
@@ -108,7 +108,7 @@
 						id: 'zfb'
 					}
 				],
-				payFalg: 'wx',
+				payFalg: '',
 				payFalgY: false, //余额支付弹窗
 				setFalg: false, //设置密码
 				remaining: '', //显示剩余时间
@@ -167,6 +167,13 @@
 
 
 
+		},
+		onBackPress() {
+			console.log('999');
+			uni.navigateTo({
+				url: '../myOrder/myOrder?orderType=1'
+			});
+			return true;
 		},
 		methods: {
 			// 倒计时
@@ -329,7 +336,7 @@
 
 			},
 			// 关闭设置密码输入框
-			closeMoudel() {
+			closeMoudel:function() {
 				console.log('0')
 				this.payFalgY = false
 			},
@@ -356,13 +363,13 @@
 		text-align: center;
 		color: #FFFFFF;
 		font-size: 22upx;
-		background: linear-gradient(#a58747, #edcb80);
+		background: linear-gradient(to right,  #edcb80,#a58747);
 		border-radius: 20upx 20upx 0upx 0upx;
 		line-height: 70upx;
 	}
 
 	.pay_list {
-		height: 416upx;
+		// height: 416upx;
 		background: #4b4b4b;
 		border-radius: 20upx;
 		margin-top: 30upx;
@@ -381,7 +388,7 @@
 
 	.pay_btn {
 		height: 98upx;
-		background: linear-gradient(#a58747, #edcb80);
+		background: linear-gradient(to right, #edcb80,#a58747);
 		border-radius: 10upx;
 		line-height: 98upx;
 		text-align: center;

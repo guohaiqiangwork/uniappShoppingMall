@@ -10,13 +10,13 @@
 			</view>
 
 			<view class="body_view">
-				<view class="body_view_1">
-					<text class="font_weight600">姓名</text>
-					<text class="font_color66 margin_left100">{{infoData.nickName}}</text>
+				<view class="body_view_1 border_bottom padding_bottom3">
+					<text class="font_weight600 ">真实姓名</text>
+					<text class="font_color66 margin_left5">{{infoData.nickName}}</text>
 				</view>
 				<view class="body_view_1" @click="editTelephon">
-					<text class="font_weight600">我的手机</text>
-					<text class="font_color66 margin_left40">{{infoData.mobile}}</text>
+					<text class="font_weight600 ">我的手机</text>
+					<text class="font_color66 margin_left5">{{infoData.mobile}}</text>
 					<image src="../../static/image/my/return1.png" mode=""></image>
 				</view>
 			</view>
@@ -138,7 +138,7 @@
 
 	.conunt {
 		width: 100%;
-		height: 554upx;
+		height: 550upx;
 		background-color: #FFFFFF;
 
 		.head_view {
@@ -168,7 +168,7 @@
 			font-size: 30upx;
 
 			.body_view_1 {
-				margin: 45upx 0;
+				margin: 30upx 0;
 
 				image {
 					width: 13upx;

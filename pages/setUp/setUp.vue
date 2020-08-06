@@ -7,7 +7,7 @@
 					<!-- <image :src="hearImage" mode=""></image> -->
 					<image :src="infoData.headImgurl" mode=""></image>
 					<text style="position: relative;bottom:50rpx;left: 28upx;">{{infoData.nickName}}</text>
-					<text style="position: relative;bottom:10rpx;right:80upx;">{{infoData.mobile}}</text>
+					<text style="position: relative;bottom:10rpx;right:63upx;">{{infoData.mobile}}</text>
 				</view>
 				<view class="list_item_right">
 					<image src="../../static/image/my/return1.png"></image>
@@ -84,9 +84,9 @@
 							<image src="../../static/image/icon/close.png" mode="" class="moudel_img"></image>
 						</view>
 						<view class="font_color33 font_size34 font_weight600 margin_left3" v-if="setFalg">
-							设置支付密码
+							设置支付密码 
 						</view>
-						<view class="font_color33 font_size34 font_weight600" v-if="!setFalg">
+						<view class="font_color33 font_size34 font_weight600" v-else>
 							修改支付提现密码
 						</view>
 					</view>
@@ -129,8 +129,19 @@
 
 		},
 		mounted() {
+			
+		},
+		onShow() {
 			this.getMyData() //获取个人信息
 		},
+		onBackPress() {
+			console.log('999');
+			uni.switchTab({
+				url:'../tabBar/my/my'
+			})
+			return true;
+		},
+		
 		methods: {
 
 			getMyData: function() {
@@ -170,17 +181,18 @@
 			},
 
 			/* 跳转到下一页 */
-			gotoNextPageFun(page) {
+			gotoNextPageFun:function(page) {
+				var data = {
+					mbId: uni.getStorageSync('userId'),
+				}
 				if (page == 'myBankCard') {
-					var data = {
-						mbId: uni.getStorageSync('userId'),
-					}
+					
 					// 获取个人信息
 					this.$http.get('/api/member/isVerified', data, true).then(res => {
 						if (res.data.code == 200) {
 							if (!res.data.data) {
 								uni.navigateTo({
-									url: '../realName/realName'
+									url: '../realName/realName?pageType=' + page
 								})
 							} else {
 								uni.navigateTo({
@@ -190,6 +202,22 @@
 						}
 					});
 
+				}else if(page == 'loginPassword'){
+					// 获取个人信息
+					this.$http.get('/api/member/isPassword', data, true).then(res => {
+						if (res.data.code == 200) {
+							console.log(99)
+							if (res.data.data) {
+								uni.navigateTo({
+									url: '../noPassword/noPassword'
+								})
+							} else {
+								uni.navigateTo({
+									url: '../' + page + '/' + page + ''
+								})
+							}
+						}
+					});
 				} else {
 					uni.navigateTo({
 						url: '../' + page + '/' + page + ''
@@ -199,9 +227,8 @@
 			},
 			// 获取密码
 			getPwd: function(val) {
-
+				console.log(val)
 				this.passwordSix = val
-
 
 			},
 
@@ -217,7 +244,7 @@
 							title: '操作成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 						this.payFalg = false;
 						this.$refs.pwd.clear(); //清空密码
@@ -227,7 +254,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {})
@@ -247,8 +274,9 @@
 					mbId: uni.getStorageSync('userId')
 				}
 				this.$http.get('/api/account/isSetPassword', data, true).then(res => {
+
 					if (res.data.code == 200) {
-						if (res.data.success) { //设定了
+						if (res.data.data) { //设定了
 							//有密码了 跳修改密码页
 							this.payFalg = true;
 							this.setFalg = false;
@@ -272,16 +300,16 @@
 			setPageFun: function() {
 				// this.getUserFun();
 			},
-			onBackPress: function() {
-				if (this.orderListType == '2') {
-					const that = this;
-					var pages = getCurrentPages();
-					if (pages.length > 1) {
-						var beforePage = pages[pages.length - 2];
-						beforePage.$vm.myFun();
-					}
-				}
-			},
+			// onBackPress: function() {
+			// 	if (this.orderListType == '2') {
+			// 		const that = this;
+			// 		var pages = getCurrentPages();
+			// 		if (pages.length > 1) {
+			// 			var beforePage = pages[pages.length - 2];
+			// 			beforePage.$vm.myFun();
+			// 		}
+			// 	}
+			// },
 		}
 	}
 </script>
@@ -322,7 +350,7 @@
 
 			.list_item_right {
 				width: 5%;
-
+				text-align: right;
 				image {
 					width: 13upx;
 					height: 23upx;

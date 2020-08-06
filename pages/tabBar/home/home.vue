@@ -7,8 +7,8 @@
 				<view class="searce_left">
 					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>
 				</view>
-				<view class="searce_right">
-					<input class="findShop" maxlength="10" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text" @confirm='Search'
+				<view class="searce_right"   @click="Search">
+					<input class="findShop" maxlength="10" disabled="true" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text" @confirm='Search'
 					 placeholder-style='color:#cccccc' />
 				</view>
 			</view>
@@ -26,12 +26,13 @@
 			</view>
 
 			<!-- 分类 -->
-			<view class="margin_top3">
-				<view @click="goTabCategory(item.id)" class="width18 margin_left2 display_inline" v-for="(item,index) in tabList" :key="index">
+			<view class="margin_top3" style="width: 720upx;margin-left: -26upx;">
+				<!-- :class="index == 0 || index == 5 ? 'text_left' :'text_right'" -->
+				<view @click="goTabCategory(item.id)"  class="width18 text_center margin_left2 display_inline" v-for="(item,index) in tabList" :key="index">
 					<view class="">
 						<image :src="item.imageUrl" mode="" style="width: 80upx;height: 80upx;"></image>
 					</view>
-					<view class="font_size26">
+					<view class="font_size26 ">
 						{{item.name}}
 					</view>
 				</view>
@@ -44,7 +45,7 @@
 				</view>
 				<!-- 公告内容 -->
 				<view class="uni-swiper-msg margin_left2">
-					<swiper class="swiper" vertical="true" autoplay="false" duration="500" interval="4000">
+					<swiper class="swiper" vertical="true" autoplay="false" duration="500" interval="2000">
 						<swiper-item v-for="(item, index) in msg" :key="index" class="swiper_item_font text_hidden">
 							<view @tap="notice(item.id)">{{item.title}}</view>
 						</swiper-item>
@@ -149,32 +150,34 @@
 			</view>
 			<!-- 图片展示 -->
 			<view class="hot_moudel text_center" v-if="true">
-				<view class="uni-flex" style="padding-left: 20upx;padding-top: 20upx;">
-					<view @click="goProductD(hotList[0].spuId)" class="" style="border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;padding-right: 20upx;">
-						<image :src="hotList[0].image" style="width: 315upx;height: 352upx;" mode=""></image>
+				<view class="uni-flex" style="">
+					<view @click="goProductD(hotList[0].spuId)" class="" style="border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;">
+						<image :src="hotList[0].image" style="width: 345upx;height: 206upx;border-top-left-radius: 10upx;" mode=""></image>
 					</view>
-					<view @click="goProductD(hotList[1].spuId)" class="" style="border-bottom: 1px solid #DEDEDE;padding-left: 10upx;">
-						<image :src="hotList[1].image" style="width: 315upx;height: 352upx;" mode=""></image>
+					<view @click="goProductD(hotList[1].spuId)" class="" style="border-bottom: 1px solid #DEDEDE;">
+						<image :src="hotList[1].image" style="width: 345upx;height: 206upx;border-top-right-radius: 10upx;" mode=""></image>
 					</view>
 				</view>
-				<view class="uni-flex" style="padding-left: 20upx;">
-					<view @click="goProductD(hotList[2].spuId)" class="padding_top2" style="border-right: 1px solid #DEDEDE;padding-right: 20upx;">
-						<image :src="hotList[2].image" style="width: 315upx;height: 352upx;" mode=""></image>
+				<view class="uni-flex" style="">
+					<view @click="goProductD(hotList[2].spuId)" class="" style="border-right: 1px solid #DEDEDE;">
+
+						<image :src="hotList[2].image" style="width: 345upx;height: 206upx;" mode=""></image>
 					</view>
-					<view @click="goProductD(hotList[3].spuId)" class="padding_top2" style="padding-left: 10upx;">
-						<image :src="hotList[3].image" style="width: 315upx;height: 352upx;" mode=""></image>
+					<view @click="goProductD(hotList[3].spuId)" class="" style="">
+					
+						<image :src="hotList[3].image" style="width: 345upx;height: 206upx;" mode=""></image>
 					</view>
 				</view>
 
 			</view>
 
 			<!-- 精调细选 -->
-			<view class="">
+			<view class="margin_top3">
 				<view class="display_flex">
 					<view class="font_size30 font_weight600">
 						精挑细选
 					</view>
-					<view class="font_size22 font_color99 font_weight600 margin_left3" style="margin-top: 1%;">
+					<view class="font_size22 font_color99  margin_left3" style="margin-top: 1%;">
 						你的生活美学指南
 					</view>
 				</view>
@@ -215,16 +218,16 @@
 			<scroll-view scroll-x="true" class="wrapper">
 				<!-- <view class="uni-flex"> -->
 				<view class="dimg_moudel" v-for="(item,index) in newlist" :key="index">
-					<view class="uni-flex">
+					<view class="uni-flex" @click="goProductD(item.spuId)">
 						<view class="width50">
-							<image :src="item.image" @click="goProductD(item.spuId)" :class="index== 0 ? 'dimgn'  : 'dimg' " mode="">
+							<image :src="item.image"  :class="index== 0 ? 'dimgn'  : 'dimg' " mode="">
 							</image>
 						</view>
-						<view class="width45  right_bj " style="white-space: normal;">
-							<view class=" text_hidden2">
+						<view class="width45  right_bj font_weight600 " style="white-space: normal;">
+							<view class=" text_hidden2 font_size30">
 								{{item.title}}
 							</view>
-							<view class="margin_top2 text_hidden2">
+							<view class="margin_top2 text_hidden2 font_size24">
 								{{item.subTitle}}
 							</view>
 						</view>
@@ -270,11 +273,14 @@
 		methods: {
 			Search:function(e) {
 				console.log(e);
-				if(e.detail.value){
-					uni.navigateTo({
-						url: '../../search/search?searchName=' + e.detail.value
-					})
-				}
+				uni.navigateTo({
+					url: '../../search/search'
+				})
+				// if(e.detail.value){
+				// 	uni.navigateTo({
+				// 		url: '../../search/search?searchName=' + e.detail.value
+				// 	})
+				// }
 				
 			},
 			// 轮播滑动操作
@@ -392,8 +398,8 @@
 	}
 
 	.content_moudel {
-		width: 94%;
-		margin-left: 3%;
+		width: 690upx;
+		margin-left: 30upx;
 	}
 
 	// 轮播
@@ -419,6 +425,7 @@
 		// border-radius: 20upx;
 		border-bottom-left-radius: 40upx;
 		border-top-right-radius: 40upx;
+		box-shadow: 0upx 3upx 6upx 0upx #e8e8e8; 
 	}
 
 	.img_cnter {

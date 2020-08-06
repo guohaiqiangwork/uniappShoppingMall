@@ -5,7 +5,7 @@
 				<view class="width15" style="margin-left: 60upx;">
 					<image :src="mySuper.headImgurl" class="left_img1"  mode=""></image>
 				</view>
-				<view class="width80">
+				<view class="width80 uni-flex margin_top3">
 					<view class="font_sise28 font_colorff">
 						{{mySuper.nickName}}
 					</view>
@@ -14,7 +14,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="uni-flex margin_top3">
+			<!-- <view class="uni-flex margin_top3">
 				<view class="width33 text_center font_colorff">
 					<view class="font_size36" style="color: #FFE0A5;">
 						{{teamCount.teamNum}}
@@ -31,7 +31,7 @@
 						总交易额
 					</view>
 				</view>
-				<view class="width33 text_center font_colorff" @click="goDetailsOfFenrun">
+				<view class="width33 text_center font_colorff">
 					<view class="font_size36" style="color: #FFE0A5;">
 						{{teamCount.splitRunAmount}}
 					</view>
@@ -40,7 +40,7 @@
 					</view>
 				</view>
 			</view>
-					
+					 -->
 		</view>
 
 		
@@ -51,24 +51,25 @@
 				团队人员
 			</view>
 			<scroll-view class="">
-				 <view class="uni-flex  padding_top3 padding_bottom3" v-for="(item,index) in teamMembersList" :key="index">
+				 <view class="uni-flex border_bottom padding_top3 padding_bottom3" v-for="(item,index) in teamMembersList" :key="index">
 				 	<view class="width15">
 				 		<image :src="item.headImgurl" class="left_img1" mode=""></image>
 				 	</view>
-					<view class="width40 ">
-						<view class="uni-flex ">
+					<view class="width80 ">
+						<view class="uni-flex " style="margin-top: 4%;">
 							<view class="font_sise28">
 								{{item.nickName}}
 							</view>
 							<view class="">
+								{{item.mobile}}
 								<!-- <image src="../../static/image/bank/gsy.png" mode="" style="width: 90upx;height: 30upx;"></image> -->
 							</view>
 						</view>
-						<view class="font_size26 font_color66">
+					<!-- 	<view class="font_size26 font_color66">
 							{{item.mobile}}
-						</view>
+						</view> -->
 					</view>
-					<view class="width40 text_right">
+				<!-- 	<view class="width40 text_right">
 						<view class="uni-flex display_right">
 							<view class="">
 								<image src="../../static/image/icon/people.png"  style="width: 26upx;height: 26upx;" mode=""></image>
@@ -81,6 +82,7 @@
 							总交易额 <text class="font_sise28 font_colorbe">{{item.totalTrans}}</text>
 						</view>
 					</view>
+				 -->
 				 </view>
 				 
 			
@@ -90,7 +92,10 @@
 				 		暂无消息~
 				 	</view>
 				 </view>
-				 <uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+				 <view class="" v-if="teamMembersList.length > 9" >
+				 	 <uni-load-more :status="status" :content-text="contentText" color="#999999" />
+				 </view>
+				
 				 
 			</scroll-view>
 		</view>
@@ -146,17 +151,13 @@
 			Search(e){
 				console.log(e)
 			},
-			goDetailsOfFenrun(){
-				uni.navigateTo({
-					url:'../detailsOfFenrun/detailsOfFenrun'
-				})
-			},
+			
 			getTeamMembers:function(){
 				var data = {
 					keyword:this.inputValue,
 					limit:'10',
 					page:this.pageNum,
-					mbId: uni.getStorageSync('userId'),
+					mbId:this.teamId,
 				}
 				// 获取团队数据
 				this.$http.get('/api/member/teamMembers', data, true).then(res => {
@@ -182,7 +183,7 @@
 					}
 				});
 				// 获取我的上级
-				this.$http.get('/api/member/team/mySuper', data, true).then(res => {
+				this.$http.get('/api/member/center/info', data, true).then(res => {
 					if (res.data.code == 200) {
 						this.mySuper = res.data.data
 					}
@@ -202,7 +203,7 @@
 	}
 	.mt_top_t {
 		background: url(../../static/image/beij/md.png) no-repeat;
-		height: 300upx;
+		height: 150upx;
 		background-size: 100% 100%;
 		padding-top: 30upx;
 	}

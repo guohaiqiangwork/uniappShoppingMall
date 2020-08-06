@@ -9,14 +9,14 @@
 			
 			<view class="content_item">
 				<text class="font_weight600 font_size30">更换手机</text>
-				<input @input="getPhone" placeholder="请输入手机号"  style="width: 520upx;float: right;margin-top: 32upx;font-size: 30upx;" type="text" value="" />
+				<input @input="getPhone" placeholder="请输入手机号" maxlength="11" placeholder-style="color:#999999" style="width: 520upx;float: right;margin-top: 32upx;font-size: 30upx;" type="text" value="" />
 			</view>
 			
 			<view class="content_item">
 				<text class="font_weight600 font_size30">验证码</text>
 				<view style="display: flex;align-items: center; width: 520upx;height: 110upx;float: right;">
-					<input @input="getCode" type="text" placeholder="请输入验证码" style="font-size: 30upx;" />
-					<view style="border-left: #CCCCCC solid 1px;width: 60%;;text-align: center;">
+					<input @input="getCode" type="text" placeholder-style="color:#999999" placeholder="请输入验证码" style="font-size: 30upx;" />
+					<view style="border-left: #CCCCCC solid 1px;width: 40%;text-align: right;margin-left:5%;padding-left: 3%;">
 						<text @click="getYzm">{{yzm}}</text>
 					</view>
 				</view>
@@ -123,7 +123,7 @@
 						if (res.data.code == 200) {
 							that.yzm_stuas = 1;
 							var clear = setInterval(function() {
-								that.yzm = "(" + that.timed + ")";
+								that.yzm = "重新获取(" + that.timed + ")";
 								console.log(that.yzm);
 								that.timed = that.timed - 1;
 								if (that.timed == 0) {

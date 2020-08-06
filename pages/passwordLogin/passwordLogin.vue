@@ -9,7 +9,7 @@
 				</view>
 				<!--登录模块 -->
 				<view class="login_moudel_width font_colorff">
-					<view class="font_weight600 font_size44 margin_top5">
+					<view class="font_weight700 font_size44 margin_top5">
 						{{loginTitle}}
 					</view>
 
@@ -18,20 +18,20 @@
 					<view class="margin_top5 font_size36">
 						手机号码
 					</view>
-					<view class="border_bottom padding_bottom3 margin_top5">
+					<view class=" padding_bottom3 margin_top5" style="border-bottom: 1px solid #484848;">
 						<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
 					</view>
 					<view class="margin_top5 font_size36">
 						密码
 					</view>
-					<view class="border_bottom padding_bottom3 margin_top5">
+					<view class=" padding_bottom3 margin_top5" style="border-bottom: 1px solid #484848;">
 						<input type="password" maxlength="11" @input="keyCode" placeholder="请输入密码" placeholder-style='color:#484848' />
 					</view>
 					<view class="font_size24 margin_top2" style="color: #FF3131;">
 						{{msgErr}}
 					</view>
 
-					<view class="bottom_btn jb_view" @click="bingYCode">
+					<view class="bottom_btn jb_view " @click="bingYCode">
 						登录
 					</view>
 					<view class="display_space uni-flex font_size28 font_colorff text_right margin_top5 margin_right3">
@@ -53,14 +53,14 @@
 							</view>
 							<view class="login_left margin_left5"></view>
 						</view>
-							<view class="text_center margin_top3" @click="goWxLogin">
+							<view class="text_center margin_top8" @click="goWxLogin">
 								<image src="../../static/image/icon/loginW.png" class="img_log" mode=""></image>
 							</view>
 					</view>
 					
 
 				</view>
-				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">
+				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 94%;">
 					登录即代表您已经同意<text @click="goUserConter('userAgreement')" style="color: #B99445;">用户协议</text>和 <text @click=" goUserConter('userPrivacy')"
 					 style="color: #B99445;">隐私政策</text>
 				</view>
@@ -121,10 +121,10 @@
 					return false;
 				}
 				this.$http.post('/api/common/mb/passLogin', loginData).then(res => {
-					// console.log(JSON.stringify(res))
+					console.log(JSON.stringify(res))
 					if (res.data.code == 200) {
 						uni.setStorageSync('token', res.data.data.token);
-						uni.setStorageSync('userId', res.data.data.id);
+						uni.setStorageSync('userId', res.data.data.mbId);
 						uni.switchTab({
 							url: '../tabBar/home/home'
 						});
@@ -132,6 +132,8 @@
 						uni.navigateTo({
 							url: '../bindingCode/bindingCode?phone=' + this.userPhone
 						})
+					}else{
+						this.msgErr ='*' + res.data.message
 					}
 				}).catch(err => {
 					uni.showToast({
@@ -192,7 +194,7 @@
 			// 忘记密码
 			goToPassword: function() {
 				uni.navigateTo({
-					url: '../noPassword/noPassword'
+					url: '../noPassword/noPassword?urlFalg=login'
 				})
 			},
 
@@ -203,7 +205,10 @@
 				});
 			},
 			goToBack() {
-				uni.navigateBack()
+				// uni.navigateBack()
+				uni.switchTab({
+					url:'../tabBar/home/home'
+				})
 			}
 
 		}
@@ -253,7 +258,7 @@
 		color: #FBECDF;
 		margin-top: 84upx;
 		font-size: 40upx;
-		border-radius: 20upx;
+		border-radius: 10upx;
 	}
 
 	.img_1 {

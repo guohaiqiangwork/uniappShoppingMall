@@ -406,6 +406,33 @@
 				"navigationBarTitleText": "售后详情"
 			}
         }
+        ,{
+            "path" : "pages/shopDetails/shopDetails",
+            "style": {
+            	"app-plus": {
+            		"titleNView": false,
+            		"backgroundTextStyle": "dark"
+            	},
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/shopIndexSearch/shopIndexSearch",
+           "style": {
+           	"app-plus": {
+           		"titleNView": false,
+           		"backgroundTextStyle": "dark"
+           		// "navigationBarTitleText": "店铺搜索"
+           	},
+           	"enablePullDownRefresh": false
+           }
+        },
+		{
+		    "path" : "pages/logisticsPage/logisticsPage",
+		   "style" : {
+		   	"navigationBarTitleText": "订单跟踪"
+		   }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

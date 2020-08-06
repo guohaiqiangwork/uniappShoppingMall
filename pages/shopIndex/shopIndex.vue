@@ -15,7 +15,7 @@
 							<image src="../../static/image/icon/serchf.png" class="searce_width" mode=""></image>
 						</view>
 						<view class="searce_right_input">
-							<input style="color: #FFFFFF;font-size: 26upx;" class="findShop" maxlength="10" :value="inputValue" @input="getInputv"
+							<input style="color: #FFFFFF;font-size: 26upx;" class="findShop"  :value="inputValue" @input="getInputv"
 							 placeholder="请输入要搜索的内容" confirm-type='搜索' type="text" @confirm='Search' placeholder-style='color:#FFFFFF' />
 						</view>
 					</view>
@@ -23,10 +23,10 @@
 
 				<!-- 店铺 -->
 				<view class="uni-flex margin_top3">
-					<view class="margin_left3 width15 text_center">
-						<image :src="shopDetail.shoreLogo" class="shop_img_w" mode=""></image>
+					<view class=" width15 text_center">
+						<image :src="shopDetail.storeLogo" class="shop_img_w" mode=""></image>
 					</view>
-					<view class="uni-flex margin_top1 width60">
+					<view class="uni-flex margin_top1 width60"  @click="goShopDetail(shopDetail)">
 						<view class="font_size28 font_colorff">
 							{{shopDetail.storeName}}
 						</view>
@@ -54,11 +54,12 @@
 
 			</view>
 		</view>
+		
 		<!-- 底部tab -->
 		<view class="background_colorff" v-if="tabIndexTwo == 'home'">
 			<view class="padding_top3 padding_bottom3">
 				<view @click="tabSwichThree(index)" class="item_tab_three" v-for="(item,index) in tabListThree" :key="index" :style="index == 2 ?'border:none' :'' ">
-					<view class="">
+					<view class="" :class="twoTab == index? 'font_weight700' : ''">
 						{{item.name}}
 					</view>
 					<view class="jian_moudel" v-if="index == 2">
@@ -78,12 +79,12 @@
 					<view class="">
 						<image :src="item.goodsDetail.images" class="list_imgone" mode=""></image>
 					</view>
-					<view class="font_size30 text_hidden margin_left3">
+					<view class="font_size30 font_weight600 text_hidden margin_left3">
 						{{item.title}}
 					</view>
-					<view class="font_colorbe font_sise28 margin_left3 padding_bottom3">
-						<text class="font_size22">¥</text>
-						{{item.goodsDetail.price}}
+					<view class="font_colorbe font_sise28  padding_bottom3 margin_top3" style="margin-left: 20upx;">
+						<text class="font_size22 font_weight600" >¥</text>
+						<text style="font-size: 28upx;font-weight: 700;"> {{item.goodsDetail.price}}</text>
 						<text class="font_size22 font_color66">/件</text>
 					</view>
 				</view>
@@ -95,7 +96,7 @@
 					</view>
 				</view>
 
-				<view>
+				<view v-if="queryGoodsList.length > 9">
 					<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
 				</view>
 			</template>
@@ -105,14 +106,14 @@
 		<!-- 分类 -->
 		<template v-if="tabIndexTwo != 'home'">
 			<view class="uni-flex">
-				<view class="width25" style="min-height: 1040upx;">
+				<view class="width25" style="min-height: 1040upx;background-color: #FAFAFA ;">
 					<view @click="leftTab(item.id)" :class="leftIndex  == item.id ? '_left_active' :'_left'" v-for="(item,index) in leftList"
 					 :key="index">
 						{{item.name}}
 					</view>
 				</view>
 
-				<view class="width75 background_colorff" style="min-height: 1040upx;">
+				<view class="width75 background_colorff" style="min-height: 1140upx;">
 					<view @click="goProductDetails(item.id)" class="uni-flex border_bottom _right_moudel" v-for="(item,index) in rightList" :key="index">
 						<view class="">
 							<image :src="item.goodsDetail.images" class="_right_img" mode=""></image>
@@ -126,7 +127,7 @@
 							</view>
 							<view class="font_sise28 font_colorbe">
 								<text class="font_size26">¥</text>
-								{{item.goodsDetail.price}}
+								 {{item.goodsDetail.price}}
 								<text class="font_size22 font_color99">/件</text>
 							</view>
 						</view>
@@ -169,6 +170,7 @@
 	export default {
 		data() {
 			return {
+				rightList:'',
 				tabListThree: [{
 						name: '综合'
 					},
@@ -222,6 +224,7 @@
 				queryGoodsList: '', //商铺列表
 				shopDetail: '', //店铺详情
 				collection: true, //是否关注
+				twoTab:''
 			}
 		},
 		onLoad(option) {
@@ -237,7 +240,7 @@
 		mounted() {
 			this.getQueryGoods('home'); //获取产品列表
 			this.getShopDetail(); //获取商铺详情
-			this.getShopFollow(); //查询是否关注
+		
 			this.getShopSeller();//获取分类
 		},
 		methods: {
@@ -245,12 +248,26 @@
 			Search(e) {
 				console.log(e.detail.value);
 				this.inputValue = e.detail.value;
-				this.getQueryGoods('home'); //获取产品列表
+				if(this.tabIndexTwo == 'home'){
+					uni.navigateTo({
+						url:'../shopIndexSearch/shopIndexSearch?inputValue=' + this.inputValue + '&shopId=' + this.sellerId
+					})
+				}else{
+					this.getQueryGoods(this.tabIndexTwo); //获取产品列表
+				}
+				
 			},
 			// 输入框输入事件
 			getInputv: function(e) {
 				this.inputValue = e.detail.value;
 				console.log(e)
+			},
+			// 去店铺详情
+			goShopDetail:function(item){
+				console.log(item)
+				uni.navigateTo({
+					url:'../shopDetails/shopDetails?shopId=' + item.id
+				})
 			},
 			// 返回
 			goBack: function() {
@@ -259,6 +276,7 @@
 			// tab
 			tabSwichThree: function(index) {
 				console.log(index)
+				this.twoTab =index;
 				this.sort = index + 1;
 				this.queryGoodsList = [];
 				index == 2 ? this.sortUp = !this.sortUp : ''; //价格
@@ -342,7 +360,8 @@
 				this.$http.get('/api/common/store/detail', data).then(res => {
 					console.log(JSON.stringify(res))
 					if (res.data.code == 200) {
-						this.shopDetail = res.data.data
+						this.shopDetail = res.data.data;
+							this.getShopFollow(); //查询是否关注
 
 					}
 				})
@@ -350,7 +369,7 @@
 			//查询店铺是否关注
 			getShopFollow: function() {
 				var data = {
-					storeId: this.sellerId, //商户id
+					storeId: this.shopDetail.id, //商户id
 					mbId: uni.getStorageSync('userId')
 				}
 				this.$http.get('/api/store/ckeckUserFollow', data, true).then(res => {
@@ -360,6 +379,8 @@
 					}
 				})
 			},
+			
+			
 			//查询分类
 			getShopSeller: function() {
 				var data = {
@@ -380,7 +401,7 @@
 				let _this = this;
 				var followData = {
 					mbId: uni.getStorageSync('userId'),
-					storeId: this.sellerId, //商户id
+					storeId: this.shopDetail.id, //商户id
 				}
 				_this.$http.get('/api/store/follow', followData, true).then(res => {
 					if (res.data.code == 200) {
@@ -401,7 +422,7 @@
 				let _this = this;
 				var followData = {
 					mbId: uni.getStorageSync('userId'),
-					storeId: this.sellerId, //商户id
+					storeId: this.shopDetail.id, //商户id
 				}
 				_this.$http.get('/api/store/cancel', followData, true).then(res => {
 					if (res.data.code == 200) {
@@ -427,6 +448,9 @@
 </script>
 
 <style lang="scss">
+	page{
+		background-color: #FAFAFA;
+	}
 	.image_width {
 		position: absolute;
 		width: 100%;
@@ -457,6 +481,7 @@
 	.searce_right_input {
 		padding-top: 2%;
 		padding-left: 3%;
+		width: 80%;
 	}
 
 	.shop_img_w {
@@ -473,7 +498,7 @@
 	.shop_btn {
 		width: 140upx;
 		height: 60upx;
-		background: linear-gradient(#edcb80, #a58747);
+		background: linear-gradient(to right, #edcb80, #a58747);
 		border-radius: 10upx;
 		align-items: center;
 	}
@@ -545,7 +570,7 @@
 
 	.bottom_img_tab {
 		width: 48upx;
-		height: 42upx;
+		height: 48upx;
 	}
 
 	.item_tab_two {
@@ -580,11 +605,14 @@
 		display: inline-block;
 		background-color: #FFFFFF;
 		border-left: 6upx solid #BE8100;
+		font-weight: 600;
 	}
 
 	._right_moudel {
-		padding-left: 30upx;
+		padding-right: 30upx;
 		padding-top: 30upx;
+		width: 94%;
+		margin-left: 3%;
 	}
 
 	._right_img {

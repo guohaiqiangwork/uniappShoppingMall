@@ -4,14 +4,14 @@
 			<view class="top_money">
 				<view class="uni-flex border_bottom padding_bottom3">
 					<view class="width25">
-						到账银行卡
+						到账方式
 					</view>
 					<view class="uni-flex width65" >
-						<view class="margin_top1">
+						<view class="margin_top1" v-if="myBankT">
 							<image :src="myBankT.imgUrl" mode="" class="img"></image>
 						</view>
 						<view class="font_size30 margin_left3">
-							<view class="">
+							<view class="" v-if="myBankT">
 								{{myBankT.bankName}}
 							</view>
 							<view class="font_size26 font_color99">
@@ -28,9 +28,9 @@
 				</view>
 
 				<view class="border_bottom  margin_top5 font_size50 uni-flex">
-					¥
-					<input :value="moneyValue" type="number" class="margin_left3 margin_top3" maxlength="11" @input="keyMoney" placeholder="请输入金额"
-					 placeholder-style='color:#484848' />
+				 ¥
+					<input :value="moneyValue" type="number"  class="margin_left3  font_size50" maxlength="11" @input="keyMoney" placeholder="请输入金额"
+					 placeholder-style='color:#484848;font-size:30upx' style="margin-top: 2%;" />
 				</view>
 
 				<view class="uni-flex font_size26 margin_top3">
@@ -80,9 +80,22 @@
 								<image src="../../static/image/icon/dui.png" mode="" class="mi"></image>
 							</view>
 						</view>
-
+						
+						<view  class="uni-flex border_bottom padding_bottom3 padding_top2">
+							<view class="width20 text_center">
+								<image  src="../../static/image/icon/addBankList.png" class="" style="width: 45upx;height: 34upx;margin-top: 8%;" mode=""></image>
+							</view>
+							<view class="font_size32 width50">
+								添加银行卡
+							</view>
+							<view class="width20 text_right" @click="goBankList">
+								<image src="../../static/image/icon/add.png" mode="" style="width: 30upx;height: 30upx;margin-top: 5%;"></image>
+							</view>
+						</view>
+						
 					</scroll-view>
-
+					
+				
 				</view>
 			</view>
 		</template>
@@ -147,14 +160,40 @@
 		onLoad(option) {
 			this.money = option.money
 		},
-		mounted() {
+		// mounted() {
+		// 	this.getBankList();
+		// 	this.getTaxation()
+		// },
+		onShow() {
+			this.bankList  = [];
 			this.getBankList();
 			this.getTaxation()
 		},
+		onBackPress() {
+			uni.switchTab({
+				url: '../tabBar/my/my'
+			});
+			return true;
+		},
 		methods: {
+			goBankList:function(){
+				this.backFalg = false
+				uni.navigateTo({
+					url:'../addBack/addBack?urlFalg=withdrawal'
+				})
+			},
 			overMoney:function(){
-				console.log('88')
-				this.moneyValue=this.money
+				if(this.money == 0){
+					uni.showToast({
+						title: '您没有可提现余额',
+						icon: 'none',
+						duration: 1500,
+						position: 'center',
+					});
+				}else{
+					this.moneyValue=this.money
+				}
+				
 			},
 			selectBank:function(item){
 				this.bankF=item.id
@@ -180,40 +219,44 @@
 				this.$http.get('/api/bank/list', data, true).then(res => {
 					if (res.data.code == 200) {
 						this.bankList = res.data.data
-						for (let item of _this.bankList) {
-							console.log(item)
-							switch (item.bankCode) {
-								case 'ICBC':
-									item.imgUrl = '../../static/image/bank/gsy.png';
-									break;
-								case 'ABC':
-									item.imgUrl = '../../static/image/bank/nyy.png';
-									break;
-								case 'CCB':
-									item.imgUrl = '../../static/image/bank/jsy.png';
-									break;
-								case 'BOC':
-									item.imgUrl = '../../static/image/bank/zgy.png';
-									break;
-								case 'COMM':
-									item.imgUrl = '../../static/image/bank/jty.png';
-									break;
-								case 'PSBC':
-									item.imgUrl = '../../static/image/bank/yzy.png';
-									break;
-								case 'SPDB':
-									item.imgUrl = '../../static/image/bank/qty.png';
-									break;
-								case 'CMB':
-									item.imgUrl = '../../static/image/bank/zsy.png';
-									break;
-								default:
-									item.imgUrl = '../../static/image/icon/wxf.png';
-									break;
+						if(this.bankList.length > 0){
+							for (let item of _this.bankList) {
+								console.log(item)
+								switch (item.bankCode) {
+									case 'ICBC':
+										item.imgUrl = '../../static/image/bank/gsy.png';
+										break;
+									case 'ABC':
+										item.imgUrl = '../../static/image/bank/nyy.png';
+										break;
+									case 'CCB':
+										item.imgUrl = '../../static/image/bank/jsy.png';
+										break;
+									case 'BOC':
+										item.imgUrl = '../../static/image/bank/zgy.png';
+										break;
+									case 'COMM':
+										item.imgUrl = '../../static/image/bank/jty.png';
+										break;
+									case 'PSBC':
+										item.imgUrl = '../../static/image/bank/yzy.png';
+										break;
+									case 'SPDB':
+										item.imgUrl = '../../static/image/bank/qty.png';
+										break;
+									case 'CMB':
+										item.imgUrl = '../../static/image/bank/zsy.png';
+										break;
+									default:
+										item.imgUrl = '../../static/image/icon/wxf.png';
+										break;
+								}
 							}
+							
+							_this.myBankT = _this.bankList[0]
+							_this.bankF = _this.bankList[0].id
 						}
-						_this.myBankT = _this.bankList[0]
-						_this.bankF = _this.bankList[0].id
+						
 					}
 				});
 			},
@@ -223,14 +266,16 @@
 				this.moneyValue = e.detail.value
 			},
 			// 关闭
-			close_m() {
+			close_m:function() {
 				this.backFalg = false
 			},
-			open_m() {
+			open_m:function() {
+				this.getBankList();
 				this.backFalg = true
+				
 			},
 			// 关闭设置密码输入框
-			closeMoudel() {
+			closeMoudel:function() {
 				this.payFalg = false
 			},
 			// 去提现结果
@@ -330,7 +375,7 @@
 								title: res.data.message,
 								icon: 'none',
 								duration: 1500,
-								position: 'top',
+								position: 'center',
 							});
 						}
 					}).catch(err => {})

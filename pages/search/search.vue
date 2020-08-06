@@ -8,12 +8,12 @@
 			</view>
 			<!-- 搜索框 -->
 			<view class="uni-flex top_content">
-				<view class="searce_left">
+				<view class="searce_left" style="width: 7%;">
 					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
 				</view>
 				<view class="searce_right">
 					<input class="findShop" maxlength="10" @input="getInputv" :value="inputValue" placeholder="请输入要搜索的内容" confirm-type='搜索'
-					 type="text" @confirm='Search' placeholder-style='color:#cccccc' />
+					 type="text" @confirm='Search'   placeholder-style='color:#cccccc' />
 				</view>
 			</view>
 
@@ -98,7 +98,7 @@
 		},
 		onLoad(option) {
 			// console.log(option.searchName)
-			this.inputValue = option.searchName;
+			// this.inputValue = option.searchName;
 			// 查询历史搜索列表
 			const than = this // 注意this的指向
 			uni.getStorage({
@@ -106,6 +106,7 @@
 				success(res) {
 					than.searchAll = res.data;
 					console.log(than.searchAll)
+					
 				}
 			})
 		},
@@ -117,6 +118,40 @@
 			Search:function(e) {
 				console.log(e.detail.value);
 				// this.inputValue = e.detail.value;
+				if (this.inputValue != '') { // 输入框的值不为空时
+					if (this.searchAll.length == 10) {
+						const than = this
+						
+						this.searchAll[0] = this.inputValue // 将输入框的值添加到搜索记录数组中存储
+						uni.setStorage({
+							key: 'searchAll_key',
+							data: than.searchAll,
+							success: function() {}
+						})
+					} else {
+						const than = this
+						 for(var i = 0;i<this.searchAll.length;i++){
+							 if(this.searchAll[i] == this.inputValue ){
+								  this.searchAll.splice(i,1);
+							 }
+						 }
+					
+						console.log(this.searchAll)
+						this.searchAll.unshift(this.inputValue.replace(/[ ]/g, "")) // 将输入框的值添加到搜索记录数组中存储
+						uni.setStorage({
+							key: 'searchAll_key',
+							data: than.searchAll,
+							success: function() {
+				
+							}
+						})
+				
+					}
+				
+				};
+				uni.navigateTo({
+					url: '../searchList/searchList?searchName=' + this.inputValue + '&urlFalg=search'
+				})
 
 			},
 			// 输入框输入事件
@@ -148,6 +183,7 @@
 				if (this.inputValue != '') { // 输入框的值不为空时
 					if (this.searchAll.length == 10) {
 						const than = this
+						
 						this.searchAll[0] = this.inputValue // 将输入框的值添加到搜索记录数组中存储
 						uni.setStorage({
 							key: 'searchAll_key',
@@ -156,7 +192,14 @@
 						})
 					} else {
 						const than = this
-						this.searchAll.push(this.inputValue) // 将输入框的值添加到搜索记录数组中存储
+						 for(var i = 0;i<this.searchAll.length;i++){
+							 if(this.searchAll[i] == this.inputValue ){
+								  this.searchAll.splice(i,1);
+							 }
+						 }
+					
+						console.log(this.searchAll)
+						this.searchAll.unshift(this.inputValue.replace(/[ ]/g, "")) // 将输入框的值添加到搜索记录数组中存储
 						uni.setStorage({
 							key: 'searchAll_key',
 							data: than.searchAll,

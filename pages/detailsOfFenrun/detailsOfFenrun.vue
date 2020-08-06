@@ -8,7 +8,7 @@
 			</view>
 			<!-- 搜索框 -->
 			<view class="width50 text_center font_size36">
-				分润详情
+				收益详情
 			</view>
 			<view class="font_size30 width20 text_right width30 margin_right3 " style="padding-top: 1%;" @click="tomeFalgTab">
 				筛选
@@ -47,37 +47,47 @@
 
 		<!-- 列表 -->
 		<view class="page_width">
-			<view class="border_bottom padding_top3 padding_bottom3" v-for="(item,index) in [1,2,3]" :key="index">
-				<view class="font_size22 font_color99">
-					2020-04-05
+			<view class="border_bottom  " v-for="(item,index) in productList" :key="index">
+				<view class="font_size22 font_color99 margin_top3">
+					{{item.createTime}}
 				</view>
 				<view class="uni-flex">
-					<view class="width33">
+					<view class="width66 uni-flex">
 						<view class="font_sise28">
-							唐筱筱
+							{{item.nickName}}
 						</view>
-						<view class="font_colorcc font_size26">
-							15839887847
+						<view class="font_colorcc font_size26 margin_left2">
+							{{item.mobile}}
 						</view>
 					</view>
-					<view class="width33 text_center">
+				<!-- 	<view class="width33 text_center">
 						<view class="font_size24">
 							总交易额
 						</view>
 						<view class="font_sise28 " style="color: #A58747;">
-							50,000.00
+							{{item.totalTrans}}
 						</view>
-					</view>
-					<view class="width33 text_center">
+					</view> -->
+					<view class="width33 text_center" style="margin-top: -5%;">
 						<view class="font_size24">
 							获得分润
 						</view>
 						<view class="font_sise28 " style="color: #A58747;">
-							50,000.00
+							{{item.splitRunAmount}}
 						</view>
 					</view>
 				</view>
 			</view>
+			<view class="" v-if="productList.length > 9">
+				<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+			</view>
+			<view v-if="productList.length == 0" class="text_center margin_top18">
+				<image src="../../static/image/default/noOrder.png" class="no_img_order" mode=""></image>
+				<view class="font_size28 font_color99 margin_top5">
+					暂无记录~
+				</view>
+			</view>
+		
 		</view>
 
 
@@ -92,9 +102,9 @@
 		let day = date.getDate();
 
 		if (type === 'start') {
-			year = year - 60;
+			year = year -1;
 		} else if (type === 'end') {
-			year = year + 2;
+			year = year ;
 		}
 		month = month > 9 ? month : '0' + month;;
 		day = day > 9 ? day : '0' + day;
@@ -104,17 +114,104 @@
 	export default {
 		data() {
 			return {
-				startDateOne: '请选择',
-				endDateOne: '请选择',
+				startDateOne: getDate('start'),
+				endDateOne: getDate('end'),
 				startDate: getDate('start'),
 				endDate: getDate('end'),
 				date: getDate({
 					format: true
 				}),
-				tomeFalg:false
+				tomeFalg:false,
+				
+				status: 'more',
+				statusTypes: [{
+					value: 'more',
+					text: '加载前'
+				}, {
+					value: 'loading',
+					text: '加载中'
+				}, {
+					value: 'noMore',
+					text: '没有更多'
+				}],
+				contentText: {
+					contentdown: '没有更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多'
+				},
+				pageNum: 1, //页码
+				productList: [],
 			}
 		},
+		// 上拉加载
+		onReachBottom() {
+			let _self = this
+			this.status = 'loading'
+			this.pageNum = this.pageNum + 1;
+			this.getMoneyList(); //调取列表
+			_self.status = 'more'
+		},
+		mounted() {
+		this.getMoneyList()	
+		},
 		methods: {
+			// 获取列表
+			getMoneyList: function() {
+				var d1 = new Date(this.startDateOne.replace(/\-/g, "\/"));
+				var d2 = new Date(this.endDateOne.replace(/\-/g, "\/"));
+				if (!d1) {
+					uni.showToast({
+						title: '请选择开始日期',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+				} else if (!d2) {
+					uni.showToast({
+						title: '请选择结束日期',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+				} else if (d1 > d2) {
+					uni.showToast({
+						title: '结束时间不能小于开始日期',
+						icon: 'none',
+						duration: 2000,
+						position: 'top',
+					});
+					this.startDateOne = getDate('start')
+					this.endDateOne =getDate('end')
+					return;
+				}
+				if (this.startDateOne == '请选择') {
+					this.startDateOne = ''
+				}
+				if (this.endDateOne == '请选择') {
+					this.endDateOne = ''
+				}
+				var data = {
+					endTime: this.endDateOne,
+					limit: 10,
+					mbId: uni.getStorageSync('userId'),
+					page: this.pageNum,
+					startTime: this.startDateOne,
+				}
+				this.$http.get('/api/member/split/detail', data, true).then(res => {
+					if (res.data.code == 200) {
+						if (this.pageNum > 1) {
+							if (res.data.data.length > 0) {
+								this.productList = this.productList.concat(res.data.data);
+							}
+						} else {
+							this.productList = res.data.data
+						}
+					}
+				})
+			},
+			
+			
+			
 			goBack() {
 				uni.navigateBack();
 			},
@@ -138,6 +235,7 @@
 				console.log(this.startDateOne)
 				this.dataStartDate = this.formatDate(this.startDateOne);
 				console.log(this.dataStartDate)
+				this.getMoneyList()
 			},
 			// 时间结束
 			bindDateChangeEnd: function(e) {
@@ -145,6 +243,7 @@
 				console.log(this.endDateOne)
 				this.dataEndDate = this.formatDate(this.endDateOne);
 				console.log(this.dataEndDate)
+				this.getMoneyList()
 			},
 
 

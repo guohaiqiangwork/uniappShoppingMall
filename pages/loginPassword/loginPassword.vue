@@ -1,20 +1,20 @@
 <template>
 	<view>
 		<view class="moudel_p">
-			<view class="uni-flex padding_top3 padding_bottom3 border_bottom">
-				<view class="font_size30 width30 text_center">
+			<view class="uni-flex  padding_bottom3 border_bottom">
+				<view class="font_size30 width30 text_left " style="padding-left: 3.5%;">
 					新密码
 				</view>
 				<view class="width70 font_size30">
-					<input placeholder="请输入密码" type="password" :value="newPa" @input="onePassword"/>
+					<input placeholder="请输入密码" type="password" placeholder-style="color:#999999" :value="newPa" @input="onePassword"/>
 				</view>
 			</view>
-			<view class="uni-flex padding_top3 padding_bottom3 border_bottom">
-				<view class="font_size30 width30 text_center">
+			<view class="uni-flex padding_top3  border_bottom" style="padding-bottom: 4%;">
+				<view class="font_size30 width30 text_left "  style="padding-left: 3.5%;">
 					确认密码
 				</view>
 				<view class="width70 font_size30">
-					<input placeholder="请再次输入密码" type="password" :value="newPa"  @input="twoPassword"/>
+					<input placeholder="请再次输入密码" type="password" placeholder-style="color:#999999" :value="newPa"  @input="twoPassword"/>
 				</view>
 			</view>
 
@@ -83,6 +83,8 @@
 	.moudel_p {
 		background-color: #FFFFFF;
 		margin-top: 2upx;
+		padding: 30upx;
+		padding-bottom: 0;
 	}
 
 	.bottom_btn_l {

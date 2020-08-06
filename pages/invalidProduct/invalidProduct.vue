@@ -17,7 +17,7 @@
 					<image :src="item.image" class="list_imgp" mode=""></image>
 				</view>
 				<view class="width70">
-					<view class="font_sise28 text_hidden2">
+					<view class="font_sise28 text_hidden">
 						{{item.title}}
 					</view>
 					<view class="uni-flex display_space margin_top2">

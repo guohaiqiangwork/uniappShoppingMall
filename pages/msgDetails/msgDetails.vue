@@ -1,7 +1,7 @@
 <template>
 	<view class="border_top">
 		<view class="msg_moudel">
-			<view class="font_size30 font_weight600">
+			<view class="font_size30 font_weight700">
 				{{msgDetails.title}}
 			</view>
 			<view class="font_size26 margin_top3">
@@ -46,9 +46,12 @@
 </script>
 
 <style lang="less">
+	page{
+		background-color: #FFFFFF;
+	}
 	.msg_moudel {
-		width: 94%;
-		margin-left: 3%;
+		width: 92%;
+		margin-left: 4%;
 		margin-top: 3%;
 	}
 

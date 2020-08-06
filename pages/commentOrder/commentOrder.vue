@@ -11,17 +11,17 @@
 						<image :src="item.image" class="list_img" mode=""></image>
 					</view>
 					<view class="width66">
-						<view class="margin_top5 text_hidden2">
+						<view class="margin_top3 text_hidden font_weight600">
 						{{item.title}}
 						</view>
 						<view class="font_size22 font_color99 margin_top5">
 							{{item.ownSpecMap}}
 						</view>
 						<view class="uni-flex display_space margin_top2">
-							<view class="font_size22 font_color66 ">
-								<text class="font_colorbe">¥{{item.price}}</text> /件
+							<view class="font_size30">
+								<text class="font_colorbe font_weight600">¥{{item.price}}</text> 
 							</view>
-							<view class="margin_right3" v-if="!item.buyerRate" @click="goComment(item.id,item.orderId)">
+							<view class="" v-if="!item.buyerRate" @click="goComment(item.id,item.orderId)">
 								<view class="listrightbtn">
 									立即评价
 								</view>
@@ -85,14 +85,16 @@
 	.list_moudel_search {
 		// height: 220upx;
 		background: #ffffff;
-		border-radius: 10upx;
+		border-radius: 20upx;
 		margin-top: 30upx;
-		padding: 30upx;
+		padding: 30upx 30upx 20upx 30upx;
+		
 	}
 
 	.list_img {
 		width: 160upx;
 		height: 160upx;
+		border-radius: 20upx;
 	}
 
 	.image_list_s {
@@ -111,5 +113,6 @@
 		color: #BE8100;
 		font-size: 26upx;
 		margin-top: -30upx;
+		margin-left: 16%;
 	}
 </style>

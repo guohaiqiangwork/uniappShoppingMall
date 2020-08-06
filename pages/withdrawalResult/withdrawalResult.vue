@@ -133,7 +133,7 @@
 		line-height: 90upx;
 		color: #FFFFFF;
 		font-size: 30upx;
-		margin-left: 20upx;
+		margin-left:1%;
 		margin-top: 30upx;
 		position: absolute;
 		bottom: 3%;

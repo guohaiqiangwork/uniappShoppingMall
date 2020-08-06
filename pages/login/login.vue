@@ -9,7 +9,7 @@
 				</view>
 				<!--登录模块 -->
 				<view class="login_moudel_width font_colorff">
-					<view class="font_weight600 font_size44 margin_top5">
+					<view class="font_weight700 font_size44 margin_top5">
 						{{loginTitle}}
 					</view>
 					<!-- 登录某块 -->
@@ -17,13 +17,13 @@
 						<view class="margin_top5 font_size36">
 							手机号码
 						</view>
-						<view class="border_bottom padding_bottom3 margin_top5">
+						<view class="padding_bottom3 margin_top5" style="border-bottom: 1px solid #484848;">
 							<input type="number" maxlength="11" @input="keyPhone" placeholder="请输入手机号码" placeholder-style='color:#484848' />
 						</view>
 						<view class="margin_top5 font_size36">
 							验证码
 						</view>
-						<view class="border_bottom padding_bottom3 margin_top5 uni-flex">
+						<view class=" padding_bottom3 margin_top5 uni-flex" style="border-bottom: 1px solid #484848;">
 							<input class="width70" type="number" maxlength="6" @input="keyCode" placeholder="请输入验证码" placeholder-style='color:#484848' />
 							<view class="yzm_moudel" @click="yzm_function">
 								{{countdown}}<text v-show="timestatus" class="forgetpwd2">秒重获</text>
@@ -51,7 +51,7 @@
 							</view>
 							<view class="login_left margin_left5"></view>
 						</view>
-						<view class="text_center margin_top3" @click="goWxLogin">
+						<view class="text_center margin_top8" @click="goWxLogin">
 							<image src="../../static/image/icon/loginW.png" class="img_log" mode=""></image>
 						</view>
 					</view>
@@ -60,7 +60,7 @@
 
 
 				</view>
-				<view class="display_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 100%;">
+				<view class="display_center text_center uni-flex font_colorff" style="position: fixed;bottom: 4%;width: 92%;">
 					登录即代表您已经同意<text @click="goUserConter('userAgreement')" style="color: #B99445;">用户协议</text>和 <text @click=" goUserConter('userPrivacy')"
 					 style="color: #B99445;">隐私政策</text>
 				</view>
@@ -201,6 +201,8 @@
 						})
 
 
+					}else{
+						this.msgErr = res.data.message
 					}
 				}).catch(err => {
 					uni.showToast({
@@ -209,7 +211,7 @@
 						duration: 1500,
 						position: 'top',
 					});
-					this.msgErr = err.data.message
+					
 				})
 
 
@@ -235,16 +237,37 @@
 				});
 			},
 			goToBack: function() {
-				uni.navigateBack()
+				// uni.navigateBack()
+				// if(uni.getStorageSync('userId')){
+				// 	uni.navigateBack()
+				// }else{
+					uni.switchTab({
+						url:'../tabBar/home/home'
+					})
+				// }
+				
 			},
 			goWxLogin: function() {
+				uni.showToast({
+					title:'进来了'
+				})
+				uni.showLoading({
+					title: '加载中'
+				});
 				var self = this;
 				uni.login({
 					provider: "weixin",
 					success: (res) => {
+						uni.hideLoading();
 						uni.getUserInfo({
 							provider: 'weixin',
 							success: function(infoRes) {
+								uni.showToast({
+									title:'微信' +  JSON.stringify(infoRes),
+									icon:'none',
+									duration:20000,
+									position:'top'
+								})
 								console.log(JSON.stringify(infoRes))
 								let formdata = {
 									nickName: infoRes.userInfo.nickName, //昵称
@@ -256,6 +279,12 @@
 								}
 								self.$http.post('/api/common/mb/wx',data).then(res => {
 									console.log('微信登录返沪' + JSON.stringify(res))
+									uni.showToast({
+										title:JSON.stringify(res),
+										icon:'none',
+										duration:90000,
+										position:'top'
+									})
 									if (res.data.code == 200) {
 										uni.setStorageSync('token', res.data.data.token);
 										uni.setStorageSync('userId', res.data.data.mbId);
@@ -313,7 +342,7 @@
 		line-height: 68upx;
 		font-size: 26upx;
 		text-align: center;
-		border-radius: 20upx;
+		border-radius: 10upx;
 		color: #FBECDF;
 
 		background: linear-gradient(to right, #EDCB80, #A58747);

@@ -58,7 +58,7 @@
 <style lang="less">
 	.pay_img {
 		width: 365upx;
-		height: 366upx;
+		height: 394upx;
 	}
 
 	.paybtn {

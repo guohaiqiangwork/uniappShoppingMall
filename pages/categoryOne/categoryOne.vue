@@ -8,7 +8,7 @@
 			</view>
 			<!-- 搜索框 -->
 			<view class="uni-flex top_content">
-				<view class="searce_left">
+				<view class="searce_left" style="width: 7%;">
 					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
 				</view>
 				<view class="searce_right">
@@ -26,27 +26,27 @@
 
 		<view class="">
 			<view class="uni-flex">
-				<view class="width25" style="min-height: 1040upx;">
+				<view class="width25" style="min-height: 1040upx;background-color: #FAFAFA ;position: absolute;height: 100%;width: 25%;">
 					<view @click="leftTab(item.id)" :class="leftIndex  == item.id ? '_left_active' :'_left'" v-for="(item,index) in leftList"
 					 :key="index">
 						{{item.name}}
 					</view>
 				</view>
 
-				<view class="width75 background_colorff" style="min-height: 1200upx;">
-					<view class="uni-flex border_bottom _right_moudel" v-for="(item,index) in rightList" :key="index">
-						<view class="" @click="goProductDetails(item.id)">
+				<view class="width75 background_colorff" style="min-height: 1200upx;margin-left: 25%;">
+					<view class="uni-flex  _right_moudel" v-for="(item,index) in rightList" :key="index">
+						<view class="" @click="goProductDetails(item.id)" style="">
 							<image :src="item.goodsDetail.images" class="_right_img" mode=""></image>
 						</view>
 						<view class="margin_left3 width70">
 							<view class="font_size26  text_hidden " @click="goProductDetails(item.id)">
 								{{item.title}}
 							</view>
-							<view class="font_size22 font_color99 text_hidden" @click="goProductDetails(item.id)">
+							<view class="font_size22 font_color99 text_hidden margin_top3" @click="goProductDetails(item.id)">
 								{{item.subTitle}}
 							</view>
-							<view class="uni-flex margin_top3 ">
-								<view class="font_sise28 font_colorbe width80">
+							<view class="uni-flex margin_top5 ">
+								<view class="font_sise28 font_colorbe width80 font_weight600">
 									<text class="font_size26">¥</text>
 									{{item.goodsDetail.price}}
 									<text class="font_size22 font_color99">/件</text>
@@ -229,6 +229,9 @@
 </script>
 
 <style lang="less">
+	page{
+		background-color: #FFFFFF;
+	}
 	.balk_img {
 		width: 16upx;
 		height: 28upx;
@@ -267,10 +270,16 @@
 		display: inline-block;
 		background-color: #FFFFFF;
 		border-left: 6upx solid #BE8100;
+		font-weight: 600;
 	}
 
 	._right_moudel {
-		padding: 30upx;
+		// padding: 30upx;
+		padding-top: 30upx;
+		padding-bottom: 30upx;
+		width: 92%;
+		margin-left: 4%;
+		border-bottom: 1px solid #EEEEEE;
 	}
 
 	._right_img {
@@ -294,7 +303,7 @@
 		line-height: 1;
 		font-weight: 600;
 		position: absolute;
-		margin-left: 10%;
+		margin-left: 8%;
 		margin-top: -1%;
 	}
 </style>

@@ -3,20 +3,23 @@
 		<view class="" v-if="productList.length > 0">
 			<view class="msg_moudel" v-for="(item,index) in productList " :key="index" @click="goToProduct(item)">
 				<view class="right_border margin_right3" v-if="item.isRead == 0"></view>
-				<view class="uni-flex display_space margin_top2">
-					<view class="margin_left3 font_size30 text_hidden width50">
+				<view class="msg_falg" v-if="!item.read"></view>
+				
+				<view class="uni-flex display_space ">
+					
+					<view class="margin_left3 font_size30 font_weight600 text_hidden width50">
 						{{item.title}}
 					</view>
 					<view class="margin_right3 font_size22 font_color99">
 						{{item.createTime}}
 					</view>
 				</view>
-				<view class="font_size26 margin_left3 margin_right3 margin_top2">
+				<view class="font_size26 margin_left3 margin_right3 margin_top2 text_hidden2">
 					{{item.content}}
 				</view>
 			</view>
 			<!-- 组件加载刷新 -->
-			<view>
+			<view v-if="productList.length > 9">
 				<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
 			</view>
 		</view>
@@ -83,10 +86,10 @@
 			// this.getMsgList(); //调取列表
 		},
 		onShow() {
-			// this.getMsgList(); //获取列表
+			this.getMsgList(); //获取列表
 		},
 		mounted() {
-			this.getMsgList(); //获取列表
+			// /this.getMsgList(); //获取列表
 		},
 		methods: {
 			// 去详情
@@ -120,15 +123,18 @@
 </script>
 
 <style lang="less">
-	.msg_moudel {
-		width: 94%;
+	page{
 		background-color: #FFFFFF;
-		margin-left: 3%;
+	}
+	.msg_moudel {
+		width: 92%;
+		background-color: #FFFFFF;
+		margin-left: 4%;
 		border-radius: 20upx;
 		-moz-box-shadow: 0px 5px 5px #CCCCCC;
 		-webkit-box-shadow: 0px 0px 5px #CCCCCC;
 		box-shadow: 0px 0px 5px #CCCCCC;
-		margin-top: 3%;
+		margin-top: 4%;
 		padding-bottom: 3%;
 		padding-top: 3%;
 	}
@@ -143,5 +149,15 @@
 		border-radius: 50%;
 		background-color: #00A398;
 		float: right;
+	}
+	
+	.msg_falg {
+		background-color: #BE8100;
+		width: 10upx;
+		height: 10upx;
+		border-radius: 50%;
+		margin-left: 6%;
+		position: absolute;
+		right: 6%;
 	}
 </style>

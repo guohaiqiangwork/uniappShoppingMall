@@ -58,10 +58,13 @@
 				yzmCode: '',
 
 				backName: '', //银行名称
-				backType: '' //卡类型
+				backType: '', //卡类型
+				goHome:'',//返回页面
 			};
 		},
 		onLoad(e) {
+			// console.log(e.urlFalg)
+			this.goHome = e.urlFalg
 			// this.tele = e.telePhone;
 			// var bankType = this.$bankType('6215590603009119061')
 			// console.log(bankType)
@@ -130,6 +133,7 @@
 				}
 				this.$http.post('/api/bank/save', data, true).then(res => {
 					if (res.data.code == 200) {
+						
 						uni.navigateBack()
 					}
 				});
