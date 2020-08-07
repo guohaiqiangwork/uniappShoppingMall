@@ -1,6 +1,16 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
+			<view class="font_size36 width33 text_center">首页</view>
+			<view class="width33 text_right" v-if="false">
+				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
+				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
+		
+				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+			</view>
+		</view>
 		<!-- 搜索框 -->
 		<view class="background_colorff padding_top3 padding_bottom3">
 			<view class="uni-flex searce_moudel">
@@ -265,10 +275,17 @@
 					'../../../static/image/icon/search.png',
 					'../../../static/image/icon/search.png'
 				], //人气推荐
+				
+							titleFalg: true,
 			}
 		},
 		onShow() {
 			this.init();
+		},
+		onPageScroll(e) {
+			// console.log(e)
+			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// console.log(this.titleFalg)
 		},
 		methods: {
 			Search:function(e) {
@@ -524,4 +541,6 @@
 		color: #FFFFFF;
 		padding: 30upx;
 	}
+	
+
 </style>

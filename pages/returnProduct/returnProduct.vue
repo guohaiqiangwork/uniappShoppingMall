@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="background_colorff">
+		<view class="background_colorff" style="position: fixed;width: 100%; background-color: #ffffff;z-index: 9;margin-top: -20upx;">
 			<!-- tab 切换 -->
 			<view class="padding_top3 padding_bottom3 border_bottom ">
 				<view @click="tabSwichThree(index)" :class=" tabIndexT == index ? 'item_tab_three' : 'item_tab_threen' " v-for="(item,index) in tabListThree"
@@ -17,7 +17,7 @@
 
 		<!-- 可申请列表 -->
 		<template v-if="tabIndexT == 0">
-			<view class="page_width">
+			<view class="page_width" style="padding-top: 70upx;">
 				<template v-if="applyOrderList.length > 0">
 					<view class="order_list"  v-for="(item,index) in applyOrderList" :key="index">
 						<!-- 标题栏 -->
@@ -35,8 +35,8 @@
 								<view class="font_colorde" v-if="item.status == 1">待支付</view>
 								<view class="font_colorde" v-if="item.status == 2">待发货</view>
 								<view class="font_colorde" v-if="item.status == 3">待收货</view>
-								<view class=" font_colorde width30" v-if="item.status == 4">已完成</view>
-								<view class=" font_color99 width30" v-if="item.status == 4">待评价</view>
+								<view class=" font_color99 width30" v-if="item.status == 4">已完成</view>
+								<view class=" font_colorde width30" v-if="item.status == 4">待评价</view>
 								<view class="font_colorde margin_right3" v-if="item.status == 5">已取消</view>
 								<view class="font_colorde" v-if="item.status == 5" @click="deldectOrder(item)">
 									<image src="../../static/image/icon/sdelect.png" style="width: 26upx;height: 26upx;margin-top: 1%;" mode=""></image>
@@ -52,15 +52,15 @@
 									<image :src="items.image" class="order_productimg" mode=""></image>
 								</view>
 								<view class="width75">
-									<view class="text_hidden2">
+									<view class="text_hidden">
 										{{items.title}}
 									</view>
-									<view class="margin_top5">
+									<view class="margin_top5 font_size22 font_color99">
 										{{items.ownSpecMap}}
 									</view>
 									<view class="">
 										<text class="font_size22 font_colorbe">¥</text>
-										<text class="font_colorbe font_size30">{{items.price}}</text>
+										<text class="font_colorbe font_size30 font_weight600">{{items.price}}</text>
 										<text class="font_size22 font_color99">/件</text>
 									</view>
 								</view>
@@ -86,7 +86,7 @@
 							<view class="font_size26 margin_left3  text_right">
 								实付款：
 								<text class="font_size22 font_colorbe">¥</text>
-								<text class="font_colorbe font_size30">{{item.payment}}</text>
+								<text class="font_colorbe font_size30 font_weight600">{{item.payment}}</text>
 								<text class="font_size22 font_color99">/件</text>
 							</view>
 						</view>
@@ -121,7 +121,7 @@
 		
 		<!-- 申请记录 -->
 		<template v-if="tabIndexT == 1">
-			<view class="page_width">
+			<view class="page_width" style="padding-top: 70upx">
 				<view v-if="applyRecordList.length > 0" class="order_list"  v-for="(item,index) in applyRecordList" :key="index">
 					<!-- 标题栏 -->
 					<view class="uni-flex" @click="goAfter(item.retId)">
@@ -153,7 +153,7 @@
 								<image :src="items.image" class="order_productimg" mode=""></image>
 							</view>
 							<view class="width75">
-								<view class="text_hidden2">
+								<view class="text_hidden">
 									{{items.title}}
 								</view>
 								<view class="margin_top5">
@@ -161,7 +161,7 @@
 								</view>
 								<view class="">
 									<text class="font_size22 font_colorbe">¥</text>
-									<text class="font_colorbe font_size30">{{items.price}}</text>
+									<text class="font_colorbe font_size30 font_weight600">{{items.price}}</text>
 									<text class="font_size22 font_color99">/件</text>
 								</view>
 							</view>
@@ -216,7 +216,7 @@
 			</view>
 		</template>
 
-		<view v-if="applyRecordList.length > 0 || applyOrderList.length > 0" >
+		<view v-if="applyRecordList.length > 9 || applyOrderList.length > 9" >
 			<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
 		</view>
 		
@@ -480,6 +480,7 @@
 		height: 40upx;
 		line-height: 40upx;
 		color: #333333;
+		font-weight: 700 !important;
 	}
 
 	.item_tab_threen {
@@ -513,6 +514,7 @@
 	.order_listimg {
 		width: 60upx;
 		height: 60upx;
+		border-radius: 6upx;
 	}
 
 	.order_productimg {

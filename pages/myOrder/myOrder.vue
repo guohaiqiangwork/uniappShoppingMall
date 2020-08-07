@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="background_colorff">
+		<view class="background_colorff" style="position: fixed;width: 100%; background-color: #ffffff;z-index: 9;margin-top: -20upx;">
 			<!-- tab 切换 -->
 			<view class="padding_top3 padding_bottom3 border_bottom ">
 				<view @click="tabSwichThree(index)" :class=" tabIndexT == index  ? 'item_tab_three' : 'item_tab_threen' " v-for="(item,index) in tabListThree"
@@ -17,7 +17,7 @@
 
 		<!-- 列表 -->
 		<template>
-			<view class="page_width">
+			<view class="page_width" style="padding-top: 60upx;">
 				<view class="order_list" v-if="goodRecommendList.length > 0" v-for="(item,index) in goodRecommendList" :key="index">
 					<!-- 标题栏 -->
 					<view class="uni-flex">

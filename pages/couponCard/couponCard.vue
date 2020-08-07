@@ -2,7 +2,7 @@
 	<view>
 
 
-		<view class="background_colorff">
+		<view class="background_colorff"  >
 			<!-- tab 切换 -->
 			<view class="padding_top3 padding_bottom3 border_bottom ">
 				<view @click="tabSwichThree(index)" :class=" tabIndexT == index ? 'item_tab_three' : 'item_tab_threen' " v-for="(item,index) in tabListThree"
@@ -224,18 +224,17 @@
 		display: inline-block;
 		width: 33%;
 		text-align: center;
-		color: #0C0C0C;
 		font-size: 30upx;
 		height: 40upx;
 		line-height: 40upx;
 		color: #333333;
+			font-weight: 700;
 	}
 
 	.item_tab_threen {
 		display: inline-block;
 		width: 33%;
 		text-align: center;
-		color: #0C0C0C;
 		font-size: 30upx;
 		height: 40upx;
 		line-height: 40upx;
@@ -249,6 +248,7 @@
 		background-color: #BE8100;
 		border-radius: 3upx;
 		margin-left: 35%;
+	
 	}
 
 	.listMOudel {

@@ -455,7 +455,7 @@ export default {
 	border: 1px solid #c4c4c4;
 	text-align: center;
 	line-height: 45upx;
-	margin-left: 35%;
+		margin-left: 43%;
 }
 
 .num_moudel {

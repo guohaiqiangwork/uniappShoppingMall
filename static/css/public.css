@@ -30,7 +30,7 @@
 .display_right {
 	justify-content: right;
 	-webkit-justify-content: right;
-	justify-content:flex-end
+	justify-content: flex-end
 }
 
 .display_left {
@@ -318,6 +318,7 @@
 .font_colorb2 {
 	color: #B2B2B2;
 }
+
 .font_weight700 {
 	font-weight: 700;
 }
@@ -359,6 +360,7 @@
 	-webkit-line-clamp: 1;
 	/** 显示的行数 **/
 }
+
 .text_hidden2 {
 	/* 	text-overflow: ellipsis;
 	overflow: hidden; */
@@ -375,6 +377,7 @@
 	-webkit-line-clamp: 2;
 	/** 显示的行数 **/
 }
+
 /* tabar页自定义头部 父元素需固定头部高度 */
 .page {
 	padding-top: 128upx;
@@ -441,7 +444,7 @@
 }
 
 .title_top {
-/* 	height: 40upx;
+	/* 	height: 40upx;
 	width: 100%;
 	background: rgba(0, 0, 0, 0.4); */
 	height: 60upx;
@@ -463,7 +466,8 @@
 	width: 690upx;
 	margin-left: 30upx;
 }
-.page_widthMoudel{
+
+.page_widthMoudel {
 	width: 92%;
 	margin-left: 4%;
 }
@@ -472,22 +476,27 @@
 	width: 380upx;
 	height: 275upx;
 }
+
 .no_img_comment {
 	width: 436upx;
 	height: 376upx;
 }
+
 .no_img_product {
 	width: 370upx;
 	height: 304upx;
 }
+
 .no_img_shop {
 	width: 370upx;
 	height: 348upx;
 }
+
 .no_img_order {
 	width: 446upx;
 	height: 376upx;
 }
+
 .no_img_time {
 	width: 365upx;
 	height: 278upx;
@@ -503,8 +512,25 @@
 	left: 0;
 }
 
-.uni_flex_hidden{
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
+.uni_flex_hidden {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+.top_moudel_two {
+	width: 100%;
+	position: fixed;
+	background-color: #ffffff;
+	display: flex;
+	padding: 30upx 30upx 10upx 30upx;
+	z-index: 9;
+	/* // height: 60upx; */
+	top: 0;
+}
+
+.top_img_width {
+	width: 60upx;
+	height: 60upx;
 }

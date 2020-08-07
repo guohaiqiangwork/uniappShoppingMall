@@ -1,6 +1,7 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- <view class="title_top"></view> -->
+	
 		<!-- 头部搜索 -->
 		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
@@ -93,9 +94,11 @@
 				inputValue: '',
 
 				searchAll: [],// 搜索记录
-				pfalg: false
+				pfalg: false,
+			
 			}
 		},
+		
 		onLoad(option) {
 			// console.log(option.searchName)
 			// this.inputValue = option.searchName;

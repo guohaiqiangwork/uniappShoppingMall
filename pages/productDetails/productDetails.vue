@@ -249,7 +249,8 @@ export default {
 			loading: false, //开启loading不显示默认值
 			description: '',
 			titleFalg: true,
-			noShop:false
+			noShop:false,
+			inviteCode:''//邀请码
 		};
 	},
 	onLoad(option) {
@@ -264,6 +265,9 @@ export default {
 	mounted() {
 		this.init(); //初始化接口查询
 	},
+	onShow() {
+		this.getMyinfo();//获取用户信息
+	},
 	onPageScroll(e) {
 		// console.log(e)
 		e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
@@ -271,11 +275,24 @@ export default {
 	},
 
 	methods: {
-		tabCCCC(one, two) {
+		tabCCCC:function(one, two) {
 			this.indexes[one] = two;
 			let index = Object.values(this.indexes).join('_');
 			this.Specific = index;
 			this.getDetail(); //查询
+		},
+		
+		// 获取个人信息
+		getMyinfo:function(){
+			var data = {
+				mbId: uni.getStorageSync('userId')
+			};
+			// 获取个人信息
+			this.$http.get('/api/member/center/info', data, true).then(res => {
+				if (res.data.code == 200) {
+					this.inviteCode = res.data.data.inviteCode;
+				}
+			});
 		},
 
 		// 轮播滑动操作
@@ -589,9 +606,9 @@ export default {
 				provider: 'weixin',
 				scene: 'WXSceneSession',
 				type: 0,
-				href: 'http:*******************', //这地址太长了，就省略了
-				title: '你笑起来真好看',
-				summary: '唐艺昕，你有火吗？没有,为何你点燃了我的心？',
+				href: 'http://101.201.180.222/share/h5/index.html?inviteCode=' + this.inviteCode, //这地址太长了，就省略了
+				title: '华行优选',
+				summary: '让   生   活    更   优   质 ',
 				imageUrl: 'http:*******************',
 				success: function(res) {
 					if (res) {
@@ -704,7 +721,8 @@ export default {
 	line-height: 98upx;
 	color: #ffffff;
 	font-size: 30upx;
-	width: 33%;
+	width: 33.4%;
+	
 }
 
 .left_bottom2 {

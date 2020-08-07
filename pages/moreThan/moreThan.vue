@@ -1,8 +1,16 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- <view class="title_top"></view> -->
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
+				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
+			</view>
+			<view class="width50 text_center font_size36">我的余额</view>
+			<view @click="topRight" class="font_size30 width20 text_right width30 margin_right3 " style="padding-top: 1%;">余额说明</view>
+		</view>
+		
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" v-if="titleFalg">
 			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -23,7 +31,7 @@
 			</view>
 		</view>
 
-		<view class="background_colorff">
+		<view class="background_colorff" style="position: fixed;width: 100%; background-color: #ffffff;">
 			<!-- tab 切换 -->
 			<view class="padding_top3 padding_bottom3 border_bottom ">
 				<view
@@ -61,7 +69,7 @@
 		</view>
 
 		<!-- 列表 -->
-		<view class="page_width">
+		<view class="page_width" style="margin-top: 30%;">
 			<view class="uni-flex margin_top3" v-for="(item, index) in productList" :key="index">
 				<view class="font_size26 width20 text_center">{{ item.remark }}</view>
 				<view class="font_size24 width50 text_center">{{ item.createTime }}</view>
@@ -155,12 +163,18 @@ export default {
 			},
 			pageNum: 1, //页码
 			productList: [],
-			dataIndex: 0
+			dataIndex: 0,
+			titleFalg:true
 		};
 	},
 	mounted() {
 		this.getTopData(); //
 		this.getMoneyList();
+	},
+	onPageScroll(e) {
+		// console.log(e)
+		e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+		// console.log(this.titleFalg)
 	},
 	// 上拉加载
 	onReachBottom() {

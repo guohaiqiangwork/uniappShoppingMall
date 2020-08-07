@@ -1,5 +1,15 @@
 <template>
 	<view>
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
+			<view class="font_size36 width33 text_center">我的</view>
+			<view class="width33 text_right" v-if="false">
+				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
+				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
+		
+				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+			</view>
+		</view>
 		<view class="login">
 			<image src="../../../static/image/beij/mybj.png" mode="" class="image_width"></image>
 			<view class="login_moudel">
@@ -150,7 +160,8 @@ export default {
 			infoData: '', //个人信息
 			followData: '', //关注数量
 			goodRecommendList: '', //毫无推荐
-			msgFalg: '' //消息
+			msgFalg: '', //消息
+			titleFalg:true
 		};
 	},
 	// mounted() {
@@ -158,6 +169,11 @@ export default {
 	// },
 	onShow() {
 		this.init();
+	},
+	onPageScroll(e) {
+		// console.log(e)
+		e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+		// console.log(this.titleFalg)
 	},
 	methods: {
 		//去产品详情
@@ -421,7 +437,7 @@ page {
 	background-color: #303030;
 	border-top-left-radius: 30upx;
 	border-top-right-radius: 30upx;
-	margin-top: 34upx;
+	margin-top: 30upx;
 	width: 92%;
 	padding-top: 30upx;
 }

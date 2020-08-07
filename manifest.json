@@ -93,5 +93,12 @@
     },
     "uniStatistics" : {
         "enable" : false
+    },
+    "h5" : {
+        "title" : "华行优选",
+        "domain" : "http://zhichengdapay.com",
+        "router" : {
+            "base" : "r"
+        }
     }
 }

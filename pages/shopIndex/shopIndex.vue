@@ -1,5 +1,15 @@
 <template>
 	<view>
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
+			<view class="font_size36 width33 text_center">店铺</view>
+			<view class="width33 text_right" v-if="false">
+				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
+				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
+		
+				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+			</view>
+		</view>
 		<!-- 头部 -->
 		<view class="" style="height: 280upx;">
 			<image src="../../static/image/beij/shopIndex.png" class="image_width" mode=""></image>
@@ -73,7 +83,7 @@
 		</view>
 
 		<!-- 列表 -->
-		<view class="page_width ">
+		<view class=" ">
 			<template v-if="tabIndexTwo == 'home'">
 				<view class="list_itemone" v-for="(item,index) in queryGoodsList" :key="index" @click="goProductDetails(item.id)">
 					<view class="">
@@ -224,8 +234,14 @@
 				queryGoodsList: '', //商铺列表
 				shopDetail: '', //店铺详情
 				collection: true, //是否关注
-				twoTab:''
+				twoTab:'',
+				titleFalg:true
 			}
+		},
+		onPageScroll(e) {
+			// console.log(e)
+			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// console.log(this.titleFalg)
 		},
 		onLoad(option) {
 			console.log(option.urlFalg);
@@ -549,12 +565,20 @@
 		background-color: #FFFFFF;
 		border-radius: 20upx;
 		margin-top: 30upx;
-		margin-left: 20upx;
-		width: 330upx;
+		margin-left: 3%;
+		width: 45%;
+		
+		
+		// width: 48.5%;
+		// margin-left: 10upx;
+		// height: 160upx;
+		// background-color: #FFFFFF;
+		// border-radius: 20upx;
+		// display: inline-flex;
 	}
 
 	.list_imgone {
-		width: 330upx;
+		width: 100%;
 		height: 330upx;
 		border-top-left-radius: 20upx;
 		border-top-right-radius: 20upx;

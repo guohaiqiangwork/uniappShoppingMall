@@ -1,8 +1,29 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- <view class="title_top"></view> -->
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
+				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
+			</view>
+			<!-- 搜索框 -->
+			<view class="uni-flex top_content">
+				<view class="searce_left" style="width: 7%;">
+					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
+				</view>
+				<view class="searce_right">
+					<input class="findShop" maxlength="10" :value="inputValue" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text"
+					 placeholder-style='color:#cccccc' @input="getInputv" @confirm='Search' />
+				</view>
+			</view>
+			
+			<view class="font_size28 text_center width15 " style="padding-top: 1%;" @click="goShopCart">
+					<view class="number_moudel" v-if="shopCarNumber > 0">{{shopCarNumber}}</view>
+				<image src="../../static/image/icon/shopC.png" class="right_img" mode=""></image>
+			</view>
+					
+		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" v-if="titleFalg">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -21,6 +42,7 @@
 					<view class="number_moudel" v-if="shopCarNumber > 0">{{shopCarNumber}}</view>
 				<image src="../../static/image/icon/shopC.png" class="right_img" mode=""></image>
 			</view>
+		
 		</view>
 		<!-- 列表 -->
 
@@ -82,7 +104,8 @@
 				leftIndex: '', //分类左面数据
 				rightList: '', //右面数据
 				categoryId: '', //一级分类
-				shopCarNumber:''//购物车数量
+				shopCarNumber:'',//购物车数量
+				titleFalg:true
 			}
 		},
 		onLoad(option) {
@@ -95,6 +118,11 @@
 		mounted() {
 			this.getLeft();
 			this.getShopNumber()
+		},
+		onPageScroll(e) {
+			// console.log(e)
+			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// console.log(this.titleFalg)
 		},
 		methods: {
 			// 输入了回车键

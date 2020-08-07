@@ -2,7 +2,7 @@
 	<view>
 		<view class="page_width">
 
-			<view class="top_moudel">
+			<view class="top_moudel" style="padding-bottom: 20upx;">
 				<view class="uni-flex display_space border_bottom padding_bottom3">
 					<view class="font_size24">
 						订单编号：<text class="font_size22 font_color66">{{afterData.id}}</text>
@@ -12,15 +12,15 @@
 					</view>
 				</view>
 
-				<view class="uni-flex padding_top3 padding_bottom2" v-for="(items,index) in afterData.returnDetails" :key="index">
+				<view class="uni-flex padding_top3 " v-for="(items,index) in afterData.returnDetails" :key="index">
 					<view class="width30">
 						<image :src="items.image" style="width: 160upx;height: 160upx;border-radius: 30upx;" mode=""></image>
 					</view>
 					<view class="width70">
-						<view class="font_sise28 text_hidden2">
+						<view class="font_sise28 text_hidden">
 							{{items.title}}
 						</view>
-						<view class="uni-flex display_space font_size22 font_color99">
+						<view class="uni-flex display_space font_size22 font_color99 margin_top5">
 							<view class="text_hidden width80">
 								{{items.ownSpec}}
 							</view>
@@ -182,6 +182,7 @@
 		background: #ffffff;
 		border-radius: 20upx;
 		margin-top: 30upx;
+		
 	}
 
 	.center_moudel {

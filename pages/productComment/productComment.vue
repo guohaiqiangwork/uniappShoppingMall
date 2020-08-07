@@ -1,8 +1,9 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		
 		<!-- 标题 -->
-		<view class="background_colorff title_moudel padding_top2 ">
+		<view class="background_colorff title_moudel padding_top2 " style="position: fixed;width: 100%; background-color: #ffffff;z-index: 9;margin-top: -20upx;">
+		<view class="title_top"></view>
 			<view class="border_bottom">
 				<view class="page_width uni-flex">
 					<view class="width40" @click="goBack">
@@ -35,7 +36,7 @@
 
 		<!-- 列表 -->
 
-		<view class="page_width" >
+		<view class="page_width" style="padding-top: 200upx;">
 			<!-- <scroll-view style="margin-top: 200upx;padding-bottom: 100upx;"> -->
 			<view class="list_moudel_contern " style="margin-top: 30upx;" v-for="(item,index) in evaluateList" :key="index">
 				<view class="uni-flex display_space">

@@ -1,6 +1,16 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- <view class="title_top"></view> -->
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
+			<view class="font_size36 width33 text_center">搜索结果</view>
+			<view class="width33 text_right" v-if="false">
+				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
+				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
+		
+				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+			</view>
+		</view>
 		<!-- 头部搜索 -->
 		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
@@ -162,11 +172,17 @@
 				tabIndexT: 0,
 				sortUp: true,
 				shopCarNumber:'',//购物车数量
-				twoTab:0
+				twoTab:0,
+					titleFalg:true
 			}
 		},
 		onLoad(option) {
 			this.inputValue = option.searchName;
+		},
+		onPageScroll(e) {
+			// console.log(e)
+			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// console.log(this.titleFalg)
 		},
 		mounted() {
 			this.getQueryGoods(); //查询列表

@@ -37,7 +37,7 @@
 
 			<view class="uni-flex background_colorff  list_one">
 				<view class="font_sise28 width25"><text v-show="productList.status != 2" class="font_colorbe">*</text> 具体说明：</view>
-				<view class="width75"><input type="text" @input="keyUserRemark" placeholder="请具体说明" placeholder-style="color:#484848" /></view>
+				<view class="width75"><input type="text" @input="keyUserRemark" placeholder="请具体说明" placeholder-style="color:#484848;font-size:28upx" /></view>
 			</view>
 			<view class="margin_top8" v-if="productList.status != 2">
 				<view class="uni-flex ">
@@ -87,7 +87,7 @@
 							<view class="width60 margin_left2">
 								<view class="font_size28 text_hidden">{{ item.oneChecked }}{{ item.title }}</view>
 
-								<view class="uni-flex display_space">
+								<view class="uni-flex display_space " style="margin-top: 60upx;">
 									<view class="font_size28 " style="color: #BE8100;">
 										¥{{ item.price }}
 										<text class="font_size22 font_color99">/件</text>

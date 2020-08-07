@@ -1,8 +1,21 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- -->
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2 border_bottom">
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
+				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
+			</view>
+			<!-- 搜索框 -->
+			<view class="width50 text_center font_size36">
+				收益详情
+			</view>
+			<view class="font_size30 width20 text_right width30 margin_right3 " style="padding-top: 1%;" @click="tomeFalgTab">
+				筛选2
+			</view>
+		</view>
+		<view class="title_top" v-if="titleFalg"></view> 
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2 border_bottom" v-if="titleFalg">
 			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -141,7 +154,13 @@
 				},
 				pageNum: 1, //页码
 				productList: [],
+				titleFalg:true
 			}
+		},
+		onPageScroll(e) {
+			// console.log(e)
+			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// console.log(this.titleFalg)
 		},
 		// 上拉加载
 		onReachBottom() {
