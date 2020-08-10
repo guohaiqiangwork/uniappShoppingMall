@@ -186,15 +186,21 @@
 						</view>
 						<view class="font_size26 margin_left3  text_right">
 							实付款
-							<text class="font_colorbe font_size34" :style="item.retStatus == 4 ? 'color:#999999' : 'color:#BE8100'">{{item.retPrice}}</text>
+							<text class="font_colorbe font_size34" :style="item.retStatus == 4 ? 'color:#999999' : 'color:#BE8100'">{{item.payment}}</text>
 	
 						</view>
 					</view>
 				
 					<!-- 底部操作栏 -->
 					<view class="uni-flex margin_top3 display_right">
-						<view class="order_listbtn1" v-if="item.retStatus == 2" @click="saveLogisticsFalg(item.retId)">
-							填写物流单号
+						<view class="" v-if="item.retStatus == 2 && item.applyServer != 4">
+							<view class="order_listbtn1" v-if="!item.logisticsCode"  @click="saveLogisticsFalg(item.retId)">
+								填写物流单号
+							</view>
+						</view>
+			
+						<view class="font_color99 font_size26" v-if="item.logisticsCode">
+						物流单号：{{item.logisticsCode}}
 						</view>
 						<view class="order_listbtn1 margin_left5" @click="getApplyCancel(item.retId)" v-if="item.retStatus == 1 || item.retStatus == 3">
 							取消申请
@@ -209,7 +215,7 @@
 				<view v-if="applyRecordList.length == 0" class="text_center margin_top18">
 					<image src="../../static/image/default/noMsg.png" class="no_img_msg" mode=""></image>
 					<view class="font_size28 font_color99 margin_top5">
-						暂无消息~
+						暂无数据~
 					</view>
 				</view>
 
@@ -434,7 +440,7 @@
 				_this.$http.post('/api/retOrder/cancel', followData, true).then(res => {
 					if (res.data.code == 200) {
 						this.pfalg = false;
-						console.log(JSON.stringify(res));
+						// console.log(JSON.stringify(res));
 						this.getApplyRecord();//刷新
 					}
 				})

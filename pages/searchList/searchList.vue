@@ -178,6 +178,15 @@
 		},
 		onLoad(option) {
 			this.inputValue = option.searchName;
+			const than = this // 注意this的指向
+			uni.getStorage({
+				key: 'searchAll_key',
+				success(res) {
+					than.searchAll = res.data;
+					console.log(than.searchAll)
+					
+				}
+			})
 		},
 		onPageScroll(e) {
 			// console.log(e)
@@ -207,6 +216,39 @@
 		methods: {
 			// 输入了回车键
 			Search:function(e) {
+				// 存历史记录
+				if (this.inputValue != '') { // 输入框的值不为空时
+					if (this.searchAll.length == 10) {
+						const than = this
+						
+						this.searchAll[0] = this.inputValue // 将输入框的值添加到搜索记录数组中存储
+						uni.setStorage({
+							key: 'searchAll_key',
+							data: than.searchAll,
+							success: function() {}
+						})
+					} else {
+						const than = this
+						 for(var i = 0;i<this.searchAll.length;i++){
+							 if(this.searchAll[i] == this.inputValue ){
+								  this.searchAll.splice(i,1);
+							 }
+						 }
+					
+						console.log(this.searchAll)
+						this.searchAll.unshift(this.inputValue.replace(/[ ]/g, "")) // 将输入框的值添加到搜索记录数组中存储
+						uni.setStorage({
+							key: 'searchAll_key',
+							data: than.searchAll,
+							success: function() {
+				
+							}
+						})
+				
+					}
+				
+				};
+				
 				if (this.tabIndex == 0) {
 					this.getQueryGoods(); //调取列表
 				} else {

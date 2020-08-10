@@ -42,14 +42,18 @@ http.interceptor.response((response) => { /* 请求之后拦截器 */
 		if (response.data.code == 200 || response.data.code == 300   || response.data.code == 500) {
 			return response;
 		} else if (response.data.code == 401) {
-			if (noLoginFalg) {
-				noLoginFalg = false;
-				uni.setStorageSync('token', '');
-				uni.reLaunch({
-					url: '/pages/login/login'
-				});
+			// if (noLoginFalg) {
+			// 	noLoginFalg = false;
+			// 	uni.setStorageSync('token', '');
+			// 	uni.reLaunch({
+			// 		url: '/pages/login/login'
+			// 	});
 
-			}
+			// }
+			uni.setStorageSync('token', '');
+			uni.reLaunch({
+				url: '/pages/login/login'
+			});
 		} else {
 			uni.showToast({
 				title: response.data.message,

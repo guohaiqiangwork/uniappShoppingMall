@@ -299,7 +299,7 @@ export default {
 								var a = JSON.parse(uploadFileRes.data);
 								console.log(a);
 								_self.imgList[index].url = a.data.url;
-								_self.imgListData[index] = a.data.path;
+								_self.imgListData[index].path = a.data.path;
 								console.log(JSON.stringify(_self.imgList));
 								if (_self.imgList.length < 5) {
 									_self.imgList.push({
@@ -339,7 +339,7 @@ export default {
 		saveComment: function() {
 			console.log(this.productList.detailResults);
 			if (this.productList.status != 2) {
-				if (!this.imgListData[0]) {
+				if (!this.imgListData[0].path) {
 					uni.showToast({
 						title: '请选择图片',
 						icon: 'none',
@@ -351,8 +351,15 @@ export default {
 			} else {
 				this.imgListData = [];
 			}
+			var listDataImg =[]
+			if(this.imgListData[0].path){
+				for(let item of this.imgListData){
+					listDataImg.push(item.path)
+				}
+			listDataImg =listDataImg.join(',') 
+			}
 
-			if (!this.userRemark) {
+			if (!this.userRemark && this.productList.status != 6) {
 				uni.showToast({
 					title: '请填写具体说明',
 					icon: 'none',
@@ -374,7 +381,7 @@ export default {
 				applyServer: this.array[this.arrayIndex].value, //	申请服务
 				mbId: uni.getStorageSync('userId'),
 				orderId: this.productList.detailResults[0].orderId,
-				pictrue: this.imgListData.join(',') || '',
+				pictrue: listDataImg,
 				retReason: this.arrayTwo[this.indexT].value, //申请原因
 				returnItems: returnItemsList,
 				sellerId: this.productList.detailResults[0].sellerId, //商户id

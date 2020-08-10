@@ -444,12 +444,12 @@
 }
 
 .title_top {
-	/* 	height: 40upx;
+		height: 50upx;
 	width: 100%;
-	background: rgba(0, 0, 0, 0.4); */
-	height: 60upx;
+	background: rgba(0, 0, 0, 0.4);
+	/* height: 60upx;
 	width: 100%;
-	background: #FFFFFF;
+	background: #FFFFFF; */
 }
 
 .header_title_img {

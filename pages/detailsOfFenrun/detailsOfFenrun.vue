@@ -37,7 +37,7 @@
 						起始日期
 					</view>
 					<view class="font_size26">
-						<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
+						<picker mode="date" :value="date"  @change="bindDateChange">
 							<view class="uni-input">{{startDateOne}}</view>
 						</picker>
 					</view>
@@ -47,7 +47,7 @@
 						截至日期
 					</view>
 					<view class="font_size26">
-						<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChangeEnd">
+						<picker mode="date" :value="date"  @change="bindDateChangeEnd">
 							<view class="uni-input">{{endDateOne}}</view>
 						</picker>
 					</view>
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-	function getDate(type) {
+	function getDate(type,code) {
 		const date = new Date();
 		let year = date.getFullYear();
 		let month = date.getMonth() + 1;
@@ -129,8 +129,8 @@
 			return {
 				startDateOne: getDate('start'),
 				endDateOne: getDate('end'),
-				startDate: getDate('start'),
-				endDate: getDate('end'),
+				startDate: getDate('start','1'),
+				endDate: getDate('end','50'),
 				date: getDate({
 					format: true
 				}),
@@ -159,7 +159,7 @@
 		},
 		onPageScroll(e) {
 			// console.log(e)
-			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			e.scrollTop > 80? (this.titleFalg = false) : (this.titleFalg = true);
 			// console.log(this.titleFalg)
 		},
 		// 上拉加载

@@ -124,7 +124,7 @@
 					</view>
 				</view>
 
-				<view class="" v-if="goodRecommendList.length > 0">
+				<view class="" v-if="goodRecommendList.length > 9">
 					<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
 				</view>
 

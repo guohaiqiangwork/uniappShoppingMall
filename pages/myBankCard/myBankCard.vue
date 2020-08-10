@@ -2,17 +2,16 @@
 	<view>
 		<!-- <view class="title_top"></view> -->
 		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
-			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
-			<view class="font_size36 width33 text_center">我的银行卡</view>
-			<view class="width33 text_right" v-if="false">
-				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
-				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
-		
-				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+			<view class="width30  margin_left3" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
+				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
+			<!-- 搜索框 -->
+			<view class="width33 text_center font_size36">{{ title }}</view>
+			<view @click="getDelectFalg" v-if="myBankList.length > 0" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">{{ rightF }}</view>
 		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" v-if="titleFalg">
+			<view class="title_top"></view> 
 			<view class="width30  margin_left3" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -42,7 +41,7 @@
 				</view>
 
 				<view class="listNobtn" @click="addBack" v-if="rightF != '完成'">添加银行卡</view>
-				<view class="listNobtn" @click="delect" v-if="rightF == '完成'">确认解绑</view>
+				<view class="listNobtn" @click="openm" v-if="rightF == '完成'">确认解绑</view>
 			</template>
 
 			<!-- 列表缺省 -->
@@ -52,6 +51,28 @@
 				<view class="nobtn" @click="addBack">添加银行卡</view>
 			</view>
 		</view>
+	
+		
+		<!-- 提示框 -->
+		<template v-if="pfalg">
+			<view class="moudel_content">
+				<view class="product_content_block">
+					<view class="font_size34 text_center" style="margin-top: 100upx;">
+						是否解绑？
+					</view>
+					<view class="uni-flex " style="margin-top: 80upx;">
+						<view class="leftbtn" @click="closemoudel">
+							取消
+						</view>
+						<view class="rightbtn" @click="delect">
+							确认
+						</view>
+					</view>
+				</view>
+			</view>
+		
+		</template>
+		
 	</view>
 </template>
 
@@ -64,7 +85,8 @@ export default {
 			myBankList: [],
 			delectFalg: false,
 			delectId: '',
-			titleFalg:true
+			titleFalg:true,
+			pfalg:false
 		};
 	},
 	mounted() {},
@@ -77,10 +99,19 @@ export default {
 		// console.log(this.titleFalg)
 	},
 	methods: {
+		closemoudel:function(){
+			this.pfalg = false
+		},
+		openm:function(){
+			this.pfalg = true
+		},
 		// 头部切换
 		getDelectFalg: function() {
 			this.delectFalg = !this.delectFalg;
 			this.delectFalg ? (this.rightF = '完成') : (this.rightF = '解除绑定');
+			for(let item of this.myBankList){
+				item.oneChecked  = false
+			}
 		},
 		// 删除银行卡
 		delectBank: function(index) {		
@@ -101,12 +132,23 @@ export default {
 				}
 			}
 			console.log(bankIdList)
+			if(bankIdList.length == 0){
+				uni.showToast({
+					title: '请选择银行卡',
+					icon: 'none',
+					duration: 2000,
+					position: 'center'
+				});
+				this.pfalg =false
+				return
+			}
 			var data = {
 				bankId: bankIdList
 			};
 			// 获取团队数据
 			this.$http.get('/api/bank/untie', data, true).then(res => {
 				if (res.data.code == 200) {
+					this.pfalg =false
 					//有误
 					uni.showToast({
 						title: '解绑银行卡成功',
@@ -288,4 +330,36 @@ export default {
 .zb{
 z-index: -9;
 }
+.product_content_block {
+		background-color: #FFFFFF;
+		border-radius: 20upx;
+		position: absolute;
+		top: 20%;
+		height: 362upx;
+		width: 600upx;
+		margin-left: 75upx;
+	}
+	
+	.leftbtn {
+		width: 220upx;
+		height: 78upx;
+		border: 1px solid #3c3d3e;
+		border-radius: 10px;
+		text-align: center;
+		color: #3C3D3E;
+		line-height: 78upx;
+		margin-left: 45upx;
+	}
+	
+	.rightbtn {
+		width: 220upx;
+		height: 78upx;
+		background: #3c3d3e;
+		border-radius: 10px;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 78upx;
+		margin-left: 45upx;
+	}
+	
 </style>

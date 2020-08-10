@@ -1,6 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	
+		{
+			"path": "pages/guide/guide",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				} //取消原生导航 
+			}
+		},
 		{
 			"path": "pages/tabBar/home/home",
 			"style": {
@@ -345,41 +352,37 @@
 				},
 				"enablePullDownRefresh": false
 			}
-		}
-	    ,{
-            "path" : "pages/activity/activity",
-            "style" : {
+		}, {
+			"path": "pages/activity/activity",
+			"style": {
 				"navigationBarTitleText": "活动详情"
 			}
-        }
-        ,{
-            "path" : "pages/headlines/headlines",
-            "style" : {
+		}, {
+			"path": "pages/headlines/headlines",
+			"style": {
 				"navigationBarTitleText": "头条信息"
 			}
-        }
-        ,{
-            "path" : "pages/bindingCode/bindingCode",
-            "style": {
-            	"app-plus": {
-            		"titleNView": false,
-            		"backgroundTextStyle": "dark"
-            		// "navigationBarTitleText": "绑定邀请码"
-            	},
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/passwordLogin/passwordLogin",
-            "style": {
-            	"app-plus": {
-            		"titleNView": false,
-            		"backgroundTextStyle": "dark"
-            		// "navigationBarTitleText": "密码登录"
-            	},
-            	"enablePullDownRefresh": false
-            }
-        },
+		}, {
+			"path": "pages/bindingCode/bindingCode",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "绑定邀请码"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/passwordLogin/passwordLogin",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "密码登录"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
 		{
 			"path": "pages/login/login",
 			"style": {
@@ -389,51 +392,56 @@
 				},
 				"enablePullDownRefresh": false
 			}
-		}
-        ,{
-            "path" : "pages/bindPhone/bindPhone",
-            "style": {
-            	"app-plus": {
-            		"titleNView": false,
-            		"backgroundTextStyle": "dark"
-            	},
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/afterSaleDetails/afterSaleDetails",
-            "style" : {
+		}, {
+			"path": "pages/bindPhone/bindPhone",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/afterSaleDetails/afterSaleDetails",
+			"style": {
 				"navigationBarTitleText": "售后详情"
 			}
-        }
-        ,{
-            "path" : "pages/shopDetails/shopDetails",
-            "style": {
-            	"app-plus": {
-            		"titleNView": false,
-            		"backgroundTextStyle": "dark"
-            	},
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/shopIndexSearch/shopIndexSearch",
-           "style": {
-           	"app-plus": {
-           		"titleNView": false,
-           		"backgroundTextStyle": "dark"
-           		// "navigationBarTitleText": "店铺搜索"
-           	},
-           	"enablePullDownRefresh": false
-           }
-        },
+		}, {
+			"path": "pages/shopDetails/shopDetails",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+				},
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/shopIndexSearch/shopIndexSearch",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "店铺搜索"
+				},
+				"enablePullDownRefresh": false
+			}
+		},
 		{
-		    "path" : "pages/logisticsPage/logisticsPage",
-		   "style" : {
-		   	"navigationBarTitleText": "订单跟踪"
-		   }
+			"path": "pages/logisticsPage/logisticsPage",
+			"style": {
+				"navigationBarTitleText": "订单跟踪"
+			}
 		}
-    ],
+
+		, {
+			"path": "pages/guideOne/guideOne",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				} //取消原生导航 
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "商城",
