@@ -149,10 +149,20 @@ export default {
 	},
 	
 	onBackPress() {
-		console.log('999');
-		uni.navigateTo({
-			url: '../setUp/setUp'
-		});
+		// console.log('999');
+		if(this.falgUrl){
+			uni.redirectTo({
+				url: '../' + this.falgUrl +'/' +this.falgUrl + '?productId=' + this.productId,
+				
+				
+				// url: '../productDetails/productDetails?addressId=' + e.id + '&productId=' + this.productId
+			});
+		}else{
+			uni.navigateTo({
+				url: '../setUp/setUp'
+			});
+		}
+	
 		return true;
 	},
 

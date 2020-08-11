@@ -1,17 +1,21 @@
 <template>
 	<view class="content" :style="{ height: windowHeight }">
-		<view class="" style=""><image mode="widthFix" src="../../static/image/one/guid.png" style="width: 100%;"></image></view>
+		<view class="" style="">
+			<image mode="" :src="imgUrl" style="width: 100%;height: 100%;position: fixed;"></image>
+		</view>
 	</view>
 </template>
 <script>
 export default {
 	data() {
 		return {
-			windowHeight: '731px' //定义手机屏幕高度值变量
+			windowHeight: '731px',//定义手机屏幕高度值变量
+			imgUrl:''
 		};
 	},
 	onReady() {
 		uni.getStorageSync('guideStus') == 'GO' ? uni.switchTab({ url: '../tabBar/home/home' }) : this.goGuidOne(); //判断初始引导页
+		this.imgUrl ='../../static/image/one/guid.png'
 		var _me = this;
 		//	plus.webview.create("url","id", {contentAdjust:false});
 		uni.getSystemInfo({
@@ -29,7 +33,7 @@ export default {
 				uni.redirectTo({
 					url: '../guideOne/guideOne'
 				});
-			}, 3000);
+			}, 5000);
 		}
 	}
 };

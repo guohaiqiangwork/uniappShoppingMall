@@ -1,18 +1,7 @@
 <template>
 	<view>
 		
-		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
-			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
-			<view class="font_size36 width33 text_center">首页</view>
-			<view class="width33 text_right" v-if="false">
-				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
-				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
-		
-				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
-			</view>
-		</view>
-		<!-- 搜索框 -->
-		<view class="background_colorff padding_top3 padding_bottom3">
+		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
 			<view class="uni-flex searce_moudel">
 				<view class="searce_left">
 					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>
@@ -22,6 +11,20 @@
 					 placeholder-style='color:#cccccc' />
 				</view>
 			</view>
+					
+		</view>
+		<!-- 搜索框 -->
+		<view class="background_colorff padding_top3 padding_bottom3" style="padding-top:calc(30upx +  var(--status-bar-height))">
+			<view class="uni-flex searce_moudel">
+				<view class="searce_left">
+					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>
+				</view>
+				<view class="searce_right"   @click="Search">
+					<input class="findShop" maxlength="10" disabled="true" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text" @confirm='Search'
+					 placeholder-style='color:#cccccc' />
+				</view>
+			</view>
+		
 		</view>
 		<view class="content_moudel">
 			<!-- 轮播图 -->
@@ -281,6 +284,10 @@
 		},
 		onShow() {
 			this.init();
+			uni.pageScrollTo({
+			scrollTop: 0,
+			duration: 100
+			});
 		},
 		onPageScroll(e) {
 			// console.log(e)

@@ -278,13 +278,13 @@
 									openid: infoRes.userInfo.openId
 								}
 								self.$http.post('/api/common/mb/wx',data).then(res => {
-									console.log('微信登录返沪' + JSON.stringify(res))
-									uni.showToast({
-										title:JSON.stringify(res),
-										icon:'none',
-										duration:90000,
-										position:'top'
-									})
+									// console.log('微信登录返沪' + JSON.stringify(res))
+									// uni.showToast({
+									// 	title:JSON.stringify(res),
+									// 	icon:'none',
+									// 	duration:90000,
+									// 	position:'top'
+									// })
 									if (res.data.code == 200) {
 										uni.setStorageSync('token', res.data.data.token);
 										uni.setStorageSync('userId', res.data.data.mbId);

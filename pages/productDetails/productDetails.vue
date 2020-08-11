@@ -411,7 +411,7 @@ export default {
 
 		// 去地址列表
 		goMyAddress: function() {
-			uni.navigateTo({
+			uni.redirectTo({
 				url: '../addAddress/addAddress?falgUrl=productDetails' + '&productId=' + this.productId
 			});
 		},

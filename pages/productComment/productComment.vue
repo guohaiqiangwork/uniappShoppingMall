@@ -2,8 +2,8 @@
 	<view>
 		
 		<!-- 标题 -->
-		<view class="background_colorff title_moudel padding_top2 " style="position: fixed;width: 100%; background-color: #ffffff;z-index: 9;margin-top: -20upx;">
-		<view class="title_top"></view>
+		<view class="background_colorff title_moudel padding_top2 "  style="position: fixed;width: 100%; background-color: #ffffff;z-index: 9;margin-top: -20upx;padding-top: calc(30upx + var(--status-bar-height))">
+		<!-- <view class="title_top"></view> -->
 			<view class="border_bottom">
 				<view class="page_width uni-flex">
 					<view class="width40" @click="goBack">

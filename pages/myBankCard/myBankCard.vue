@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- <view class="title_top"></view> -->
-		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
 			<view class="width30  margin_left3" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -10,8 +10,8 @@
 			<view @click="getDelectFalg" v-if="myBankList.length > 0" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">{{ rightF }}</view>
 		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" v-if="titleFalg">
-			<view class="title_top"></view> 
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="titleFalg">
+			<!-- <view class="title_top"></view> -->
 			<view class="width30  margin_left3" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -103,6 +103,23 @@ export default {
 			this.pfalg = false
 		},
 		openm:function(){
+			var bankIdList =[];
+			for(let item of this.myBankList){
+				if(item.oneChecked ){
+					bankIdList.push(item.id)
+				}
+			}
+			console.log(bankIdList)
+			if(bankIdList.length == 0){
+				uni.showToast({
+					title: '请选择银行卡',
+					icon: 'none',
+					duration: 2000,
+					position: 'center'
+				});
+				this.pfalg =false
+				return
+			}
 			this.pfalg = true
 		},
 		// 头部切换

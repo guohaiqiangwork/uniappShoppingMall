@@ -1,14 +1,12 @@
 <template>
 	<view>
-		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
-			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
-			<view class="font_size36 width33 text_center">我的</view>
-			<view class="width33 text_right" v-if="false">
-				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
-				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
-		
-				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+		<view class="top_moudel_two" style="padding-top: var(--status-bar-height) ;background-color: #333333;" v-if="!titleFalg">
+			<view class="width80" @click="goMyPage('msg')">
+				<view class="msg_falg" v-if="msgFalg"></view>
+				<image src="../../../static/image/icon/msg.png" mode="" class="top_img1"></image>
 			</view>
+			<view class="" @click="goMyPage('myQRCode')"><image src="../../../static/image/icon/erw.png" mode="" class="top_img2"></image></view>
+			<view class="margin_left8" @click="goMyPage('setUp')"><image src="../../../static/image/icon/set.png" mode="" class="top_img3"></image></view>
 		</view>
 		<view class="login">
 			<image src="../../../static/image/beij/mybj.png" mode="" class="image_width"></image>
@@ -169,6 +167,10 @@ export default {
 	// },
 	onShow() {
 		this.init();
+		uni.pageScrollTo({
+		scrollTop: 0,
+		duration: 300
+		});
 	},
 	onPageScroll(e) {
 		// console.log(e)

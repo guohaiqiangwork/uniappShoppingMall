@@ -2,7 +2,7 @@
 	<view class="content" :style="{ height: windowHeight }">
 		
 		<view class="" style="">
-			<image mode="widthFix" src="../../static/image/one/guid.png" style="width: 100%;"></image>
+			<image mode="" src="../../static/image/one/guid.png" style="width: 100%;height: 100%;position: fixed;"></image>
 		</view>
 		
 		<!-- 提示框 -->
@@ -67,7 +67,7 @@ export default {
 		uni.getSystemInfo({
 			//获取手机屏幕高度信息，让swiper的高度和手机屏幕一样高
 			success: function(res) {
-				_me.windowHeight = res.windowHeight + 'px';
+				_me.windowHeight = res.windowHeight +  'px';
 				//console.log('手机屏幕高度为' + _me.windowHeight);
 			}
 		});

@@ -3,11 +3,21 @@
 		<!-- 列表部分 -->
 		<view class="list">
 			<view class="list_item" @click="gotoNextPageFun('editData')">
-				<view class="list_item_left" style="margin-top: 30upx;">
+				<view class="list_item_left uni-flex" style="margin-top: 30upx;">
 					<!-- <image :src="hearImage" mode=""></image> -->
-					<image :src="infoData.headImgurl" mode=""></image>
-					<text style="position: relative;bottom:50rpx;left: 28upx;">{{infoData.nickName}}</text>
-					<text style="position: relative;bottom:10rpx;right:63upx;">{{infoData.mobile}}</text>
+					<view class="">
+						<image :src="infoData.headImgurl" mode=""></image>
+					</view>
+					<view class="margin_left2">
+						<view class="">
+							{{infoData.nickName}}
+						</view>
+						<view class="" style="line-height: 0;margin-top: 15upx;">
+							{{infoData.mobile}}
+						</view>
+					</view>
+					<!-- <text style="position: relative;bottom:50rpx;left: 28upx;">{{infoData.nickName}}</text> -->
+					<!-- <text style="position: relative;bottom:10rpx;right:63upx;">{{infoData.mobile}}</text> -->
 				</view>
 				<view class="list_item_right">
 					<image src="../../static/image/my/return1.png"></image>

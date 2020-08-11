@@ -3,16 +3,13 @@
 		<!-- <view class="title_top"></view> -->
 		
 		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
-			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
-			<view class="font_size36 width33 text_center">购物车</view>
-			<view class="width33 text_right" v-if="false">
-				<image @click="open_moudelS" src="../../../static/image/icon/top_right.png" class="top_img_width" mode=""></image>
-				<image @click="goFollow" src="../../../static/image/icon/top_right1.png" v-if="collection" class="top_img_width margin_left5" mode=""></image>
-		
-				<image @click="closeGoFollow" src="../../../static/image/icon/tright2S.png" v-else class="top_img_width margin_left5" mode=""></image>
+			<view class="width33" ><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
+			<view class="font_size36 width33 text_center margin_left3">购物车</view>
+			<view class="width33 text_right margin_right3 margin_top2" @click="deleteShop">
+				<image src="../../../static/image/icon/delete.png" class="header_title_imgr" mode=""></image>
 			</view>
 		</view>
-		<view class="uni-flex background_colorff padding_top2 padding_bottom2" v-if="titleFalg">
+		<view style="padding-top:var(--status-bar-height);" class="uni-flex background_colorff padding_top2 padding_bottom2" v-if="titleFalg">
 			<view class="width33 margin_left3 margin_top2"><!-- <image src="../../../static/image/icon/left.png" class="header_title_img" mode=""></image> --></view>
 			<view class="width33 text_center font_size36">购物车</view>
 			<view class="width33 text_right margin_right3 margin_top2" @click="deleteShop">

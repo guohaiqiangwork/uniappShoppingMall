@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<!-- <view class="title_top"></view> -->
-		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+		<!-- <view class="title_top" style="background-color: #FFFFFF;"></view> -->
+		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -23,7 +23,7 @@
 					
 		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" v-if="titleFalg">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(20upx + var(--status-bar-height))" v-if="titleFalg">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>

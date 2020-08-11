@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- <view class="title_top"></view> -->
 		<!-- 搜索框 -->
-		<view class=" padding_top2 padding_bottom2 background_colorff" style="height: 90upx;">
+		<view class=" padding_top2 padding_bottom2 background_colorff" style="padding-top: calc(30upx + var(--status-bar-height))">
 			<view class="uni-flex searce_moudel" style="border-radius: 20upx;">
 				<view class="searce_left">
 					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>

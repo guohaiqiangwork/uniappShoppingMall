@@ -5,7 +5,7 @@
 				<view class="uni-flex display_space border_bottom padding_bottom3">
 					<view class="font_size24">
 						订单编号：
-						<text class="font_size22 font_color66">{{ afterData.id }}</text>
+						<text class="font_size22 font_color66">{{ afterData.orderNo }}</text>
 					</view>
 					<view class="font_size22 font_color99">{{ afterData.retTime }}</view>
 				</view>
@@ -27,14 +27,14 @@
 			</view>
 
 			<view class="top_moudel" style="padding-bottom: 0;" v-if="afterData.retStatus == 1 || afterData.retStatus == 5">
-				<view class="uni-flex border_bottom font_size26 padding_bottom3">
+				<!-- <view class="uni-flex border_bottom font_size26 padding_bottom3">
 					<view class="width25">订单编号：</view>
 					<view class="font_color66">{{ afterData.orderNo }}</view>
 				</view>
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请时间:</view>
 					<view class="font_color66">{{ afterData.retTime }}</view>
-				</view>
+				</view> -->
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请原因:</view>
 					<view class="font_color66">{{ afterData.retReason }}</view>
@@ -104,14 +104,14 @@
 			 -->
 
 			<view class="top_moudel" v-if="afterData.retStatus == 3" style="padding-bottom: 0;">
-				<view class="uni-flex border_bottom font_size26 padding_bottom3">
+				<!-- <view class="uni-flex border_bottom font_size26 padding_bottom3">
 					<view class="width25">订单编号：</view>
 					<view class="font_color66">{{ afterData.orderNo }}</view>
 				</view>
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请时间:</view>
 					<view class="font_color66">{{ afterData.retTime }}</view>
-				</view>
+				</view> -->
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请原因:</view>
 					<view class="font_color66">{{ afterData.retReason }}</view>
@@ -123,14 +123,14 @@
 			</view>
 
 			<view class="top_moudel" v-if="afterData.retStatus == 2" style="padding-bottom: 0;">
-				<view class="uni-flex border_bottom font_size26 padding_bottom3">
+				<!-- <view class="uni-flex border_bottom font_size26 padding_bottom3">
 					<view class="width25">订单编号：</view>
 					<view class="font_color66">{{ afterData.orderNo }}</view>
 				</view>
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请时间:</view>
 					<view class="font_color66">{{ afterData.retTime }}</view>
-				</view>
+				</view> -->
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请原因:</view>
 					<view class="font_color66">{{ afterData.retReason }}</view>
@@ -144,14 +144,14 @@
 			</view>
 
 			<view class="top_moudel" v-if="afterData.retStatus == 4" style="padding-bottom: 0;">
-				<view class="uni-flex border_bottom font_size26 padding_bottom3">
+				<!-- <view class="uni-flex border_bottom font_size26 padding_bottom3">
 					<view class="width25">订单编号：</view>
 					<view class="font_color66">{{ afterData.orderNo }}</view>
 				</view>
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请时间:</view>
 					<view class="font_color66">{{ afterData.retTime }}</view>
-				</view>
+				</view> -->
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3">
 					<view class="width25">申请原因:</view>
 					<view class="font_color66">{{ afterData.retReason }}</view>
@@ -177,14 +177,14 @@
 			</view>
 
 			<view class="top_moudel" v-if="afterData.retStatus == 6" style="padding-bottom: 0;">
-				<view class="uni-flex border_bottom font_size26 padding_bottom3" v-if="afterData.applyService == 4">
+				<!-- <view class="uni-flex border_bottom font_size26 padding_bottom3" v-if="afterData.applyService == 4">
 					<view class="width25">订单编号：</view>
 					<view class="font_color66">{{ afterData.orderNo }}</view>
 				</view>
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3" v-if="afterData.applyService == 4">
 					<view class="width25">申请时间:</view>
 					<view class="font_color66">{{ afterData.retTime }}</view>
-				</view>
+				</view> -->
 				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3" v-if="afterData.applyService == 4">
 					<view class="width25">申请原因:</view>
 					<view class="font_color66">{{ afterData.retReason }}</view>

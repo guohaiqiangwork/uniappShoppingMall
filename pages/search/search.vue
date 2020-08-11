@@ -3,7 +3,7 @@
 		<!-- <view class="title_top"></view> -->
 	
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(20upx + var(--status-bar-height))">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>

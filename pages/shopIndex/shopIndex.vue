@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);" v-if="!titleFalg">
+		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
 			<view class="width33  " @click="goBack"><image v-if="false" src="../../../static/image/icon/top_left.png" class="top_img_width" mode=""></image></view>
 			<view class="font_size36 width33 text_center">店铺</view>
 			<view class="width33 text_right" v-if="false">
@@ -13,7 +13,7 @@
 		<!-- 头部 -->
 		<view class="" style="height: 280upx;">
 			<image src="../../static/image/beij/shopIndex.png" class="image_width" mode=""></image>
-			<view class="login_moudel">
+			<view class="login_moudel" style="padding-top: calc(5upx + var(--status-bar-height))">
 				<!-- 搜索框 -->
 				<view class="uni-flex  padding_bottom2 padding_top2">
 					<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
