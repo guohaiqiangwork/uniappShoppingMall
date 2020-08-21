@@ -113,7 +113,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (this.timestatus == true) {
@@ -121,7 +121,7 @@
 						title: '请勿重复点击',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -141,7 +141,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 
 					}
@@ -169,7 +169,7 @@
 						title: '请检查验证码',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					return
 				} else if (!this.userPhone) {
@@ -177,7 +177,7 @@
 						title: '请填写手机号',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					return
 				}else if (!this.password || !this.password1) {
@@ -185,7 +185,7 @@
 						title: '请检查密码',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					return
 				}else if (this.password != this.password1) {
@@ -193,7 +193,7 @@
 						title: '密码不一致',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					return
 				}
@@ -208,7 +208,7 @@
 							title: '修改成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 						uni.reLaunch({
 							url: '../passwordLogin/passwordLogin'

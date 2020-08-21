@@ -61,7 +61,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}else if(!this.yzmCode){
@@ -69,7 +69,7 @@
 						title: '请输入验证码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -87,7 +87,7 @@
 							title: '设置成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 						uni.navigateBack()
 					}
@@ -102,7 +102,7 @@
 						title: '请填写修改的手机号',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return
 				}
@@ -115,7 +115,7 @@
 						title: '请勿重复点击',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 				
 				} else {
@@ -140,7 +140,7 @@
 								title: res.data.message,
 								icon: 'none',
 								duration: 1500,
-								position: 'top',
+								position: 'center',
 							});
 						}
 					}).catch(err => {})

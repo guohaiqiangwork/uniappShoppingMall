@@ -310,14 +310,14 @@ export default {
 									title: '上传成功',
 									icon: 'none',
 									duration: 2000,
-									position: 'top'
+									position: 'center'
 								});
 							} else {
 								uni.showToast({
 									title: JSON.parse(uploadFileRes.data).message,
 									icon: 'none',
 									duration: 2000,
-									position: 'top'
+									position: 'center'
 								});
 								return;
 							}
@@ -344,7 +344,7 @@ export default {
 						title: '请选择图片',
 						icon: 'none',
 						duration: 2000,
-						position: 'top'
+						position: 'center'
 					});
 					return;
 				}
@@ -352,19 +352,22 @@ export default {
 				this.imgListData = [];
 			}
 			var listDataImg =[]
-			if(this.imgListData[0].path){
-				for(let item of this.imgListData){
-					listDataImg.push(item.path)
+			if(this.imgListData.length > 0){
+				if(this.imgListData[0].path){
+					for(let item of this.imgListData){
+						listDataImg.push(item.path)
+					}
+				listDataImg =listDataImg.join(',') 
 				}
-			listDataImg =listDataImg.join(',') 
+				
 			}
-
+			
 			if (!this.userRemark && this.productList.status != 6) {
 				uni.showToast({
 					title: '请填写具体说明',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				return;
 			}

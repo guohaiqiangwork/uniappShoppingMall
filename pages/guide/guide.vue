@@ -26,7 +26,9 @@ export default {
 			}
 		});
 	},
-	mounted() {},
+	onShow() {
+		uni.getStorageSync('guideStus') == 'GO' ? uni.switchTab({ url: '../tabBar/home/home' }) : this.goGuidOne(); //判断初始引导页
+	},
 	methods: {
 		goGuidOne: function() {
 			setTimeout(function() {

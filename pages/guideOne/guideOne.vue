@@ -24,7 +24,7 @@
 						<view class="leftbtn" @click="closemoudel">
 							不同意
 						</view>
-						<view class="rightbtn" @click="toIndex">
+						<view class="rightbtn" @click="toIndexGo">
 							同意
 						</view>
 					</view>
@@ -85,11 +85,15 @@ export default {
 		
 		// iOS 平台不支持此 API，只能是用户主动杀进程。
 		toIndex:function() {
+			this.oneImg = 1
+		},
+		toIndexGo:function(){
 			uni.setStorageSync('guideStus', 'GO');
 			uni.switchTab({
 				url:'../tabBar/home/home'
 			})
 		}
+		
 	}
 };
 </script>

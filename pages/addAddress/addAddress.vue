@@ -153,9 +153,6 @@ export default {
 		if(this.falgUrl){
 			uni.redirectTo({
 				url: '../' + this.falgUrl +'/' +this.falgUrl + '?productId=' + this.productId,
-				
-				
-				// url: '../productDetails/productDetails?addressId=' + e.id + '&productId=' + this.productId
 			});
 		}else{
 			uni.navigateTo({
@@ -205,7 +202,7 @@ export default {
 					title: '请填写完整信息',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				return false;
 			} else if (!/^1[3456789]\d{9}$/.test(this.phone)) {
@@ -213,7 +210,7 @@ export default {
 					title: '请输入正确的11位手机号码',
 					icon: 'none',
 					duration: 1500,
-					position: 'top'
+					position: 'center'
 				});
 				return false;
 			} else if (this.addr.length > 20) {
@@ -221,7 +218,7 @@ export default {
 					title: '地址请输入小于20个字符',
 					icon: 'none',
 					duration: 1500,
-					position: 'top'
+					position: 'center'
 				});
 				return false;
 			}
@@ -254,7 +251,7 @@ export default {
 							title: '添加成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 						this.province = '请选择省'
 						this.city =''
@@ -291,7 +288,7 @@ export default {
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 					}
 				})

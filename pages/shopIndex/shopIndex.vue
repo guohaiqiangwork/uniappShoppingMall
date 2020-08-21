@@ -427,7 +427,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})
@@ -448,7 +448,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})

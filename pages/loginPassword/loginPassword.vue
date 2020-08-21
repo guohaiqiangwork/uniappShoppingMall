@@ -51,7 +51,7 @@
 						title: '两次密码不一致',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					return;
 				}
@@ -67,7 +67,7 @@
 							title: '设置成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 						uni.navigateBack()
 					}

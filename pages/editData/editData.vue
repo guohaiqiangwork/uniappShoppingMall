@@ -86,14 +86,14 @@
 								title: '上传成功',
 								icon: 'none',
 								duration: 2000,
-								position: 'top',
+								position: 'center',
 							});
 						} else {
 							uni.showToast({
 								title: JSON.parse(uploadFileRes.data).message,
 								icon: 'none',
 								duration: 2000,
-								position: 'top',
+								position: 'center',
 							});
 							return
 						}

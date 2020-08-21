@@ -234,6 +234,7 @@
 		methods: {
 			// tab two
 			tabSwichThree: function(index) {
+				this.pageNum  = 1
 				index == 0 ? this.tabIndexT = '' : this.tabIndexT = index
 				this.goodRecommendList = [];
 				this.getMyorderList()

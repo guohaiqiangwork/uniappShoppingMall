@@ -300,7 +300,7 @@
 							title: '添加成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})

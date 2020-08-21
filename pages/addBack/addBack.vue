@@ -98,7 +98,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (!this.code) {
@@ -106,7 +106,7 @@
 						title: '请输入验证码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (!this.number) {
@@ -114,7 +114,7 @@
 						title: '请检查银行卡号',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -153,7 +153,7 @@
 						title: '请勿重复点击',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 
 				} else {
@@ -162,7 +162,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 						if (res.data.code == 200) {
 							that.yzm_stuas = 1;
@@ -185,7 +185,7 @@
 								title: res.data.message,
 								icon: 'none',
 								duration: 1500,
-								position: 'top',
+								position: 'center',
 							});
 						}
 					}).catch(err => {})

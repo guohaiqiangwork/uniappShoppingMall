@@ -309,7 +309,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {})
@@ -330,7 +330,7 @@
 							title: '操作成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 						this.payFalg = false;
 						this.$refs.pwd.clear(); //清空密码
@@ -340,7 +340,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {})

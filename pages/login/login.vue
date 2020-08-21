@@ -114,7 +114,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (this.timestatus == true) {
@@ -122,7 +122,7 @@
 						title: '请勿重复点击',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -142,7 +142,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 
 					}
@@ -173,7 +173,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (this.phoneCode.length < 6 || this.phoneCode.length > 15) {
@@ -181,7 +181,7 @@
 						title: '验证码请输入不少于6位',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -209,7 +209,7 @@
 						title: err.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					
 				})
@@ -248,9 +248,9 @@
 				
 			},
 			goWxLogin: function() {
-				uni.showToast({
-					title:'进来了'
-				})
+				// uni.showToast({
+				// 	title:'进来了'
+				// })
 				uni.showLoading({
 					title: '加载中'
 				});
@@ -266,7 +266,7 @@
 									title:'微信' +  JSON.stringify(infoRes),
 									icon:'none',
 									duration:20000,
-									position:'top'
+									position:'center'
 								})
 								console.log(JSON.stringify(infoRes))
 								let formdata = {

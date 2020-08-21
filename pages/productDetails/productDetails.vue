@@ -70,10 +70,10 @@
 			<!-- list -->
 			
 		<!-- v-if="Object.keys(productDetailList.genericParamMaps).length > 0 " -->
-			<view class="page_width" >
+			<view class="page_width" v-if="productDetailListFalg">
 				<view class="list_moudel_details">
 					<view class="page_width">
-						<view v-for="(item, key) in productDetailList.genericParamMaps" :key="key" class="uni-flex  font_size26 border_bottom padding_top3 padding_bottom3">
+						<view style="width: 93%;" v-for="(item, key) in productDetailList.genericParamMaps" :key="key" class="uni-flex  font_size26 border_bottom padding_top3 padding_bottom3">
 							<view class="">{{ key }}</view>
 							<view class="font_color66 margin_left3">{{ item }}</view>
 						</view>
@@ -250,7 +250,8 @@ export default {
 			description: '',
 			titleFalg: true,
 			noShop:false,
-			inviteCode:''//邀请码
+			inviteCode:'',//邀请码
+			productDetailListFalg:true
 		};
 	},
 	onLoad(option) {
@@ -360,7 +361,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -381,7 +382,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -403,7 +404,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -428,6 +429,7 @@ export default {
 					if (res.data.code == 200) {
 						_this.AddressList.data = res.data.data.provinceName + res.data.data.cityName + res.data.data.areaName + res.data.data.address;
 						console.log(_this.AddressList.data)
+					
 						// _this.$set(_this.AddressList, 'data' , _this.AddressList.data)
 						// this.$set( _this.AddressList.data )
 					} else {
@@ -436,7 +438,7 @@ export default {
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 					}
 				})
@@ -455,7 +457,11 @@ export default {
 					_this.productDetailList = res.data.data;
 					_this.lunBoList = _this.productDetailList.imgArr; //轮播数据
 					_this.goodsDetail = _this.productDetailList.goodsDetail; //详细数据
+					console.log(_this.goodsDetail)
 					_this.spec = _this.productDetailList.goodsDetail.indexes.replace(/_/g, ' ');
+					if(_this.productDetailList.genericParamMaps){
+						_this.productDetailListFalg = Object.keys(_this.productDetailList.genericParamMaps).length > 0 
+					}
 					
 					if (!data.indexes) {
 						_this.indexes = _this.productDetailList.ownSpec;
@@ -467,7 +473,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -487,7 +493,7 @@ export default {
 					title: '库存不足',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				return;
 			}
@@ -504,7 +510,7 @@ export default {
 						title: '添加成功',
 						icon: 'none',
 						duration: 2000,
-						position: 'top'
+						position: 'center'
 					});
 					this.findShopNumber();
 				}
@@ -520,7 +526,7 @@ export default {
 					title: '库存不足',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				return;
 			}
@@ -555,7 +561,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -572,7 +578,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -593,7 +599,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});

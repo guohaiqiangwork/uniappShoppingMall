@@ -400,7 +400,7 @@ export default {
 					title: '请选择要结算的商品',
 					icon: 'none',
 					duration: 1500,
-					position: 'top'
+					position: 'center'
 				});
 			}
 		}

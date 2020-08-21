@@ -154,21 +154,21 @@ export default {
 					title: '请选择开始日期',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 			} else if (!d2) {
 				uni.showToast({
 					title: '请选择结束日期',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 			} else if (d1 > d2) {
 				uni.showToast({
 					title: '结束时间不能小于开始日期',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				this.startDateOne = getDate('start');
 				this.endDateOne = getDate('end');

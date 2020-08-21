@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top:var(--status-bar-height);">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -69,7 +69,7 @@
 						<image :src="item.goodsDetail.images" class="list_img" mode=""></image>
 					</view>
 					<view class="width66">
-						<view class="margin_top5 text_hidden font_weight600">
+						<view class="margin_top5 text_hidden font_weight600"  @click="goTodetails(item)">
 							{{item.title}}
 						</view>
 						<view class="uni-flex display_space margin_top8">
@@ -322,7 +322,7 @@
 							title: '添加成功',
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 					this.getShopNumber();
@@ -395,7 +395,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})

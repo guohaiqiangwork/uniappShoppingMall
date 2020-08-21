@@ -55,7 +55,7 @@ http.interceptor.response((response) => { /* 请求之后拦截器 */
 				title: response.data.message,
 				icon: 'none',
 				duration: 1500,
-				position: 'top',
+				position: 'center',
 			});
 			uni.stopPullDownRefresh(); //停止下拉刷新动画
 			return response;

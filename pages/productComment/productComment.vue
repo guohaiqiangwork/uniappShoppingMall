@@ -23,8 +23,8 @@
 
 			<!-- tab -->
 			<view class="padding_top2" >
-				<view class="item_tab" v-for="(item,index) in tabList" :key="index" @click="tabSwitch(index)">
-					<view class="">
+				<view :class="tabIndex == index ? 'item_tab_one'  : 'item_tab'" v-for="(item,index) in tabList" :key="index" @click="tabSwitch(index)">
+					<view >
 						{{item.name}}
 					</view>
 					<view class="tab_select" v-if="tabIndex == index "></view>
@@ -61,6 +61,7 @@
 				</view>
 				<view class="margin_top2" style="margin-left: -20upx;">
 					<view class="display_inline" v-for="(item,index) in item.images" :key="index">
+						{{item}}
 						<image :src="item" class="moudel_img2" mode=""></image>
 					</view>
 
@@ -266,7 +267,7 @@
 								title: res.data.message,
 								icon: 'none',
 								duration: 1500,
-								position: 'top',
+								position: 'center',
 							});
 						}
 					})
@@ -295,7 +296,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})
@@ -316,7 +317,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})
@@ -338,7 +339,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top'
+							position: 'center'
 						});
 					}
 				});
@@ -360,7 +361,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})
@@ -399,6 +400,16 @@
 		font-size: 28upx;
 		height: 65upx;
 		line-height: 65upx;
+	}
+	.item_tab_one{
+		display: inline-block;
+		width: 33%;
+		text-align: center;
+		color: #0C0C0C;
+		font-size: 28upx;
+		height: 65upx;
+		line-height: 65upx;
+		font-weight: 700;
 	}
 
 	.tab_select {

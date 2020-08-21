@@ -57,7 +57,7 @@
 							</view>
 							<!-- </view> -->
 						</scroll-view>
-						<view class="width25 font_size30 text_center" style="align-items: center;padding-top: 40upx;" @click="goInvalidProduct('d')">
+						<view class=" font_size26 text_right" style="align-items: center;padding-top: 40upx;width: 19%;" @click="goInvalidProduct('d')">
 							共{{ item.cartResults.length }}件>
 						</view>
 					</view>
@@ -384,7 +384,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -407,7 +407,7 @@ export default {
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 					}
 				})
@@ -455,7 +455,7 @@ export default {
 							title: '优惠券已全额抵扣',
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 						setTimeout(function() {
 							uni.switchTab({
@@ -472,7 +472,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -734,7 +734,7 @@ export default {
 }
 
 .wrapper {
-	width: 90%;
+	width: 80%;
 	white-space: nowrap;
 	display: flex;
 	margin-top: 2%;

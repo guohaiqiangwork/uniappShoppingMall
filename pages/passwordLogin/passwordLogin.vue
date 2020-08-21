@@ -108,7 +108,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (this.phoneCode.length < 6 || this.phoneCode.length > 15) {
@@ -116,7 +116,7 @@
 						title: '验证码请输入不少于6位',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -140,7 +140,7 @@
 						title: err.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					this.msgErr = '*' + err.data.message
 				})

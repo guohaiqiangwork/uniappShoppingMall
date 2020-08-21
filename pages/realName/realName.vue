@@ -42,7 +42,7 @@ export default {
 					title: '请检查内容',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				return;
 			}
@@ -60,7 +60,7 @@ export default {
 							title: '认证成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 						// uni.navigateBack();
 						uni.navigateTo({
@@ -71,7 +71,7 @@ export default {
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top'
+							position: 'center'
 						});
 					}
 				})

@@ -202,7 +202,7 @@
 							title: '添加成功',
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 						this.getShopNumber()
 					}
@@ -223,7 +223,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				})

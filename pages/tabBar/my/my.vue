@@ -9,7 +9,8 @@
 			<view class="margin_left8" @click="goMyPage('setUp')"><image src="../../../static/image/icon/set.png" mode="" class="top_img3"></image></view>
 		</view>
 		<view class="login">
-			<image src="../../../static/image/beij/mybj.png" mode="" class="image_width"></image>
+			<image src="../../../static/image/beij/mybj1.png" mode="" class="image_width"></image>
+			<!-- <image src="../../../static/image/beij/mybj.png" mode="" class="image_width"></image> -->
 			<view class="login_moudel">
 				<!-- 头部操作 -->
 				<view class="uni-flex">
@@ -21,7 +22,7 @@
 					<view class="margin_left8" @click="goMyPage('setUp')"><image src="../../../static/image/icon/set.png" mode="" class="top_img3"></image></view>
 				</view>
 				<!-- 信息 -->
-				<image src="../../../static/image/beij/myTopb.png" mode="" class="image_width_top"></image>
+				<!-- <image src="../../../static/image/beij/myTopb.png" mode="" class="image_width_top"></image> -->
 				<view class="image_width_top_moudel">
 					<view class="uni-flex" style="margin-top: 80upx;">
 						<view class="width75 font_size36 margin_top5">Hi~ {{ infoData.nickName }}</view>
@@ -278,6 +279,8 @@ export default {
 				});
 			}
 		},
+		
+		
 		goOrder: function(e) {
 			console.log(e);
 			if (e == 'th') {
@@ -436,7 +439,7 @@ page {
 .my_topmoudel {
 	margin-left: 4%;
 	height: 140upx;
-	background-color: #303030;
+	// background-color: #303030;
 	border-top-left-radius: 30upx;
 	border-top-right-radius: 30upx;
 	margin-top: 30upx;

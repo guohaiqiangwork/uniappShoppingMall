@@ -300,7 +300,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {})

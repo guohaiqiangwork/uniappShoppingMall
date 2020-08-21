@@ -65,7 +65,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (this.inviteCode.length < 8) {
@@ -73,7 +73,7 @@
 						title: '邀请码请输入不少于8位',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -90,7 +90,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 1500,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {})
@@ -115,7 +115,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} 
@@ -138,7 +138,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		
-		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
+		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height));padding-left: 0;padding-right: 0;padding-bottom: 20upx;" v-if="!titleFalg">
 			<view class="uni-flex searce_moudel">
 				<view class="searce_left">
 					<image src="../../../static/image/icon/search.png" class="searce_width" mode=""></image>

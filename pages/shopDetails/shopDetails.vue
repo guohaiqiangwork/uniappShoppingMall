@@ -176,7 +176,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});
@@ -196,7 +196,7 @@ export default {
 						title: res.data.message,
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 				}
 			});

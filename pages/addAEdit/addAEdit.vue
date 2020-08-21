@@ -179,7 +179,7 @@
 							title: res.data.message,
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 					}
 				}).catch(err => {})
@@ -200,7 +200,7 @@
 						title: '删除成功',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					console.log(res)
 					if (res.data.code == 200) {
@@ -225,7 +225,7 @@
 						title: '请填写完整信息',
 						icon: 'none',
 						duration: 2000,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (!(/^1[3456789]\d{9}$/.test(this.phone))) {
@@ -233,7 +233,7 @@
 						title: '请输入正确的11位手机号码',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				} else if (this.addr.length > 20) {
@@ -241,7 +241,7 @@
 						title: '地址请输入小于20个字符',
 						icon: 'none',
 						duration: 1500,
-						position: 'top',
+						position: 'center',
 					});
 					return false;
 				}
@@ -274,7 +274,7 @@
 							title: '修改成功',
 							icon: 'none',
 							duration: 2000,
-							position: 'top',
+							position: 'center',
 						});
 						if (this.urlFalg == 'list') {
 							uni.navigateTo({

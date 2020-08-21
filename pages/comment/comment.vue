@@ -20,7 +20,13 @@
 				<view class="font_size22 font_colorcc text_right margin_top3 margin_right3">{{ number }}/300</view>
 				<view class="uni-flex margin_top8">
 					<view class="width30 text_center" :class="index != 0 ? 'margin_left4' : ''" v-for="(item, index) in imgList" :key="index">
-						<image @click="delectUpload(index)" v-if="item.url != '../../static/image/beij/uplodel.png' " src="../../static/image/beij/jian.png" class="jian_img" mode=""></image>
+						<image
+							@click="delectUpload(index)"
+							v-if="item.url != '../../static/image/beij/uplodel.png'"
+							src="../../static/image/beij/jian.png"
+							class="jian_img"
+							mode=""
+						></image>
 						<image @click="upload(index)" :src="item.url" class="img_width" mode=""></image>
 					</view>
 				</view>
@@ -110,7 +116,7 @@ export default {
 					title: '请选择星星打分',
 					icon: 'none',
 					duration: 2000,
-					position: 'top'
+					position: 'center'
 				});
 				return;
 			}
@@ -118,7 +124,18 @@ export default {
 		},
 		// 保存评价
 		saveComment: function() {
-			
+			console.log(this.imgListData)
+			if (!this.imgListData[0].path) {
+				this.imgListData = [];
+				// uni.showToast({
+				// 	title: '请选择图片',
+				// 	icon: 'none',
+				// 	duration: 2000,
+				// 	position: 'center'
+				// });
+				// return;
+			} 
+
 			var data = {
 				content: this.content,
 				images: this.imgListData.join(','),
@@ -137,7 +154,7 @@ export default {
 						title: '评价成功，感谢您！',
 						icon: 'none',
 						duration: 1500,
-						position: 'top'
+						position: 'center'
 					});
 					setTimeout(function() {
 						uni.navigateBack();
@@ -154,7 +171,7 @@ export default {
 			// 	this.imgList.splice(index, 1);
 			// 	this.imgListData.splice(index, 1);
 			// }
-			
+
 			if (this.imgList[index].url == '../../static/image/beij/uplodel.png') {
 				return;
 			} else {
@@ -171,7 +188,6 @@ export default {
 					this.imgListData.splice(index, 1);
 				}
 			}
-			
 		},
 		upload: function(index) {
 			console.log('77');
@@ -212,14 +228,14 @@ export default {
 									title: '上传成功',
 									icon: 'none',
 									duration: 2000,
-									position: 'top'
+									position: 'center'
 								});
 							} else {
 								uni.showToast({
 									title: JSON.parse(uploadFileRes.data).message,
 									icon: 'none',
 									duration: 2000,
-									position: 'top'
+									position: 'center'
 								});
 								return;
 							}

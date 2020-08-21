@@ -255,7 +255,7 @@ export default {
 			};
 			this.$http.get('/api/order/cancel', data, true).then(res => {
 				if (res.data.code == 200) {
-					this.getMyorderList(); //刷新列表
+					this.getOrderDetail();
 				}
 			});
 		},
