@@ -1,5 +1,8 @@
 <template>
 	<view style="padding-top: calc(30upx + var(--status-bar-height));">
+		<view class="font_size30 page_widthMoudel font_weight700">
+			{{title}}
+		</view>
 		<u-parse :content="item.content" :loading="loading"   />
 	</view>
 </template>
@@ -14,12 +17,14 @@
 			return {
 				loading: false, //开启loading不显示默认值
 				id: '',
-				item: ''
+				item: '',
+				title:''
 			}
 		},
-		onLoad(e) {
-			console.log(e)
-			this.id = e.id
+		onLoad(option) {
+			console.log(option)
+			this.id = option.id
+			this.title = option.title
 		},
 		mounted() {
 			this.getLunb();

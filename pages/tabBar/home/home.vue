@@ -60,7 +60,7 @@
 				<view class="uni-swiper-msg margin_left2">
 					<swiper class="swiper" vertical="true" autoplay="false" duration="500" interval="2000">
 						<swiper-item v-for="(item, index) in msg" :key="index" class="swiper_item_font text_hidden">
-							<view @tap="notice(item.id)">{{item.title}}</view>
+							<view @tap="notice(item)">{{item.title}}</view>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -349,9 +349,10 @@
 			},
 			
 			//点击信息
-			notice:function(e) {
+			notice:function(item) {
+				console.log(item)
 				uni.navigateTo({
-					url: '../../headlines/headlines?id=' + e
+					url: '../../headlines/headlines?id=' + item.id + '&title=' +item.title
 				})
 			},
 			// 去产品详情

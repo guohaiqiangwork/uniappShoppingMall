@@ -57,7 +57,7 @@
 							</view>
 							<!-- </view> -->
 						</scroll-view>
-						<view class=" font_size26 text_right" style="align-items: center;padding-top: 40upx;width: 19%;" @click="goInvalidProduct('d')">
+						<view class=" font_size26 text_right" style="align-items: center;padding-top: 40upx;width: 19%;" @click="goInvalidProduct('d',item.cartResults)">
 							共{{ item.cartResults.length }}件>
 						</view>
 					</view>
@@ -495,12 +495,12 @@ export default {
 			this.couponFalg = true;
 		},
 		// 去失效商品列表
-		goInvalidProduct(falg) {
+		goInvalidProduct(falg,items) {
 			console.log(falg);
 			var _this = this;
 			var dataList = [];
 			if (falg == 'd') {
-				for (let item of _this.productList[0].cartResults) {
+				for (let item of items) {
 					console.log(item);
 					var a = {
 						num: item.num,

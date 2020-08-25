@@ -199,6 +199,7 @@ export default {
 					this.totalPrice = 0;
 					this.totalPriceNum = 0;
 					this.quanAllChecked = false;
+					this.idsList =[];
 					this.getShopCard(); //刷新
 				}
 			});
