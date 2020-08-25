@@ -28,6 +28,7 @@ export default {
 	},
 	onLoad(option) {
 		this.page = option.pageType;
+		this.money = option.money
 	},
 	methods: {
 		keyName: function(e) {
@@ -63,9 +64,17 @@ export default {
 							position: 'center'
 						});
 						// uni.navigateBack();
-						uni.navigateTo({
-							url: '../' + this.page + '/' + this.page
-						});
+						if(this.page == 'withdrawal'){
+							uni.navigateTo({
+								url: '../' + this.page + '/' + this.page + '?money=' + this.money
+							});
+							
+						}else{
+							uni.navigateTo({
+								url: '../' + this.page + '/' + this.page
+							});
+						}
+						
 					} else {
 						uni.showToast({
 							title: res.data.message,

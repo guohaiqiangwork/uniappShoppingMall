@@ -187,6 +187,16 @@
 			
 			// 取消操作
 			getBatchCancel: function() {
+				if(this.producrIds.length == 0){
+					console
+					uni.showToast({
+						title:'请选择商品',
+						icon:'none',
+						duration:2000,
+						position:top
+					});
+					return
+				}
 				this.pfalg = true;
 				
 			},
@@ -258,6 +268,7 @@
 			},
 			// 确认取消
 			okMoudel:function(){
+				
 				var data = {
 					ids: this.producrIds.join(","),
 				}

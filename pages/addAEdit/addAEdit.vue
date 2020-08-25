@@ -323,24 +323,39 @@
 			// },滑动
 			// 确认
 			handleConfirm: function(item) {
-				console.log('confirm::', item)
+				if(!item){
+					this.province = '请选择省',
+					this.city = '请选择城市',
+					this.area = '请选择区域'
+					return
+				}
+				// console.log('confirm::', item)
 				this.province = item.item.label
 				this.provinceNumber = item.value
 				this.city = '请选择城市'
+				this.area = '请选择区域'
 				this.getProvince(item.value, 'city')
 			},
 			handleConfirmCity: function(item) {
-				console.log('confirm::', item.item)
+				if(!item){
+					this.city = '请选择城市',
+					this.area = '请选择区域'
+					return
+				}
+				// console.log('confirm::', item.item)
 				this.city = item.item.label
 				this.cityNumber = item.value
-				this.area = '请选择'
+				this.area = '请选择区域'
 				this.getProvince(item.value, 'area')
 			},
 			handleConfirmArea: function(item) {
-				console.log('confirm::', item.item)
+				if(!item){
+					this.area = '请选择区域'
+					return
+				}
+				// console.log('confirm::', item.item)
 				this.area = item.item.label
 				this.areaNumber = item.value
-
 			},
 			// handleCancel (item) {
 			// 	console.log('cancel::', item)

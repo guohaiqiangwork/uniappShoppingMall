@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="padding-top: calc(30upx + var(--status-bar-height));">
 		<u-parse :content="item.content" :loading="loading"   />
 	</view>
 </template>

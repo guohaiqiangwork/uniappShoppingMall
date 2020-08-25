@@ -21,7 +21,7 @@
 		</view>
 
 		<!-- 银行卡列表 -->
-		<view class="page_width">
+		<view class="page_width" style="padding-bottom: 24%;">
 			<!-- 列表 -->
 			<template v-if="myBankList.length > 0">
 				<view class="uni-flex back_moudel" :class="item.bankBColor" v-for="(item, index) in myBankList" :key="index">
@@ -39,8 +39,8 @@
 						</view>
 					</view>
 				</view>
-
-				<view class="listNobtn" @click="addBack" v-if="rightF != '完成'">添加银行卡</view>
+				
+				<view class="listNobtn"  @click="addBack" v-if="rightF != '完成' || myBankList.length > 10 ">添加银行卡</view>
 				<view class="listNobtn" @click="openm" v-if="rightF == '完成'">确认解绑</view>
 			</template>
 
@@ -337,7 +337,7 @@ export default {
 	line-height: 88upx;
 	color: #ffffff;
 	font-size: 30upx;
-	position: absolute;
+	position: fixed;
 	bottom: 3%;
 }
 .z{

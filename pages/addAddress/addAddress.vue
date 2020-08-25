@@ -22,7 +22,7 @@
 				</view>
 			</view>
 
-			<view class="bottom_add">
+			<view class="bottom_add" v-if="addressData.length < 10">
 				<view class="fixed_btm uni-flex display_center" @click="getnewAddress">
 					<view class="" style="margin:4.8% 2% 0 0;"><image src="../../static/image/icon/addA.png" style="width: 35upx;height: 35upx;" mode=""></image></view>
 					<view style="margin: auto 0 ;">添加新地址</view>
@@ -35,7 +35,7 @@
 			<view class="form_body">
 				<view class="form_list">
 					<view class="list_left">收货人</view>
-					<view class="list_right"><input class="list_input" @input="keyName" placeholder="请填写收货人姓名" placeholder-style="color:#999999" /></view>
+					<view class="list_right"><input maxlength="8" class="list_input" @input="keyName" placeholder="请填写收货人姓名" placeholder-style="color:#999999" /></view>
 				</view>
 				<view class="form_list">
 					<view class="list_left">手机号码</view>
@@ -69,7 +69,7 @@
 				<view class="form_list" style="border-bottom: none;">
 					<view class="list_left" style="height: 160upx;">详细地址</view>
 					<view class="list_right">
-						<input class="list_input" @input="keyAddr" maxlength="20" placeholder="街道,楼牌号等" placeholder-style="color:#999999" />
+						<input class="list_input" @input="keyAddr" maxlength="25" placeholder="街道,楼牌号等" placeholder-style="color:#999999" />
 						<!-- <textarea value="" @input="keyAddr" maxlength="20" placeholder="街道,楼牌号等" /> -->
 					</view>
 				</view>
@@ -131,7 +131,8 @@ export default {
 			cityNumber: '',
 			areaList: [], //区
 			area: '',
-			areaNumber: ''
+			areaNumber: '',
+			urlFalg:''
 		};
 	},
 	onLoad(option) {
@@ -141,6 +142,13 @@ export default {
 		this.falgUrl = option.falgUrl; //路径
 		this.productId = option.productId; //产品ID
 		this.ids = option.ids; //确认下单
+		if (option.urlFalg == 'productDetails') {
+			this.urlFalg = option.urlFalg ;
+			this.productSkuId = option.productSkuId;
+			this.productNumber = option.productNumber;
+		}
+		
+		
 	},
 	onShow() {
 		this.getProvince('', 'province'); //获取省数据
@@ -306,7 +314,14 @@ export default {
 				uni.redirectTo({
 					url: '../productDetails/productDetails?addressId=' + e.id + '&productId=' + this.productId
 				});
-			} else {
+			} else if(this.urlFalg == 'productDetails'){
+				var urlData = '../' + this.falgUrl + '/' + this.falgUrl + '?addressId=' + e.id + '&productSkuId=' + this.productSkuId + '&productNumber=' + this.productNumber + '&urlFalg=productDetails';
+				uni.redirectTo({
+					url: urlData
+				});
+
+			}else
+			{
 				var urlData = '../' + this.falgUrl + '/' + this.falgUrl + '?addressId=' + e.id + '&ids=' + this.ids;
 				uni.redirectTo({
 					url: urlData

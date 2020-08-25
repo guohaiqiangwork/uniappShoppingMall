@@ -220,7 +220,7 @@ export default {
 					if (res.data.code == 200) {
 						if (!res.data.data) {
 							uni.navigateTo({
-								url: '../../realName/realName?pageType=withdrawal'
+								url: '../../realName/realName?pageType=withdrawal' + '&money=' + e
 							});
 						} else {
 							uni.navigateTo({

@@ -143,6 +143,7 @@
 		},
 		onShow() {
 			this.getMyData() //获取个人信息
+			this.passwordSix = '';
 		},
 		onBackPress() {
 			console.log('999');
@@ -244,12 +245,22 @@
 
 			// 设置支付密码
 			getSetPassword: function() {
+				if(!this.passwordSix){
+					uni.showToast({
+						title: '密码长度不够',
+						icon: 'none',
+						duration: 2000,
+						position: 'center',
+					});
+					return
+				}
 				var data = {
 					password: this.passwordSix,
 					mbId: uni.getStorageSync('userId')
 				}
 				this.$http.post('/api/account/setPassword', data, true).then(res => {
 					if (res.data.code == 200) {
+						this.passwordSix = '';
 						uni.showToast({
 							title: '操作成功',
 							icon: 'none',

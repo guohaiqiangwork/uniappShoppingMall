@@ -170,7 +170,7 @@ export default {
 					duration: 2000,
 					position: 'center'
 				});
-				this.startDateOne = getDate('start');
+				this.startDateOne = getDate('end');
 				this.endDateOne = getDate('end');
 				return;
 			}

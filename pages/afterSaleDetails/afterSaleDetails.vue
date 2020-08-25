@@ -185,7 +185,7 @@
 					<view class="width25">申请时间:</view>
 					<view class="font_color66">{{ afterData.retTime }}</view>
 				</view> -->
-				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3" v-if="afterData.applyService == 4">
+				<view class="uni-flex border_bottom font_size26 padding_bottom3 padding_top3" v-if="afterData.applyService == 4 || afterData.applyService == 2">
 					<view class="width25">申请原因:</view>
 					<view class="font_color66">{{ afterData.retReason }}</view>
 				</view>

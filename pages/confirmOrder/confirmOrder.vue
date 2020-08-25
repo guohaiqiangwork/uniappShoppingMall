@@ -2,7 +2,7 @@
 	<view>
 		<view class="page_width padding_top2 padding_bottom3">
 			<!-- 地址块 -->
-			<view class="margin_top3" v-if="AddressList == 1" @click="goAddAddress('new')" >
+			<view class="margin_top3" v-if="AddressList == 1" @click="goAddAddress('new')">
 				<image src="../../static/image/beij/orderConfirm.png" class="orderimg" mode=""></image>
 			</view>
 
@@ -222,10 +222,11 @@ export default {
 			dataInvalidList: [], //变更商品列表
 			productNumber: '', //详情页数量
 			productSkuId: '', //详情页id
-			pfalg: false
+			pfalg: false,
+			urlFalg:''
 		};
 	},
-	
+
 	onLoad(option) {
 		console.log(option);
 		this.addressId = option.addressId; //地址参数
@@ -237,6 +238,7 @@ export default {
 		}
 		// 购买来路
 		if (option.urlFalg == 'productDetails') {
+			this.urlFalg = option.urlFalg ;
 			this.productSkuId = option.productSkuId;
 			this.productNumber = option.productNumber;
 			this.getProductList();
@@ -306,6 +308,7 @@ export default {
 				}
 			});
 		},
+
 		// 查询失效
 		getShopCardInval: function() {
 			var data = {
@@ -352,7 +355,7 @@ export default {
 			this.$http.get('/api/coupon/balance', data, true).then(res => {
 				if (res.data.code == 200) {
 					if (res.data.data) {
-						console.log(JSON.stringify(res))
+						console.log(JSON.stringify(res));
 						_this.discountMoney = res.data.data;
 						let priceNumber = 0;
 						priceNumber = Number(_this.totalPrice.totalPrice) - Number(_this.discountMoney.balance);
@@ -493,9 +496,28 @@ export default {
 		},
 		// 去失效商品列表
 		goInvalidProduct(falg) {
-			uni.navigateTo({
-				url: '../invalidProduct/invalidProduct?falg=' + falg
-			});
+			console.log(falg);
+			var _this = this;
+			var dataList = [];
+			if (falg == 'd') {
+				for (let item of _this.productList[0].cartResults) {
+					console.log(item);
+					var a = {
+						num: item.num,
+						skuId: item.skuId
+					};
+					dataList.push(a);
+				}
+			
+				uni.navigateTo({
+					url: '../invalidProduct/invalidProduct?falg=' + falg +'&producTList=' + JSON.stringify(dataList)
+				});
+				console.log(dataList);
+			} else {
+				uni.navigateTo({
+					url: '../invalidProduct/invalidProduct?falg=' + falg
+				});
+			}
 		},
 		// 关闭失效
 		closeMoudel() {
@@ -512,9 +534,20 @@ export default {
 		// 去添加地址
 		goAddAddress(e) {
 			console.log(e);
-			uni.navigateTo({
-				url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&ids=' + this.idsList
-			});
+			if(this.urlFalg == 'productDetails' ){
+			
+				// = option.productSkuId;
+				//  = option.productNumber;
+				// 	option.urlFalg == 'productDetails'
+				uni.navigateTo({
+					url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&urlFalg=productDetails' + '&productSkuId=' + this.productSkuId  + '&productNumber=' + this.productNumber
+				});
+			}else{
+				uni.navigateTo({
+					url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&ids=' + this.idsList
+				});
+			}
+			
 		}
 	}
 };

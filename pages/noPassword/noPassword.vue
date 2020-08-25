@@ -210,6 +210,8 @@
 							duration: 2000,
 							position: 'center',
 						});
+						uni.removeStorageSync("userId");
+						uni.removeStorageSync("token");
 						uni.reLaunch({
 							url: '../passwordLogin/passwordLogin'
 						})

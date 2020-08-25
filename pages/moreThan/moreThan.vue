@@ -233,6 +233,7 @@ export default {
 			if (this.endDateOne == '请选择') {
 				this.endDateOne = '';
 			}
+			console.log(this.dataIndex)
 			var data = {
 				mbId: uni.getStorageSync('userId'),
 				endTime: this.endDateOne,
@@ -262,10 +263,13 @@ export default {
 		tabSwichThree: function(index) {
 			console.log(index);
 			this.tabIndexT = index;
+			// console.log(this.tabIndexT)
 			if (this.tabIndexT == 1) {
 				this.dataIndex = 2;
 			} else if (this.tabIndexT == 2) {
 				this.dataIndex = 1;
+			}else if(this.tabIndexT == 0){
+				this.dataIndex  = 0
 			}
 			this.productList = [];
 			this.pageNum = 1;

@@ -360,8 +360,16 @@
 		}, {
 			"path": "pages/headlines/headlines",
 			"style": {
-				"navigationBarTitleText": "头条信息"
+				"app-plus": {
+					"titleNView": false,
+					"backgroundTextStyle": "dark"
+					// "navigationBarTitleText": "头条信息"
+				},
+				"enablePullDownRefresh": false
 			}
+			// "style": {
+			// 	"navigationBarTitleText": "头条信息"
+			// }
 		}, {
 			"path": "pages/bindingCode/bindingCode",
 			"style": {

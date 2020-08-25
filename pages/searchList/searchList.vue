@@ -108,9 +108,16 @@
 							</view>
 						</view>
 					</view>
+					
+					<view v-if="queryStoreList.length == 0" class="text_center margin_top18">
+						<image src="../../static/image/default/noProduct.png" class="no_img_product" mode=""></image>
+						<view class="font_size28 font_color99 margin_top5">
+							暂无相关店铺~
+						</view>
+					</view>
 				</view>
 			</template>
-
+			
 
 			<view v-if="queryStoreList.length > 9">
 				<uni-load-more :status="status" :content-text="contentText" color="#999999" />
@@ -220,8 +227,9 @@
 				if (this.inputValue != '') { // 输入框的值不为空时
 					if (this.searchAll.length == 10) {
 						const than = this
-						
-						this.searchAll[0] = this.inputValue // 将输入框的值添加到搜索记录数组中存储
+						this.searchAll.splice(9,1);
+						this.searchAll.unshift(this.inputValue);
+						// this.searchAll[9] = this.inputValue // 将输入框的值添加到搜索记录数组中存储
 						uni.setStorage({
 							key: 'searchAll_key',
 							data: than.searchAll,
