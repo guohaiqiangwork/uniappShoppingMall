@@ -89,7 +89,7 @@
 				 <view v-if="teamMembersList.length == 0" class="text_center margin_top18">
 				 	<image src="../../static/image/default/noMsg.png" class="no_img_msg" mode=""></image>
 				 	<view class="font_size28 font_color99 margin_top5">
-				 		暂无消息~
+				 		暂无成员~
 				 	</view>
 				 </view>
 				 <view class="" v-if="teamMembersList.length > 9" >

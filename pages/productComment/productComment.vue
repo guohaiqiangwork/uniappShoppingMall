@@ -36,7 +36,7 @@
 
 		<!-- 列表 -->
 
-		<view class="page_width" style="padding-top: 200upx;">
+		<view class="page_width" style="padding-top: 200upx;padding-bottom: 15%;">
 			<!-- <scroll-view style="margin-top: 200upx;padding-bottom: 100upx;"> -->
 			<view class="list_moudel_contern " style="margin-top: 30upx;" v-for="(item,index) in evaluateList" :key="index">
 				<view class="uni-flex display_space">
@@ -61,7 +61,6 @@
 				</view>
 				<view class="margin_top2" style="margin-left: -20upx;">
 					<view class="display_inline" v-for="(item,index) in item.images" :key="index">
-						{{item}}
 						<image :src="item" class="moudel_img2" mode=""></image>
 					</view>
 

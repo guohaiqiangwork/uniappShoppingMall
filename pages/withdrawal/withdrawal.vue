@@ -109,7 +109,7 @@ export default {
 			bankF: '',
 			myBankT: '',
 			taxationData: '',
-			tiXiMoney:''
+			tiXiMoney: ''
 		};
 	},
 	onLoad(option) {
@@ -236,7 +236,7 @@ export default {
 					title: '请输入提现金额',
 					icon: 'none',
 					duration: 2000,
-					position: top
+					position: 'center'
 				});
 				return;
 			} else if (!this.moneyValue) {
@@ -244,15 +244,15 @@ export default {
 					title: '请输入提现金额',
 					icon: 'none',
 					duration: 2000,
-					position: top
+					position: 'center'
 				});
 				return;
-			} else if (this.moneyValue > Number(this.money)) {
+			} else if (Number(this.moneyValue) > Number(this.money)) {
 				uni.showToast({
 					title: '提现金额超限',
 					icon: 'none',
 					duration: 2000,
-					position: top
+					position: 'center'
 				});
 				return;
 			}
@@ -292,6 +292,15 @@ export default {
 		},
 		// 设置支付密码
 		getSetPassword: function() {
+			if (!this.passwordSix) {
+				uni.showToast({
+					title: '密码长度不够',
+					icon: 'none',
+					duration: 2000,
+					position: 'center'
+				});
+				return;
+			}
 			var data = {
 				password: this.passwordSix,
 				mbId: uni.getStorageSync('userId')

@@ -31,17 +31,31 @@
 						<view class="">{{ item.bankType }}</view>
 					</view>
 					<view class="width65 text_right">
-							
-						<view class="font_size32"> ****{{ item.bankCard.substr(-4) }}</view>
-						<view class="" style="margin-top: 10%;" >
-							<image :class="delectFalg ? 'z' : 'zb'" @click="delectBank(index)"  v-if="!item.oneChecked" src="../../static/image/my/bf.png" mode="" class="right_img"></image>
-							<image :class="delectFalg ? 'z' : 'zb'" @click="delectBankOver(index)"  v-if="item.oneChecked" src="../../static/image/my/bf1.png" mode="" class="right_img"></image>
+						<view class="font_size32">****{{ item.bankCard.substr(-4) }}</view>
+						<view class="" style="margin-top: 10%;">
+							<image
+								:class="delectFalg ? 'z' : 'zb'"
+								@click="delectBank(index)"
+								v-if="!item.oneChecked"
+								src="../../static/image/my/bf.png"
+								mode=""
+								class="right_img"
+							></image>
+							<image
+								:class="delectFalg ? 'z' : 'zb'"
+								@click="delectBankOver(index)"
+								v-if="item.oneChecked"
+								src="../../static/image/my/bf1.png"
+								mode=""
+								class="right_img"
+							></image>
 						</view>
 					</view>
 				</view>
-				
-				<view class="listNobtn"  @click="addBack" v-if="rightF != '完成' || myBankList.length > 10 ">添加银行卡</view>
-				<view class="listNobtn" @click="openm" v-if="rightF == '完成'">确认解绑</view>
+				<view class="fixed_btm ">
+					<block v-if="myBankList.length < 10"><view class="listNobtn" @click="addBack" v-if="rightF != '完成'">添加银行卡</view></block>
+					<view class="listNobtn" @click="openm" v-if="rightF == '完成'">确认解绑</view>
+				</view>
 			</template>
 
 			<!-- 列表缺省 -->
@@ -51,28 +65,19 @@
 				<view class="nobtn" @click="addBack">添加银行卡</view>
 			</view>
 		</view>
-	
-		
+
 		<!-- 提示框 -->
 		<template v-if="pfalg">
 			<view class="moudel_content">
 				<view class="product_content_block">
-					<view class="font_size34 text_center" style="margin-top: 100upx;">
-						是否解绑？
-					</view>
+					<view class="font_size34 text_center" style="margin-top: 100upx;">是否解绑？</view>
 					<view class="uni-flex " style="margin-top: 80upx;">
-						<view class="leftbtn" @click="closemoudel">
-							取消
-						</view>
-						<view class="rightbtn" @click="delect">
-							确认
-						</view>
+						<view class="leftbtn" @click="closemoudel">取消</view>
+						<view class="rightbtn" @click="delect">确认</view>
 					</view>
 				</view>
 			</view>
-		
 		</template>
-		
 	</view>
 </template>
 
@@ -85,8 +90,8 @@ export default {
 			myBankList: [],
 			delectFalg: false,
 			delectId: '',
-			titleFalg:true,
-			pfalg:false
+			titleFalg: true,
+			pfalg: false
 		};
 	},
 	mounted() {},
@@ -99,65 +104,65 @@ export default {
 		// console.log(this.titleFalg)
 	},
 	methods: {
-		closemoudel:function(){
-			this.pfalg = false
+		closemoudel: function() {
+			this.pfalg = false;
 		},
-		openm:function(){
-			var bankIdList =[];
-			for(let item of this.myBankList){
-				if(item.oneChecked ){
-					bankIdList.push(item.id)
+		openm: function() {
+			var bankIdList = [];
+			for (let item of this.myBankList) {
+				if (item.oneChecked) {
+					bankIdList.push(item.id);
 				}
 			}
-			console.log(bankIdList)
-			if(bankIdList.length == 0){
+			console.log(bankIdList);
+			if (bankIdList.length == 0) {
 				uni.showToast({
 					title: '请选择银行卡',
 					icon: 'none',
 					duration: 2000,
 					position: 'center'
 				});
-				this.pfalg =false
-				return
+				this.pfalg = false;
+				return;
 			}
-			this.pfalg = true
+			this.pfalg = true;
 		},
 		// 头部切换
 		getDelectFalg: function() {
 			this.delectFalg = !this.delectFalg;
 			this.delectFalg ? (this.rightF = '完成') : (this.rightF = '解除绑定');
-			for(let item of this.myBankList){
-				item.oneChecked  = false
+			for (let item of this.myBankList) {
+				item.oneChecked = false;
 			}
 		},
 		// 删除银行卡
-		delectBank: function(index) {		
+		delectBank: function(index) {
 			this.myBankList[index].oneChecked = true;
-			this.$forceUpdate()
+			this.$forceUpdate();
 		},
 		delectBankOver: function(index) {
 			this.myBankList[index].oneChecked = false;
-			this.$forceUpdate()
+			this.$forceUpdate();
 		},
 
 		// 删除银行卡
 		delect: function() {
-			var bankIdList =[];
-			for(let item of this.myBankList){
-				if(item.oneChecked ){
-					bankIdList.push(item.id)
+			var bankIdList = [];
+			for (let item of this.myBankList) {
+				if (item.oneChecked) {
+					bankIdList.push(item.id);
 				}
 			}
-			console.log(bankIdList)
-			if(bankIdList.length == 0){
+			console.log(bankIdList);
+			if (bankIdList.length == 0) {
 				uni.showToast({
 					title: '请选择银行卡',
 					icon: 'none',
 					duration: 2000,
 					position: 'center'
 				});
-				this.pfalg =false
-				return
+				this.pfalg = false;
+				return;
 			}
 			var data = {
 				bankId: bankIdList
@@ -165,7 +170,7 @@ export default {
 			// 获取团队数据
 			this.$http.get('/api/bank/untie', data, true).then(res => {
 				if (res.data.code == 200) {
-					this.pfalg =false
+					this.pfalg = false;
 					//有误
 					uni.showToast({
 						title: '解绑银行卡成功',
@@ -203,7 +208,7 @@ export default {
 						_this.myBankList = res.data.data;
 						for (let item of _this.myBankList) {
 							console.log(item);
-							item.oneChecked = false
+							item.oneChecked = false;
 							switch (item.bankCode) {
 								case 'ICBC':
 									item.bankBColor = 'bank_bgColor_zgp';
@@ -243,9 +248,8 @@ export default {
 									break;
 							}
 						}
-						
+
 						// this.delectFalg = false
-				
 					} else {
 						//有误
 						uni.showToast({
@@ -329,7 +333,7 @@ export default {
 	margin-top: 30upx;
 }
 .listNobtn {
-	width: 92%;
+	// width: 92%;
 	height: 88upx;
 	background: #3c3d3e;
 	border-radius: 10upx;
@@ -337,46 +341,55 @@ export default {
 	line-height: 88upx;
 	color: #ffffff;
 	font-size: 30upx;
-	position: fixed;
-	bottom: 3%;
+	// position: fixed;
+	// bottom: 3%;
 }
-.z{
-	
-		z-index: 1;
+.z {
+	z-index: 1;
 }
-.zb{
-z-index: -9;
+.zb {
+	z-index: -9;
 }
 .product_content_block {
-		background-color: #FFFFFF;
-		border-radius: 20upx;
-		position: absolute;
-		top: 20%;
-		height: 362upx;
-		width: 600upx;
-		margin-left: 75upx;
-	}
-	
-	.leftbtn {
-		width: 220upx;
-		height: 78upx;
-		border: 1px solid #3c3d3e;
-		border-radius: 10px;
-		text-align: center;
-		color: #3C3D3E;
-		line-height: 78upx;
-		margin-left: 45upx;
-	}
-	
-	.rightbtn {
-		width: 220upx;
-		height: 78upx;
-		background: #3c3d3e;
-		border-radius: 10px;
-		color: #FFFFFF;
-		text-align: center;
-		line-height: 78upx;
-		margin-left: 45upx;
-	}
-	
+	background-color: #ffffff;
+	border-radius: 20upx;
+	position: absolute;
+	top: 20%;
+	height: 362upx;
+	width: 600upx;
+	margin-left: 75upx;
+}
+
+.leftbtn {
+	width: 220upx;
+	height: 78upx;
+	border: 1px solid #3c3d3e;
+	border-radius: 10px;
+	text-align: center;
+	color: #3c3d3e;
+	line-height: 78upx;
+	margin-left: 45upx;
+}
+
+.rightbtn {
+	width: 220upx;
+	height: 78upx;
+	background: #3c3d3e;
+	border-radius: 10px;
+	color: #ffffff;
+	text-align: center;
+	line-height: 78upx;
+	margin-left: 45upx;
+}
+
+.fixed_btm {
+	padding: 30upx;
+	background: #fafafa;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	left: 0%;
+	width: 100%;
+	z-index: 99;
+}
 </style>

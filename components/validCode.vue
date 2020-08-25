@@ -14,6 +14,7 @@ isPwd：是否是密码模式
 			    :value="val"
 				type="number"
 				focus="true"
+				autofocus="autofocus" 
 				:maxlength="maxlength"
 				class="hide-input"
 				@input="getVal"

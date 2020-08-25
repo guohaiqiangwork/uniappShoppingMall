@@ -6,7 +6,7 @@
 					收货人
 				</view>
 				<view class="list_right">
-					<input class="list_input" :value="name" @input="keyName" placeholder="请填写收货人姓名" />
+					<input class="list_input" :value="name" @input="keyName" maxlength="8" placeholder="请填写收货人姓名" />
 				</view>
 			</view>
 			<view class="form_list">
@@ -49,7 +49,7 @@
 					详细地址
 				</view>
 				<view class="list_right">
-					<input class="list_input" @input="keyAddr" :value="addr" maxlength="20" placeholder="街道,楼牌号等" />
+					<input class="list_input"  @input="keyAddr" :value="addr" maxlength="25" placeholder="街道,楼牌号等" />
 
 				</view>
 			</view>
