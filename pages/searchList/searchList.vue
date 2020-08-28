@@ -258,9 +258,8 @@ export default {
 		},
 		// tab two
 		tabSwichThree: function(index) {
-			console.log(index);
 			this.twoTab = index;
-
+			this.pageNum  = 1
 			this.sort = index + 1;
 			this.queryGoodsList = [];
 			index == 2 ? (this.sortUp = !this.sortUp) : ''; //价格

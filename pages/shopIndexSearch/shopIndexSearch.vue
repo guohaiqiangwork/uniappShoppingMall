@@ -5,7 +5,7 @@
 			<view class="login_moudel">
 				<!-- 搜索框 -->
 				<view class="uni-flex border_bottom  padding_bottom2 padding_top2">
-					<view class="width10 text_center margin_top1" style="padding-top: 1%;" @click="goBack">
+					<view class="width10  margin_top1" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
 						<image src="../../static/image/icon/left.png" class="balk_img " mode=""></image>
 					</view>
 					<!-- 搜索框 -->
@@ -49,13 +49,14 @@
 					<view class="">
 						<image :src="item.goodsDetail.images" class="list_imgone" mode=""></image>
 					</view>
-					<view class="font_size30 text_hidden margin_left3">
+					<view class="font_size30 font_weight700 text_hidden margin_left3">
 						{{item.title}}
 					</view>
-					<view class="font_colorbe font_sise28 margin_left3 padding_bottom3">
+					<view class="font_colorbe font_sise28 margin_left3 padding_bottom3 font_weight700">
+
 						<text class="font_size22">¥</text>
 						{{item.goodsDetail.price}}
-						<text class="font_size22 font_color66">/件</text>
+						<text class="font_size22 font_color66" style="font-weight: 600;">/件</text>
 					</view>
 				</view>
 
@@ -249,7 +250,7 @@
 		position: relative;
 		width: 94%;
 		margin-left: 3%;
-		padding-top: 6%;
+		// padding-top: 6%;
 	}
 
 	.balk_img {
@@ -335,12 +336,12 @@
 		background-color: #FFFFFF;
 		border-radius: 20upx;
 		margin-top: 30upx;
-		margin-left: 20upx;
+		margin-left: 2%;
 		width: 47%;
 	}
 
 	.list_imgone {
-		width: 330upx;
+		width: 100%;
 		height: 330upx;
 		border-top-left-radius: 20upx;
 		border-top-right-radius: 20upx;
