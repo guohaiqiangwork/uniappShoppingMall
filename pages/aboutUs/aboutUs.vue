@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class=" top_moudel">
-			<image src="../../static/image/my/log.png" mode="" style="width: 170upx;height: 170upx;"></image>
+			<image src="../../static/image/log.png" mode="" style="width: 170upx;height: 170upx;"></image>
 			<view class="font_size32 font_color33">
 				华行优选
 			</view>

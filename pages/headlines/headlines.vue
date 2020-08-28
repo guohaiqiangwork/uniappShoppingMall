@@ -1,5 +1,5 @@
 <template>
-	<view style="padding-top: calc(30upx + var(--status-bar-height));">
+	<view class="margin_top3">
 		<view class="font_size30 page_widthMoudel font_weight700">
 			{{title}}
 		</view>

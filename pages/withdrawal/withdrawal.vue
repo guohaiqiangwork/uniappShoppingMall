@@ -4,7 +4,7 @@
 			<view class="top_money">
 				<view class="uni-flex border_bottom padding_bottom3">
 					<view class="width25">到账方式</view>
-					<view class="uni-flex width65">
+					<view class="uni-flex width65" @click="open_m">
 						<view class="margin_top1" v-if="myBankT"><image :src="myBankT.imgUrl" mode="" class="img"></image></view>
 						<view class="font_size30 margin_left3">
 							<view class="" v-if="myBankT">{{ myBankT.bankName }}</view>
@@ -18,6 +18,7 @@
 				<view class="border_bottom  margin_top5 font_size50 uni-flex">
 					¥
 					<input
+						v-if="!payFalg"
 						:value="moneyValue"
 						type="number"
 						class="margin_left3  font_size50"
@@ -267,10 +268,12 @@ export default {
 						if (res.data.data) {
 							//设定了
 							//有密码了 跳修改密码页
+							this.passwordSix = '';
 							this.payFalg = true;
 							this.setFalg = false;
 						} else {
 							//没设定
+							this.passwordSix='';
 							this.payFalg = true;
 							this.setFalg = true;
 						}

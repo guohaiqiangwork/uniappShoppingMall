@@ -1,13 +1,13 @@
 <template>
 	<view>
-		<view class="title_top"></view>
+		<!-- <view class="title_top"></view> -->
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2">
+		<view style="padding-top:var(--status-bar-height);position: fixed;width: 100%;z-index: 99;" class="uni-flex  background_colorff padding_bottom2 padding_top2">
 			<view class="width35 margin_left3" style="padding-top: 1%;" @click="goBack"><image src="../../static/image/icon/left.png" class="balk_img" mode=""></image></view>
 			<view class="font_size36">商品清单({{ invalidList.length }})</view>
 		</view>
 		<!-- 列表 -->
-		<view class="page_width">
+		<view class="page_width" style="padding-top: 140upx;">
 			<view class="uni-flex product_moudel_list" v-for="(item, index) in invalidList" :key="index">
 				<view class="width30"><image :src="item.image" class="list_imgp" mode=""></image></view>
 				<view class="width70">

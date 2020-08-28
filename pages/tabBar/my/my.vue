@@ -168,10 +168,10 @@ export default {
 	// },
 	onShow() {
 		this.init();
-		uni.pageScrollTo({
-		scrollTop: 0,
-		duration: 300
-		});
+	// 	uni.pageScrollTo({
+	// 	scrollTop: 0,
+	// 	duration: 300
+	// 	});
 	},
 	onPageScroll(e) {
 		// console.log(e)

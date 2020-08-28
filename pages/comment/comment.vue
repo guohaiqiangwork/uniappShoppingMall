@@ -125,7 +125,8 @@ export default {
 		// 保存评价
 		saveComment: function() {
 			console.log(this.imgListData)
-			if (!this.imgListData[0].path) {
+			if (!this.imgListData[0]) {
+				
 				this.imgListData = [];
 				// uni.showToast({
 				// 	title: '请选择图片',

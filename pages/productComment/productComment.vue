@@ -45,7 +45,7 @@
 							<image :src="item.headImgurl" class="list_heard" mode=""></image>
 						</view>
 						<view class="font_size24 margin_left3 margin_top3 width15">
-							{{item.nickName}}
+							{{item.nickName.substr(0,1)}} **
 						</view>
 						<view class="margin_left2" style="margin-top:6%;">
 							<uni-rate size="18" disabled="true" color="#ffffff" active-color="#B99445" :value="item.score"></uni-rate>
@@ -80,7 +80,7 @@
 
 
 		<!-- 底导 -->
-		<view class="uni-flex bottom_view">
+		<view class="uni-flex bottom_view" v-if="false">
 			<view class="uni-flex text_center width33 margin_top2">
 				<view class="width50">
 					<view class="">
@@ -185,7 +185,7 @@
 			console.log(option.urlFalg);
 			console.log(option.pruductId);
 			this.productId = option.pruductId
-
+			
 
 		},
 		mounted() {
@@ -290,6 +290,8 @@
 						} else {
 							this.evaluateList = res.data.data
 						}
+					
+						
 					} else {
 						uni.showToast({
 							title: res.data.message,

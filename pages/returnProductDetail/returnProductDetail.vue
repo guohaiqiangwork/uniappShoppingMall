@@ -242,6 +242,13 @@ export default {
 					this.productList = res.data.data;
 					this.getReason(res.data.data.status);
 					this.getService(res.data.data.status);
+					if(res.data.data.status == '2'){
+						this.allChecked  = true;
+						for (let item of this.productList.detailResults) {
+							item.oneChecked = true;
+						}
+						this.getCalculation()
+					}
 					console.log(this.productList);
 				}
 			});
@@ -361,15 +368,20 @@ export default {
 				}
 				
 			}
-			
-			if (!this.userRemark && this.productList.status != 6) {
-				uni.showToast({
-					title: '请填写具体说明',
-					icon: 'none',
-					duration: 2000,
-					position: 'center'
-				});
-				return;
+			console.log('00')
+			if (!this.userRemark && this.productList.status != 6 ) {
+				if(this.productList.status == 2){
+					
+				}else{
+					uni.showToast({
+						title: '请填写具体说明',
+						icon: 'none',
+						duration: 2000,
+						position: 'center'
+					});
+					return;
+				}
+				
 			}
 			var returnItemsList = [];
 			for (let item of this.productList.detailResults) {
@@ -414,7 +426,9 @@ export default {
 			this.userRemark = e.detail.value;
 		},
 		//商户全选事件
-		allChoose(e) {
+		allChoose:function(e) {
+			if(this.productList.status == 2)
+			return
 			this.allChecked = !this.allChecked;
 			console.log('99');
 			if (this.allChecked) {
@@ -429,7 +443,9 @@ export default {
 			this.getCalculation(); //计算总价
 		},
 		// 多选复选框改变事件
-		changeCheckbox(index) {
+		changeCheckbox:function(index) {
+			if(this.productList.status == 2)
+			return
 			this.productList.detailResults[index].oneChecked = !this.productList.detailResults[index].oneChecked;
 			let dataList = [];
 			for (let item of this.productList.detailResults) {

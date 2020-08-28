@@ -9,7 +9,7 @@
 					<view class="font_sise28 font_colorff">
 						{{mySuper.nickName}}
 					</view>
-					<view class="font_size26 font_colorcc">
+					<view class="font_size26 font_colorcc margin_left3">
 						{{mySuper.mobile}}
 					</view>
 				</view>

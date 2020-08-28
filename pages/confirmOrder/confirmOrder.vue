@@ -57,7 +57,7 @@
 							</view>
 							<!-- </view> -->
 						</scroll-view>
-						<view class=" font_size26 text_right" style="align-items: center;padding-top: 40upx;width: 19%;" @click="goInvalidProduct('d',item.cartResults)">
+						<view class=" font_size26 text_right" style="align-items: center;padding-top: 40upx;width: 19%;" @click="goInvalidProduct('d', item.cartResults)">
 							共{{ item.cartResults.length }}件>
 						</view>
 					</view>
@@ -223,7 +223,7 @@ export default {
 			productNumber: '', //详情页数量
 			productSkuId: '', //详情页id
 			pfalg: false,
-			urlFalg:''
+			urlFalg: ''
 		};
 	},
 
@@ -238,7 +238,7 @@ export default {
 		}
 		// 购买来路
 		if (option.urlFalg == 'productDetails') {
-			this.urlFalg = option.urlFalg ;
+			this.urlFalg = option.urlFalg;
 			this.productSkuId = option.productSkuId;
 			this.productNumber = option.productNumber;
 			this.getProductList();
@@ -495,7 +495,7 @@ export default {
 			this.couponFalg = true;
 		},
 		// 去失效商品列表
-		goInvalidProduct(falg,items) {
+		goInvalidProduct(falg, items) {
 			console.log(falg);
 			var _this = this;
 			var dataList = [];
@@ -508,9 +508,9 @@ export default {
 					};
 					dataList.push(a);
 				}
-			
+
 				uni.navigateTo({
-					url: '../invalidProduct/invalidProduct?falg=' + falg +'&producTList=' + JSON.stringify(dataList)
+					url: '../invalidProduct/invalidProduct?falg=' + falg + '&producTList=' + JSON.stringify(dataList)
 				});
 				console.log(dataList);
 			} else {
@@ -534,20 +534,18 @@ export default {
 		// 去添加地址
 		goAddAddress(e) {
 			console.log(e);
-			if(this.urlFalg == 'productDetails' ){
-			
+			if (this.urlFalg == 'productDetails') {
 				// = option.productSkuId;
 				//  = option.productNumber;
 				// 	option.urlFalg == 'productDetails'
 				uni.navigateTo({
-					url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&urlFalg=productDetails' + '&productSkuId=' + this.productSkuId  + '&productNumber=' + this.productNumber
+					url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&urlFalg=productDetails' + '&productSkuId=' + this.productSkuId + '&productNumber=' + this.productNumber
 				});
-			}else{
+			} else {
 				uni.navigateTo({
-					url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&ids=' + this.idsList
+					url: '../addAddress/addAddress?falgUrl=confirmOrder' + '&ids=' + this.idsList +'&number=Multiple'
 				});
 			}
-			
 		}
 	}
 };

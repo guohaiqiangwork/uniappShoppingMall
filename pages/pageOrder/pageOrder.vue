@@ -168,7 +168,7 @@ export default {
 				// console.log("剩余时间 " + _this.timeDom)
 			}
 		},
-
+		// 支付方式
 		switchPay(id) {
 			this.payFalg = id;
 		},
@@ -183,8 +183,17 @@ export default {
 				});
 				return;
 			}
+			if (!this.payFalg) {
+				uni.showToast({
+					title: '请选择支付方式',
+					icon: 'none',
+					duration: 2000,
+					position: 'center'
+				});
+				return;
+			}
 
-			this.payFalg == 'ye' ? (this.payFalgY = true) : this.payFalg == 'wx' ? this.Wxpay() : this.zfbPay();
+			this.payFalg == 'ye' ? (this.payFalgY = true) : this.payFalg == 'wx' ? this.Wxpay() : this.payFalg == 'zfb' ? this.zfbPay() :'';
 			if (this.payFalg == 'ye') {
 				var data = {
 					mbId: uni.getStorageSync('userId')

@@ -284,10 +284,10 @@
 		},
 		onShow() {
 			this.init();
-			uni.pageScrollTo({
-			scrollTop: 0,
-			duration: 100
-			});
+			// uni.pageScrollTo({
+			// scrollTop: 0,
+			// duration: 100
+			// });
 		},
 		onPageScroll(e) {
 			// console.log(e)

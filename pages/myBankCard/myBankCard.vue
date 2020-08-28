@@ -1,27 +1,27 @@
 <template>
 	<view>
 		<!-- <view class="title_top"></view> -->
-		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
+		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height));padding-left: 0;padding-right: 0;" v-if="titleFalg">
 			<view class="width30  margin_left3" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
 			<!-- 搜索框 -->
-			<view class="width33 text_center font_size36">{{ title }}</view>
-			<view @click="getDelectFalg" v-if="myBankList.length > 0" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">{{ rightF }}</view>
+			<view class="width33 text_center font_size36">{{ title }} </view>
+			<view @click="getDelectFalg" v-if="myBankList.length > 0" class="font_size20  text_right width30 margin_right3 " style="padding-top: 1%;">{{ rightF }}</view>
 		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="titleFalg">
-			<!-- <view class="title_top"></view> -->
+	<!-- 	<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(30upx + var(--status-bar-height));padding-right: 3%;" v-if="titleFalg">
+			
 			<view class="width30  margin_left3" style="padding-top: 1%;padding-left: 2%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
-			<!-- 搜索框 -->
+		
 			<view class="width33 text_center font_size36">{{ title }}</view>
-			<view @click="getDelectFalg" v-if="myBankList.length > 0" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">{{ rightF }}</view>
-		</view>
+			<view @click="getDelectFalg" v-if="myBankList.length > 0" class="font_size20  text_right width30 margin_right3 " style="padding-top: 1%;">{{ rightF }}</view>
+		</view> -->
 
 		<!-- 银行卡列表 -->
-		<view class="page_width" style="padding-bottom: 24%;">
+		<view class="page_width" style="padding-bottom: 24%;padding-top: 160upx;">
 			<!-- 列表 -->
 			<template v-if="myBankList.length > 0">
 				<view class="uni-flex back_moudel" :class="item.bankBColor" v-for="(item, index) in myBankList" :key="index">
@@ -100,7 +100,7 @@ export default {
 	},
 	onPageScroll(e) {
 		// console.log(e)
-		e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+		// e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
 		// console.log(this.titleFalg)
 	},
 	methods: {

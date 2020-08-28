@@ -1,10 +1,18 @@
 <template>
 	<view>
-		<view class="title_top"></view>
-		<view class="uni-flex background_colorff padding_top2 padding_bottom2">
-			<view class="width33 margin_left3 margin_top2"><image src="../../static/image/icon/left.png" class="header_title_img" @click="goBank" mode=""></image></view>
-			<view class="width33 text_center font_size36">购物车</view>
+		<!-- <view class="title_top"></view> -->
+		<view class="uni-flex background_colorff padding_top2 padding_bottom2 " style="padding-right: 3%;padding-top:var(--status-bar-height);" v-if="titleFalg">
+			<view class="width33 margin_left3 margin_top2" ><image src="../../static/image/icon/left.png" class="header_title_img" @click="goBank" mode=""></image></view>
+			<view class="width33 text_center font_size36 margin_left3">购物车</view>
 			<view class="width33 text_right margin_right3 margin_top2" @click="deleteShop">
+				<image src="../../static/image/icon/delete.png" class="header_title_imgr" mode=""></image>
+			</view>
+		</view>
+
+		<view class="top_moudel_two" style="padding-top:var(--status-bar-height);padding-left: 0;" v-if="!titleFalg">
+			<view class="width33 margin_left3 margin_top2"><image src="../../static/image/icon/left.png" class="header_title_img" @click="goBank" mode=""></image></view>
+			<view class="font_size36 width33 text_center margin_left3">购物车</view>
+			<view class="width33 text_right  margin_top2" style="margin-right: 2%;" @click="deleteShop">
 				<image src="../../static/image/icon/delete.png" class="header_title_imgr" mode=""></image>
 			</view>
 		</view>
@@ -139,7 +147,8 @@ export default {
 			invalidList: [], //失效商品
 			oneInvalidList: [],
 			idsList: [], //商品ID数组
-			pfalg: false
+			pfalg: false,
+			titleFalg: true
 		};
 	},
 	onShow() {
@@ -148,6 +157,11 @@ export default {
 		this.totalPrice = 0;
 		this.totalPriceNum = 0;
 		this.quanAllChecked = false;
+	},
+	onPageScroll(e) {
+		// console.log(e)
+		e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+		// console.log(this.titleFalg)
 	},
 	methods: {
 		goBank: function() {
@@ -188,7 +202,7 @@ export default {
 					this.totalPrice = 0;
 					this.totalPriceNum = 0;
 					this.quanAllChecked = false;
-					this.idsList =[];
+					this.idsList = [];
 					this.getShopCard(); //刷新
 				}
 			});
@@ -456,7 +470,7 @@ export default {
 	border: 1px solid #c4c4c4;
 	text-align: center;
 	line-height: 45upx;
-		margin-left: 43%;
+	margin-left: 43%;
 }
 
 .num_moudel {

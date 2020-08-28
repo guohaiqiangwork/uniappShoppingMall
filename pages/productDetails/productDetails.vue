@@ -68,37 +68,41 @@
 			</view>
 
 			<!-- list -->
-			
-		<!-- v-if="Object.keys(productDetailList.genericParamMaps).length > 0 " -->
+
+			<!-- v-if="Object.keys(productDetailList.genericParamMaps).length > 0 " -->
 			<view class="page_width" v-if="productDetailListFalg">
 				<view class="list_moudel_details">
 					<view class="page_width">
-						<view style="width: 93%;" v-for="(item, key) in productDetailList.genericParamMaps" :key="key" class="uni-flex  font_size26 border_bottom padding_top3 padding_bottom3">
+						<view
+							style="width: 93%;"
+							v-for="(item, key) in productDetailList.genericParamMaps"
+							:key="key"
+							class="uni-flex  font_size26 border_bottom padding_top3 padding_bottom3"
+						>
 							<view class="">{{ key }}</view>
 							<view class="font_color66 margin_left3">{{ item }}</view>
 						</view>
 					</view>
 				</view>
-
-				<!-- 评论 -->
-				<view class="comment_moudel" v-if="evaluate.count > 0">
-					<view class="uni-flex display_space " @click="goComment">
-						<view class="margin_left3 width50">宝贝评价（{{ evaluate.count }}）</view>
-						<view class="uni-flex margin_right3 display_right width50">
-							<view class="">查看全部</view>
-							<view class="margin_left2"><image src="../../static/image/icon/rightb.png" style="width: 12upx;height: 20upx;" mode=""></image></view>
-						</view>
+			</view>
+			<!-- 评论 -->
+			<view class="comment_moudel" v-if="evaluate.count > 0">
+				<view class="uni-flex display_space " @click="goComment">
+					<view class="margin_left3 width50">宝贝评价（{{ evaluate.count }}）</view>
+					<view class="uni-flex margin_right3 display_right width50">
+						<view class="">查看全部</view>
+						<view class="margin_left2"><image src="../../static/image/icon/rightb.png" style="width: 12upx;height: 20upx;" mode=""></image></view>
 					</view>
-
-					<view class="uni-flex margin_top2">
-						<view class="margin_left3"><image :src="evaluate.headImgurl" class="img_heard1" mode=""></image></view>
-						<view class="font_size24 margin_top1 margin_left3">{{ evaluate.nickName }}</view>
-					</view>
-					<view class="font_size24  margin_left3 ">{{ evaluate.content }}</view>
 				</view>
 
-				<view class="margin_top3"><image src="../../static/image/icon/prod.png" style="height: 38upx;width: 518upx;" mode=""></image></view>
+				<view class="uni-flex margin_top2">
+					<view class="margin_left3"><image :src="evaluate.headImgurl" class="img_heard1" mode=""></image></view>
+					<view class="font_size24 margin_top1 margin_left3">{{ evaluate.nickName.substr(0, 1) }}**</view>
+				</view>
+				<view class="font_size24  margin_left3 ">{{ evaluate.content }}</view>
 			</view>
+
+			<view class="margin_top3"><image src="../../static/image/icon/prod.png" style="height: 38upx;width: 518upx;" mode=""></image></view>
 
 			<!-- 图片区域 -->
 			<view class="margin_top2 " style="line-height: 0;"><u-parse :content="productDetailList.spuDetail.description" :loading="loading" /></view>
@@ -117,9 +121,8 @@
 					<view class="font_size22" style="margin-top: -8%;">购物车</view>
 				</view>
 			</view>
-			<view :class="productDetailList.goodsDetail.stock == 0  || noShop ? 'left_bottom_no' : 'left_bottom'" @click="addShopCard">加入购物车</view>
-			<view :class="productDetailList.goodsDetail.stock == 0  || noShop ? 'left_bottom_no' : 'left_bottom2'"  @click="goConfirmOrder">立即购买</view>
-			
+			<view :class="productDetailList.goodsDetail.stock == 0 || noShop ? 'left_bottom_no' : 'left_bottom'" @click="addShopCard">加入购物车</view>
+			<view :class="productDetailList.goodsDetail.stock == 0 || noShop ? 'left_bottom_no' : 'left_bottom2'" @click="goConfirmOrder">立即购买</view>
 		</view>
 
 		<!-- 规格选择 -->
@@ -143,22 +146,22 @@
 							</view>
 						</view>
 						<!-- 规格 -->
-
-						<view class="margin_top3" v-for="(item, key) in this.productDetailList.specParamMaps" :key="key">
-							<view class="font_size26">{{ key }}</view>
-							<view class="" style="margin-left: -20upx;">
-								<view
-									@click="tabCCCC(key, chainditem)"
-									v-for="(chainditem, chKey) in item"
-									:key="chKey"
-									class="moudel_item"
-									:style="chainditem != indexes[key] ? 'backgroundColor:#F4F4F4;color:#666666' : ''"
-								>
-									{{ chainditem }}
+						<scroll-view scroll-y="true" style="max-height: 400upx;">
+							<view class="margin_top3" v-for="(item, key) in this.productDetailList.specParamMaps" :key="key">
+								<view class="font_size26">{{ key }}</view>
+								<view class="" style="margin-left: -20upx;">
+									<view
+										@click="tabCCCC(key, chainditem)"
+										v-for="(chainditem, chKey) in item"
+										:key="chKey"
+										class="moudel_item"
+										:style="chainditem != indexes[key] ? 'backgroundColor:#F4F4F4;color:#666666' : ''"
+									>
+										{{ chainditem }}
+									</view>
 								</view>
 							</view>
-						</view>
-
+						</scroll-view>
 						<!-- 购买数量 -->
 						<view class="uni-flex display_space margin_top3">
 							<view class="font_size26">购买数量</view>
@@ -201,7 +204,6 @@
 				</view>
 			</view>
 		</block>
-	
 	</view>
 </template>
 
@@ -232,13 +234,13 @@ export default {
 				spuDetail: {
 					description: ''
 				},
-				goodsDetail:{
-					stock:''
+				goodsDetail: {
+					stock: ''
 				}
 			}, //获取接口详情数据
 			lunBoList: '', //轮播图数据
 			goodsDetail: '', //详情数据
-			AddressList:{data:''}, //地址列表
+			AddressList: { data: '' }, //地址列表
 			evaluate: '', //评价内容
 			spec: '', //规格
 			productNumber: 1, //数量
@@ -249,16 +251,16 @@ export default {
 			loading: false, //开启loading不显示默认值
 			description: '',
 			titleFalg: true,
-			noShop:false,
-			inviteCode:'',//邀请码
-			productDetailListFalg:true
+			noShop: false,
+			inviteCode: '', //邀请码
+			productDetailListFalg: true
 		};
 	},
 	onLoad(option) {
 		this.productId = option.productId; //产品编码
 		this.addressId = option.addressId; //地址ID
 		if (this.addressId) {
-			this.AddressList.data = ''
+			this.AddressList.data = '';
 			this.getAddress(); //获取详情
 		}
 	},
@@ -267,7 +269,7 @@ export default {
 		this.init(); //初始化接口查询
 	},
 	onShow() {
-		this.getMyinfo();//获取用户信息
+		this.getMyinfo(); //获取用户信息
 	},
 	onPageScroll(e) {
 		// console.log(e)
@@ -276,15 +278,16 @@ export default {
 	},
 
 	methods: {
-		tabCCCC:function(one, two) {
+		tabCCCC: function(one, two) {
 			this.indexes[one] = two;
 			let index = Object.values(this.indexes).join('_');
+
 			this.Specific = index;
 			this.getDetail(); //查询
 		},
-		
+
 		// 获取个人信息
-		getMyinfo:function(){
+		getMyinfo: function() {
 			var data = {
 				mbId: uni.getStorageSync('userId')
 			};
@@ -330,7 +333,7 @@ export default {
 		//去评论去
 		goComment: function() {
 			uni.navigateTo({
-				url: '../productComment/productComment?urlFalg=productDetails' + '&pruductId=' + this.productId
+				url: '../productComment/productComment?urlFalg=productDetails' + '&pruductId=' + this.productId + '&shopId=' + this.productDetailList.storeId
 			});
 		},
 		// 返回
@@ -419,7 +422,7 @@ export default {
 
 		// 通过地址id 获取详情
 		getAddress: function() {
-			var _this = this
+			var _this = this;
 			var data = {
 				addressId: this.addressId
 			};
@@ -428,8 +431,8 @@ export default {
 				.then(res => {
 					if (res.data.code == 200) {
 						_this.AddressList.data = res.data.data.provinceName + res.data.data.cityName + res.data.data.areaName + res.data.data.address;
-						console.log(_this.AddressList.data)
-					
+						console.log(_this.AddressList.data);
+
 						// _this.$set(_this.AddressList, 'data' , _this.AddressList.data)
 						// this.$set( _this.AddressList.data )
 					} else {
@@ -457,18 +460,18 @@ export default {
 					_this.productDetailList = res.data.data;
 					_this.lunBoList = _this.productDetailList.imgArr; //轮播数据
 					_this.goodsDetail = _this.productDetailList.goodsDetail; //详细数据
-					console.log(_this.goodsDetail)
+					console.log(_this.goodsDetail);
 					_this.spec = _this.productDetailList.goodsDetail.indexes.replace(/_/g, ' ');
-					if(_this.productDetailList.genericParamMaps){
-						_this.productDetailListFalg = Object.keys(_this.productDetailList.genericParamMaps).length > 0 
+					if (_this.productDetailList.genericParamMaps) {
+						_this.productDetailListFalg = Object.keys(_this.productDetailList.genericParamMaps).length > 0;
 					}
-					
+
 					if (!data.indexes) {
 						_this.indexes = _this.productDetailList.ownSpec;
 					}
-					this.noShop = false
+					this.noShop = false;
 				} else {
-					this.noShop = true
+					this.noShop = true;
 					uni.showToast({
 						title: res.data.message,
 						icon: 'none',
@@ -481,7 +484,7 @@ export default {
 
 		// 去店铺
 		goToShop: function() {
-			console.log(this.productDetailList)
+			console.log(this.productDetailList);
 			uni.navigateTo({
 				url: '../shopIndex/shopIndex?shopId=' + this.productDetailList.storeId + '&urlFalg=productDetails' + '&searchName='
 			});
@@ -547,14 +550,14 @@ export default {
 				mbId: uni.getStorageSync('userId')
 			};
 			this.$http.get('/api/address/list', dataA, true).then(res => {
-				if(this.addressId ){
+				if (this.addressId) {
 					return;
 				}
 				if (res.data.code == 200) {
 					if (res.data.data.length > 0) {
 						_this.AddressList.data = res.data.data[0].address;
 					} else {
-						_this.AddressList.data= '选择收货地址';
+						_this.AddressList.data = '选择收货地址';
 					}
 				} else {
 					uni.showToast({
@@ -573,6 +576,7 @@ export default {
 			this.$http.get('/api/common/evaluation/find', dataP).then(res => {
 				if (res.data.code == 200) {
 					_this.evaluate = res.data.data;
+					console.log(_this.evaluate);
 				} else {
 					uni.showToast({
 						title: res.data.message,
@@ -728,12 +732,11 @@ export default {
 	color: #ffffff;
 	font-size: 30upx;
 	width: 33.4%;
-	
 }
 
 .left_bottom2 {
 	height: 98upx;
-	background: #BE8100;
+	background: #be8100;
 	text-align: center;
 	line-height: 98upx;
 	color: #ffffff;
@@ -859,5 +862,4 @@ export default {
 	width: 80upx;
 	height: 80upx;
 }
-
 </style>

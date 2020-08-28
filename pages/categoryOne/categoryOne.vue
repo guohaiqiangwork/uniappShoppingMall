@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<!-- <view class="title_top" style="background-color: #FFFFFF;"></view> -->
-		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
+		<!-- <view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
-			<!-- 搜索框 -->
+
 			<view class="uni-flex top_content">
 				<view class="searce_left" style="width: 7%;">
 					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
@@ -21,9 +21,9 @@
 				<image src="../../static/image/icon/shopC.png" class="right_img" mode=""></image>
 			</view>
 					
-		</view>
+		</view> -->
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(20upx + var(--status-bar-height))" v-if="titleFalg">
+		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(20upx + var(--status-bar-height));position: fixed;width: 100%;z-index: 99;" v-if="titleFalg">
 			<view class="width10 text_center" style="padding-top: 1%;" @click="goBack">
 				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
 			</view>
@@ -33,6 +33,7 @@
 					<image src="../../static/image/icon/search.png" class="searce_width" mode=""></image>
 				</view>
 				<view class="searce_right">
+	
 					<input class="findShop" maxlength="10" :value="inputValue" placeholder="请输入要搜索的内容" confirm-type='搜索' type="text"
 					 placeholder-style='color:#cccccc' @input="getInputv" @confirm='Search' />
 				</view>
@@ -46,7 +47,7 @@
 		</view>
 		<!-- 列表 -->
 
-		<view class="">
+		<view class="" style="padding-top: 160upx;" >
 			<view class="uni-flex">
 				<view class="width25" style="min-height: 1040upx;background-color: #FAFAFA ;position: absolute;height: 100%;width: 25%;">
 					<view @click="leftTab(item.id)" :class="leftIndex  == item.id ? '_left_active' :'_left'" v-for="(item,index) in leftList"
@@ -130,7 +131,7 @@
 		},
 		onPageScroll(e) {
 			// console.log(e)
-			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
 			// console.log(this.titleFalg)
 		},
 		methods: {

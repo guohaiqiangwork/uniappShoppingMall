@@ -15,7 +15,8 @@
 							</view>
 							<view class="font_color66 font_size26 text_hidden2">{{ item.address }}</view>
 						</view>
-						<view class="width20 text_center margin_left3" @click="goAddressEdit(item.id)">
+
+						<view v-if="enifFalg" class="width20  text_center margin_left3" @click="goAddressEdit(item.id)">
 							<view class="list_right_img"><image src="../../static/image/icon/edit.png" class="list_img_add" mode=""></image></view>
 						</view>
 					</view>
@@ -44,7 +45,7 @@
 					</view>
 				</view>
 				<view class="form_list">
-					<view class="list_left">所在地区 </view>
+					<view class="list_left">所在地区</view>
 					<view class="list_right uni-flex">
 						<!-- <view class="list_right uni-flex">
 							<input class="list_input width90" placeholder="省,市,区" disabled="disabled" @click="keyArea" :value="area" />
@@ -114,7 +115,7 @@ export default {
 		return {
 			name: '',
 			phone: '',
-
+			enifFalg: true,
 			addr: '',
 			defAddrstaus: false,
 			sign: '', //其他页面传来的标识
@@ -132,7 +133,8 @@ export default {
 			areaList: [], //区
 			area: '',
 			areaNumber: '',
-			urlFalg:''
+			urlFalg: '',
+			Multiple: ''
 		};
 	},
 	onLoad(option) {
@@ -140,34 +142,55 @@ export default {
 		this.sign = option.falg;
 		this.goodsId = option.goodsId;
 		this.falgUrl = option.falgUrl; //路径
+		if (this.falgUrl == 'confirmOrder' || this.falgUrl == 'productDetails') {
+			this.enifFalg = false;
+			if (option.number) {
+				this.Multiple = option.number;
+			}
+		}
 		this.productId = option.productId; //产品ID
 		this.ids = option.ids; //确认下单
 		if (option.urlFalg == 'productDetails') {
-			this.urlFalg = option.urlFalg ;
+			this.urlFalg = option.urlFalg;
 			this.productSkuId = option.productSkuId;
 			this.productNumber = option.productNumber;
 		}
-		
-		
 	},
 	onShow() {
 		this.getProvince('', 'province'); //获取省数据
 		this.getAddressList(); //获取地址列表
-		
 	},
-	
+
 	onBackPress() {
-		// console.log('999');
-		if(this.falgUrl){
-			uni.redirectTo({
-				url: '../' + this.falgUrl +'/' +this.falgUrl + '?productId=' + this.productId,
-			});
-		}else{
+		console.log(this.falgUrl);
+		if (this.falgUrl) {
+			if (this.falgUrl == 'productDetails') {
+				uni.redirectTo({
+					url: '../' + this.falgUrl + '/' + this.falgUrl + '?productId=' + this.productId
+				});
+			} else if (this.falgUrl == 'confirmOrder') {
+				if (this.Multiple) {
+					var urlData = '../' + this.falgUrl + '/' + this.falgUrl + '?ids=' + this.ids;
+					uni.redirectTo({
+						url: urlData
+					});
+				} else {
+					uni.redirectTo({
+						url: '../' + this.falgUrl + '/' + this.falgUrl + '?productSkuId=' + this.productSkuId + '&productNumber=' + this.productNumber + '&urlFalg=productDetails'
+					});
+				}
+			} else {
+				var urlData = '../' + this.falgUrl + '/' + this.falgUrl + '?ids=' + this.ids;
+				uni.redirectTo({
+					url: urlData
+				});
+			}
+		} else {
 			uni.navigateTo({
 				url: '../setUp/setUp'
 			});
 		}
-	
+
 		return true;
 	},
 
@@ -221,9 +244,9 @@ export default {
 					position: 'center'
 				});
 				return false;
-			} else if (this.addr.length > 20) {
+			} else if (this.addr.length > 25) {
 				uni.showToast({
-					title: '地址请输入小于20个字符',
+					title: '地址请输入小于25个字符',
 					icon: 'none',
 					duration: 1500,
 					position: 'center'
@@ -261,9 +284,9 @@ export default {
 							duration: 2000,
 							position: 'center'
 						});
-						this.province = '请选择省'
-						this.city =''
-						this.area=''
+						this.province = '请选择省';
+						this.city = '';
+						this.area = '';
 						this.getAddressList(); //刷新列表
 					}
 				})
@@ -314,14 +337,23 @@ export default {
 				uni.redirectTo({
 					url: '../productDetails/productDetails?addressId=' + e.id + '&productId=' + this.productId
 				});
-			} else if(this.urlFalg == 'productDetails'){
-				var urlData = '../' + this.falgUrl + '/' + this.falgUrl + '?addressId=' + e.id + '&productSkuId=' + this.productSkuId + '&productNumber=' + this.productNumber + '&urlFalg=productDetails';
+			} else if (this.urlFalg == 'productDetails') {
+				var urlData =
+					'../' +
+					this.falgUrl +
+					'/' +
+					this.falgUrl +
+					'?addressId=' +
+					e.id +
+					'&productSkuId=' +
+					this.productSkuId +
+					'&productNumber=' +
+					this.productNumber +
+					'&urlFalg=productDetails';
 				uni.redirectTo({
 					url: urlData
 				});
-
-			}else
-			{
+			} else {
 				var urlData = '../' + this.falgUrl + '/' + this.falgUrl + '?addressId=' + e.id + '&ids=' + this.ids;
 				uni.redirectTo({
 					url: urlData

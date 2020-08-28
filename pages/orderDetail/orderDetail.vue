@@ -205,6 +205,7 @@ export default {
 				}
 			} else {
 				_this.timeDom = '00:00';
+				_this.getOrderDetail()
 				// console.log("剩余时间 " + _this.timeDom)
 			}
 		},

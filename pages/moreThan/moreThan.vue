@@ -31,7 +31,8 @@
 			</view>
 		</view>
 
-		<view class="background_colorff" style="position: fixed;width: 100%; background-color: #ffffff;">
+		<view class="background_colorff" >
+			<!-- style="position: fixed;width: 100%; background-color: #ffffff;" -->
 			<!-- tab 切换 -->
 			<view class="padding_top3 padding_bottom3 border_bottom ">
 				<view
@@ -68,8 +69,9 @@
 			</view>
 		</view>
 
-		<!-- 列表 -->
-		<view class="page_width" style="margin-top: 30%;">
+		<!-- 列表 style="margin-top: 30%;"-->
+		<view class="page_width" >
+			
 			<view class="uni-flex margin_top3" v-for="(item, index) in productList" :key="index">
 				<view class="font_size26 width20 text_center">{{ item.remark }}</view>
 				<view class="font_size24 width50 text_center">{{ item.createTime }}</view>
@@ -79,7 +81,8 @@
 					￥{{ item.amount }}
 				</view>
 			</view>
-			<view class="" v-if="productList > 0"><uni-load-more :status="status" :content-text="contentText" color="#007aff" /></view>
+	
+			<view class="" v-if="productList.length > 9"><uni-load-more :status="status" :content-text="contentText" color="#007aff" /></view>
 
 			<view v-if="productList.length == 0" class="text_center margin_top18">
 				<image src="../../static/image/default/noOrder.png" class="no_img_order" mode=""></image>
@@ -109,7 +112,7 @@ function getDate(type) {
 	if (type === 'start') {
 		year = year;
 	} else if (type === 'end') {
-		year = year + 1;
+		year = year ;
 	}
 	month = month > 9 ? month : '0' + month;
 	day = day > 9 ? day : '0' + day;
@@ -237,7 +240,7 @@ export default {
 			var data = {
 				mbId: uni.getStorageSync('userId'),
 				endTime: this.endDateOne,
-				limit: 10,
+				limit: 20,
 				page: this.pageNum,
 				startTime: this.startDateOne,
 				type: this.dataIndex

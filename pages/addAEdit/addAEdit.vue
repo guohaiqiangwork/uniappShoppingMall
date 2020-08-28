@@ -236,9 +236,9 @@
 						position: 'center',
 					});
 					return false;
-				} else if (this.addr.length > 20) {
+				} else if (this.addr.length > 25) {
 					uni.showToast({
-						title: '地址请输入小于20个字符',
+						title: '地址请输入小于25个字符',
 						icon: 'none',
 						duration: 1500,
 						position: 'center',

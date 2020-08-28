@@ -59,7 +59,7 @@
 					<view class="width75 ">
 						<view class="uni-flex " style="margin-top: 4%;">
 							<view class="font_sise28">{{ item.nickName }}</view>
-							<view class="font_sise28">{{ item.mobile }}
+							<view class="font_sise28 margin_left3">{{ item.mobile }}
 								<!-- <image src="../../static/image/bank/gsy.png" mode="" style="width: 90upx;height: 30upx;"></image> --></view>
 						</view>
 						<!-- <view class="font_size26 font_color66">{{ item.mobile }}</view> -->

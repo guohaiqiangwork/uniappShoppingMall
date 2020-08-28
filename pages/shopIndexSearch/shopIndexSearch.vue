@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 头部 -->
-		<view class="" >
+		<view class="background_colorff" style="padding-top:var(--status-bar-height);">
 			<view class="login_moudel">
 				<!-- 搜索框 -->
 				<view class="uni-flex border_bottom  padding_bottom2 padding_top2">
@@ -42,8 +42,9 @@
 		</view>
 
 		<!-- 列表 -->
-		<view class="page_width ">
+		<view class=" ">
 			<template v-if="tabIndexTwo == 'home'">
+				<!-- {{queryGoodsList}} -->
 				<view class="list_itemone" v-for="(item,index) in queryGoodsList" :key="index" @click="goProductDetails(item.id)">
 					<view class="">
 						<image :src="item.goodsDetail.images" class="list_imgone" mode=""></image>
@@ -81,6 +82,7 @@
 	export default {
 		data() {
 			return {
+				twoTab:'',
 				tabListThree: [{
 						name: '综合'
 					},
@@ -247,7 +249,7 @@
 		position: relative;
 		width: 94%;
 		margin-left: 3%;
-		padding-top: 5%;
+		padding-top: 6%;
 	}
 
 	.balk_img {
@@ -334,7 +336,7 @@
 		border-radius: 20upx;
 		margin-top: 30upx;
 		margin-left: 20upx;
-		width: 330upx;
+		width: 47%;
 	}
 
 	.list_imgone {

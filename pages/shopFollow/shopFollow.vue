@@ -333,8 +333,9 @@
 	.left_check {
 		width: 10%;
 		text-align: center;
-		height: 150upx;
-		line-height: 150upx;
+		height: 100upx;
+		line-height: 100upx;
+		margin-top: 30upx;
 		// background-color: #FFFFFF;
 	}
 
