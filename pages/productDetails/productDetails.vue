@@ -611,15 +611,32 @@ export default {
 
 		// 微信分享
 		wxShare: function() {
+			var imgData = [];
+			let listVideo = this.productDetailList.imgArr; //轮播数据
+			for (let index in listVideo) {
+				if (listVideo[index].substr(listVideo[index].lastIndexOf('.') + 1) == 'mp4') {
+					var a = {
+						url: listVideo[index],
+						type: 'mp4'
+					};
+				} else {
+					var b = {
+						url: listVideo[index],
+						type: 'img'
+					};
+				}
+
+				imgData.push(b);
+			}
 			//分享到微信朋友
 			uni.share({
 				provider: 'weixin',
 				scene: 'WXSceneSession',
 				type: 0,
-				href: 'http://101.201.180.222/share/h5/index.html?inviteCode=' + this.inviteCode, //这地址太长了，就省略了
+				href: 'http://www.ydlhuaxia.cn/apk/share/h5/index.html?inviteCode=' + this.inviteCode,
 				title: '华行优选',
 				summary: '让   生   活    更   优   质 ',
-				imageUrl: 'http:*******************',
+				imageUrl: imgData[0].url,
 				success: function(res) {
 					if (res) {
 						console.log('success:' + JSON.stringify(res));

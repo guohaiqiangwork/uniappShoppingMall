@@ -193,7 +193,7 @@ export default {
 				return;
 			}
 
-			this.payFalg == 'ye' ? (this.payFalgY = true) : this.payFalg == 'wx' ? this.Wxpay() : this.payFalg == 'zfb' ? this.zfbPay() :'';
+			this.payFalg == 'ye' ? (this.payFalgY = true) : this.payFalg == 'wx' ? this.Wxpay() : this.payFalg == 'zfb' ? this.zfbPay() : '';
 			if (this.payFalg == 'ye') {
 				var data = {
 					mbId: uni.getStorageSync('userId')
@@ -241,10 +241,24 @@ export default {
 			});
 		},
 		pay: function(type, pay) {
+			var weiXin = pay;
+			var data = {
+				appid: weiXin.appId,
+				noncestr: weiXin.nonceStr,
+				package: weiXin.packageValue, // 固定值，以微信支付文档为主
+				partnerid: weiXin.partnerId,
+				prepayid: weiXin.prepayId,
+				timestamp: weiXin.timeStamp,
+				sign: weiXin.sign // 根据签名算法生成签名
+			};
+			type == 'wxpay' ? (pay = data) : (pay = pay);
 			uni.requestPayment({
 				provider: type,
 				orderInfo: pay, //微信、支付宝订单数据
 				success: function(res) {
+					uni.navigateTo({
+						url: '../payResult/payResult?payFalg=true' + '&orderId=' + this.orderId + '&orderNo=' + this.payData.orderNo
+					});
 					console.log('success:' + JSON.stringify(res));
 				},
 				fail: function(err) {

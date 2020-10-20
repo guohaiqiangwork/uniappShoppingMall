@@ -29,7 +29,7 @@
 
 		</view>
 		<view class="font_size22 font_color99 text_center" style="position: fixed; bottom :3%;width:100%">
-			@新商城   版权所有
+			@华行优选   版权所有
 		</view>
 	</view>
 </template>

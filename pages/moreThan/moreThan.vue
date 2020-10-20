@@ -8,7 +8,7 @@
 			<view class="width50 text_center font_size36">我的余额</view>
 			<view @click="topRight" class="font_size30 width20 text_right width30 margin_right3 " style="padding-top: 1%;">余额说明</view>
 		</view>
-		
+
 		<!-- 头部搜索 -->
 		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(10upx + var(--status-bar-height))" v-if="titleFalg">
 			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
@@ -31,7 +31,7 @@
 			</view>
 		</view>
 
-		<view class="background_colorff" >
+		<view class="background_colorff">
 			<!-- style="position: fixed;width: 100%; background-color: #ffffff;" -->
 			<!-- tab 切换 -->
 			<view class="padding_top3 padding_bottom3 border_bottom ">
@@ -70,8 +70,7 @@
 		</view>
 
 		<!-- 列表 style="margin-top: 30%;"-->
-		<view class="page_width" >
-			
+		<view class="page_width">
 			<view class="uni-flex margin_top3" v-for="(item, index) in productList" :key="index">
 				<view class="font_size26 width20 text_center">{{ item.remark }}</view>
 				<view class="font_size24 width50 text_center">{{ item.createTime }}</view>
@@ -81,7 +80,7 @@
 					￥{{ item.amount }}
 				</view>
 			</view>
-	
+
 			<view class="" v-if="productList.length > 9"><uni-load-more :status="status" :content-text="contentText" color="#007aff" /></view>
 
 			<view v-if="productList.length == 0" class="text_center margin_top18">
@@ -94,8 +93,21 @@
 		<template v-if="explainFalg">
 			<view class="moudel_content">
 				<view class="content_block">
-					<view class="text_right" @click="closeMoudel"><image src="../../static/image/icon/close.png" style="width: 30upx;height: 30upx;" class="margin_top3 margin_right3" mode=""></image></view>
-					<view class="margin_top3 text_center font_size28 ">是打飞机啊龙佳龙看见发生纠纷离开 卢卡斯肌肤抵抗力你卡家解开了</view>
+					<view class="text_right" @click="closeMoudel">
+						<image src="../../static/image/icon/close.png" style="width: 30upx;height: 30upx;" class="margin_top3 margin_right3" mode=""></image>
+					</view>
+					<view class="text_center">拥金提现余额说明</view>
+					<view class="margin_top3 text_left font_size28 padding_left2" style="padding-right: 2%;">
+						<view class="">一、拥金提现相关操作</view>
+						<view class="">1.用户在华行优选APP平台，进入账户余额-点击提现-填写提现金额，进入填写存管银行提现页面，正确填写交易密码后即可提现成功.</view>
+						<view class="">2.用户账户有可用资金即可提现，具体到账时间由银行为准 .</view>
+						<view class="">3. 温馨提示：华行优选APP平台拥金提现’最大金额单笔金额不超过1000（壹仟）元人民币 ；</view>
+						<view class="magin_top3">二、提现规则</view>
+						<view class="">1、单笔提现最小金额为100（壹佰）元；</view>
+						<view class="">2、提现手续费根据银行第三方提现金额进行扣除；与本平台无关。</view>
+						<view class="">三、冻结余额</view>
+						<view class="">“冻结余额”可能是因好友退款、退换货、导致交易账期延长造成余额暂时无法入账的款项，会随着交易状态改变等原因恢复可用或扣除；</view>
+					</view>
 				</view>
 			</view>
 		</template>
@@ -112,7 +124,7 @@ function getDate(type) {
 	if (type === 'start') {
 		year = year;
 	} else if (type === 'end') {
-		year = year ;
+		year = year;
 	}
 	month = month > 9 ? month : '0' + month;
 	day = day > 9 ? day : '0' + day;
@@ -167,7 +179,7 @@ export default {
 			pageNum: 1, //页码
 			productList: [],
 			dataIndex: 0,
-			titleFalg:true
+			titleFalg: true
 		};
 	},
 	mounted() {
@@ -226,8 +238,8 @@ export default {
 					duration: 2000,
 					position: 'center'
 				});
-				this.startDateOne = getDate('start')
-				this.endDateOne =getDate('end')
+				this.startDateOne = getDate('start');
+				this.endDateOne = getDate('end');
 				return;
 			}
 			if (this.startDateOne == '请选择') {
@@ -236,7 +248,7 @@ export default {
 			if (this.endDateOne == '请选择') {
 				this.endDateOne = '';
 			}
-			console.log(this.dataIndex)
+			console.log(this.dataIndex);
 			var data = {
 				mbId: uni.getStorageSync('userId'),
 				endTime: this.endDateOne,
@@ -271,8 +283,8 @@ export default {
 				this.dataIndex = 2;
 			} else if (this.tabIndexT == 2) {
 				this.dataIndex = 1;
-			}else if(this.tabIndexT == 0){
-				this.dataIndex  = 0
+			} else if (this.tabIndexT == 0) {
+				this.dataIndex = 0;
 			}
 			this.productList = [];
 			this.pageNum = 1;

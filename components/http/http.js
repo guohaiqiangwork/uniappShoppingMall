@@ -7,12 +7,12 @@ let token = uni.getStorageSync('token');
 http.setConfig((config) => { /* 设置全局配置 */
 	if (process.env.VUE_APP_PLATFORM === 'h5') {
 		// config.baseUrl = '/dep';　
-		config.baseUrl = 'http://101.201.180.222:8080';
+		config.baseUrl = 'http://manage.ydlhuaxia.cn';
 		// config.baseUrl = 'http://192.168.1.102';
 		// console.log('开发环境H5')　　　　　　　　　　　　　　
 	} else {
 		//config.baseUrl = 'http://47.105.108.144:8080/primary';　
-		config.baseUrl = 'http://101.201.180.222:8080';
+		config.baseUrl = 'http://manage.ydlhuaxia.cn';
 
 	}
 	config.header = {

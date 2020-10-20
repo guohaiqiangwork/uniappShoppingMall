@@ -55,17 +55,23 @@
             },
             /* ios打包配置 */
             "ios" : {
-                "idfa" : false
+                "idfa" : false,
+                "capabilities" : {
+                    "entitlements" : {
+                        "com.apple.developer.associated-domains" : [ "applinks:demo.dcloud.net.cn" ]
+                    }
+                }
             },
             /* SDK配置 */
             "sdkConfigs" : {
                 "ad" : {},
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wxd6c3811bc495eae1",
-                        "appsecret" : "e491fbd2b81f5c71f1e3144d4ae7bcab",
-                        "UniversalLinks" : ""
-                    }
+                        "appid" : "wxe25f5eb75c809c80",
+                        "appsecret" : "7f19cd62860eff8c305400334d2ef0c6",
+                        "UniversalLinks" : "https://www.ydlhuaxia.cn/.well-known/"
+                    },
+                    "apple" : {}
                 },
                 "payment" : {
                     "alipay" : {
@@ -73,14 +79,14 @@
                     },
                     "weixin" : {
                         "__platform__" : [ "android" ],
-                        "appid" : "wxd6c3811bc495eae1",
-                        "UniversalLinks" : ""
+                        "appid" : "wxe25f5eb75c809c80",
+                        "UniversalLinks" : "https://www.ydlhuaxia.cn/.well-known/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wxd6c3811bc495eae1",
-                        "UniversalLinks" : ""
+                        "appid" : "wxe25f5eb75c809c80",
+                        "UniversalLinks" : "https://www.ydlhuaxia.cn/.well-known/"
                     }
                 }
             },

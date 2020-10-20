@@ -1,33 +1,23 @@
 <template>
 	<view>
-		<!-- <view class="title_top"></view> -->
-		<view class="top_moudel_two" style="padding-top: calc(30upx + var(--status-bar-height))" v-if="!titleFalg">
-			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
-				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
-			</view>
-			<!-- 搜索框 -->
-			<view class="width50 text_center font_size36">
-				店铺关注
-			</view>
-			<view @click="edit" class="font_size30 width20 text_right width30 margin_right3 " style="padding-top: 1%;margin-right: 30upx;">
-				{{titleRight}}
-			</view>
-		</view>
 		<!-- 头部搜索 -->
-		<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(20upx + var(--status-bar-height))" v-if="titleFalg">
-			<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
-				<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
-			</view>
-			<!-- 搜索框 -->
-			<view class="width50 text_center font_size36">
-				店铺关注
-			</view>
-			<view @click="edit" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">
-				{{titleRight}}
+		<view class="" style="position: fixed;width: 100%;z-index: 99;">
+			<view class="uni-flex  background_colorff padding_bottom2 padding_top2" style="padding-top: calc(20upx + var(--status-bar-height))">
+				<view class="width30 text_left margin_left3" style="padding-top: 1%;" @click="goBack">
+					<image src="../../static/image/icon/left.png" class="balk_img" mode=""></image>
+				</view>
+				<!-- 搜索框 -->
+				<view class="width50 text_center font_size36">
+					店铺关注
+				</view>
+				<view @click="edit" class="font_size20 width20 text_right width30 margin_right3 " style="padding-top: 1%;">
+					{{titleRight}}
+				</view>
 			</view>
 		</view>
+		
 		<!-- 列表 -->
-		<view class=" " >
+		<view class=" "  style="padding-top: 160upx;">
 			<view class="uni-flex" v-for="(item,index) in productList" :key="index">
 				<!-- 左边 -->
 				<view :class="leftFalg ? 'left_check' : 'left_checkn'" v-if="leftFalg">
@@ -147,7 +137,7 @@
 		},
 		onPageScroll(e) {
 			// console.log(e)
-			e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
+			// e.scrollTop > 80 ? (this.titleFalg = false) : (this.titleFalg = true);
 			// console.log(this.titleFalg)
 		},
 		onReachBottom() {
