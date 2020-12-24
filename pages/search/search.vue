@@ -138,6 +138,8 @@ export default {
 					});
 				}
 			}
+			
+			
 			uni.navigateTo({
 				url: '../searchList/searchList?searchName=' + this.inputValue + '&urlFalg=search'
 			});

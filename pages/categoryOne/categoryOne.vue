@@ -57,7 +57,7 @@
 		<view class="" style="padding-top: 160upx;">
 			<view class="uni-flex">
 				<!-- <scroll-view scroll-y="false"> -->
-				<view class="width25" style="min-height: 1040upx;background-color: #FAFAFA ;position: absolute;height: 100%;width: 25%;">
+				<view class="width25" style="min-height: 1040upx;background-color: #FAFAFA ;position: fixed;height: 100%;width: 25%;">
 					<view @click="leftTab(item.id)" :class="leftIndex == item.id ? '_left_active' : '_left'" v-for="(item, index) in leftList" :key="index">{{ item.name }}</view>
 				</view>
 				<!-- </scroll-view> -->
@@ -85,7 +85,9 @@
 						<image src="../../static/image/default/noProduct.png" class="no_img_product" mode=""></image>
 						<view class="font_size28 font_color99 margin_top5">暂无相关商品~</view>
 					</view>
-					
+					<view class="" v-if="rightList.length > 9">
+						<uni-load-more :status="status" :content-text="contentText" color="#007aff" />
+					</view>
 					<view class="" @click="goTop">
 						<image src="../../static/image/top.png" style="position: fixed; right: 2%;bottom: 5%;width: 120upx;height: 120upx;" mode=""></image>
 					</view>
@@ -106,7 +108,24 @@ export default {
 			rightList: '', //右面数据
 			categoryId: '', //一级分类
 			shopCarNumber: '', //购物车数量
-			titleFalg: true
+			titleFalg: true,
+			status: 'more',
+			statusTypes: [{
+				value: 'more',
+				text: '加载前'
+			}, {
+				value: 'loading',
+				text: '加载中'
+			}, {
+				value: 'noMore',
+				text: '没有更多'
+			}],
+			contentText: {
+				contentdown: '没有更多',
+				contentrefresh: '加载中',
+				contentnomore: '没有更多'
+			},
+			pageNum: 1, //页码
 		};
 	},
 	onLoad(option) {
@@ -127,6 +146,16 @@ export default {
 	mounted() {
 		this.getLeft();
 		this.getShopNumber();
+	},
+	// 上拉加载
+	onReachBottom() {
+		let _self = this
+		this.status = 'loading'
+		// uni.showNavigationBarLoading()
+		this.pageNum = this.pageNum + 1;
+		this.getQueryGoods()
+		_self.status = 'more'
+		// uni.hideNavigationBarLoading()
 	},
 	onPageScroll(e) {
 		// console.log(e)
@@ -239,6 +268,7 @@ export default {
 		leftTab: function(id) {
 			this.leftIndex = id;
 			this.rightList = [];
+			this.pageNum = 1;
 			this.getQueryGoods();
 		},
 

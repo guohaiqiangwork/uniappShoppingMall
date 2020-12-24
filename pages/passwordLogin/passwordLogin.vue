@@ -44,7 +44,7 @@
 					</view>
 
 					
-					<view class="margin_top18">
+					<view class="margin_top18" v-if="iosFalgOne == 'true'">
 						<view class="uni-flex display_center">
 							<view class="login_left"></view>
 						
@@ -78,8 +78,12 @@
 			return {
 				loginTitle: '登录',
 				msgErr: '',
+				iosFalgOne:''
 
 			}
+		},
+		onLoad() {
+			this.iosFalgOne = uni.getStorageSync('iosFalgOne')
 		},
 		methods: {
 			// 手机号

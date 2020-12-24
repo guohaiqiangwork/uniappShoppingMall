@@ -67,7 +67,7 @@
 				let id = uni.getStorageSync('userId');
 				const token = uni.getStorageSync('token');
 				uni.uploadFile({
-					url: 'http://101.201.180.222:8080/api/member/updateAvatar',
+					url: 'http://manage.ydlhuaxia.cn/api/member/updateAvatar',
 					filePath: rsp.path,
 					name: 'file',
 					method: 'post',

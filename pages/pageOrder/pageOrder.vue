@@ -39,7 +39,9 @@
 					<view class="font_color33 font_size30 text_center" v-if="setFalg">支付密码与提现密码一致</view>
 					<view class="font_color33 font_size30 text_center" v-if="!setFalg">需支付</view>
 					<view class="font_color33 font_size60 font_weight600 text_center" v-if="!setFalg">￥{{ payData.payment }}</view>
-					<view class="margin_top5"><validcode :maxlength="6" :isPwd="true" @finish="getPwd" ref="pwd"></validcode></view>
+					<view class="margin_top5">
+						<validcode :maxlength="6" :isPwd="true" @finish="getPwd" ref="pwd"></validcode>
+						</view>
 
 					<view class="moudel_btn" v-if="setFalg" @click="getSetPassword">确认</view>
 				</view>

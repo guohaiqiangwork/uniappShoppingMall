@@ -18,7 +18,7 @@
 					<view class="font_size28">
 						您可使用本应用，进行商品浏览，支付购买售后服务等功能。我们将严格遵守相关法律法规和隐私政策以保护您的个人隐私。
 						请您阅读并同意
-						<text class="font_colorbe">《用户协议》</text>和<text class="font_colorbe">《隐私政策》</text>
+						<text class="font_colorbe" @click="goUserConter('userAgreement')">《用户协议》</text>和<text class="font_colorbe"  @click="goUserConter('userPrivacy')">《隐私政策》</text>
 					</view>
 					<view class="uni-flex " style="margin-top: 80upx;">
 						<view class="leftbtn" @click="closemoudel">
@@ -36,7 +36,7 @@
 			<view class="">
 				<view class="product_content_block">
 					<view class="font_sise28 text_center margin_top3" >
-					您需要同意《用户协议》和《隐私政策》才能继续使用我们的服务
+					您需要同意 <text @click="goUserConter('userAgreement')">《用户协议》</text>和 <text @click="goUserConter('userPrivacy')">《隐私政策》</text>才能继续使用我们的服务
 					</view>
 					<view class="uni-flex " style="margin-top: 50upx;">
 						<view class="leftbtn" @click="closemoudelOne">
@@ -74,6 +74,12 @@ export default {
 	},
 	
 	methods: {
+		// 去用户协议 去隐私协议
+		goUserConter: function(page) {
+			uni.navigateTo({
+				url: '../' + page + '/' + page
+			});
+		},
 		closemoudel:function(){
 			this.oneImg = 2
 		},

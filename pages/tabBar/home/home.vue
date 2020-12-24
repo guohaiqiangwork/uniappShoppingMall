@@ -24,7 +24,6 @@
 					 placeholder-style='color:#cccccc' />
 				</view>
 			</view>
-		
 		</view>
 		<view class="content_moudel">
 			<!-- 轮播图 -->

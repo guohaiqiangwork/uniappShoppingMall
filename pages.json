@@ -444,7 +444,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "商城",
+		"navigationBarTitleText": "华行优选",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 		// "navigationStyle": "custom"
